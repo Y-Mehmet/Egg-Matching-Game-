@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var item in eggSlotDic)
         {
-            Debug.Log(item.Key + " " + item.Value.name);
+            //Debug.Log(item.Key + " " + item.Value.name);
         }
         if (eggSlotDic.Count<=slotCount )
         {
