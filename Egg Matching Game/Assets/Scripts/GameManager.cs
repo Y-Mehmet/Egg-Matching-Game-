@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> slotList= new List<GameObject>();
     public Dictionary< int, GameObject> eggSlotDic = new Dictionary<int, GameObject>();
     public Action<int, GameObject> onSlotIndexChange;
+    [HideInInspector]
     public int slotCount = 3;
     private Color originalColor;
 
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
 
     }
     private void Start()
@@ -54,18 +56,31 @@ public class GameManager : MonoBehaviour
     {
         switch (color)
         {
+            case EggColor.Yellow:
+                return Color.yellow;
             case EggColor.Red:
                 return Color.red;
             case EggColor.Green:
                 return Color.green;
-            case EggColor.Yellow:
-                return Color.yellow;
+            case EggColor.Blue:
+                return Color.blue;
+            case EggColor.Orange:
+                return new Color(1f, 0.5f, 0f); // turuncu (RGB: 255,128,0)
+            case EggColor.Purple:
+                return new Color(0.5f, 0f, 0.5f); // mor (RGB: 128,0,128)
+            case EggColor.Pink:
+                return new Color(1f, 0.41f, 0.71f); // pembe (RGB: 255,105,180)
+            case EggColor.Cyan:
+                return Color.cyan;
+            case EggColor.White:
+                return Color.white;
+            case EggColor.Black:
+                return Color.black;
             default:
                 Debug.LogError("Invalid EggColor");
                 return Color.white;
-
-
         }
+
 
     }
     public void AddEggListByIndex(int slotIndex , GameObject eggObj)
@@ -165,4 +180,11 @@ public enum EggColor
     Yellow,
     Red,
     Green,
+    Blue,
+    Orange,
+    Purple,
+    Pink,
+    Cyan,
+    White,
+    Black
 }
