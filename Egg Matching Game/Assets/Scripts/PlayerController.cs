@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 originalPosition;
     private Transform currentSlot;
     private Transform selectedEgg;
-
+    public LayerMask eggLayerMask;
     void Start()
     {
         cam = Camera.main;
@@ -56,15 +56,15 @@ public class PlayerController : MonoBehaviour
     void TryPickEgg(Vector2 screenPos)
     {
         Ray ray = cam.ScreenPointToRay(screenPos);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit,Mathf.Infinity, eggLayerMask))
         {
             if (hit.collider.gameObject.CompareTag("Egg") )
             {
                 offset = hit.collider.gameObject.transform.position - hit.point;
                 isDragging = true;
-                GameManager.instance.SetTargetPos(hit.collider.gameObject.GetComponent<Egg>().eggSlotIndex);
+                //GameManager.instance.SetTargetPos(hit.collider.gameObject.GetComponent<Egg>().slotIndex);
 
-                Debug.Log("Egg Pos : " + GameManager.instance.GetTargetPos());
+                //Debug.Log("Egg Pos : " + GameManager.instance.GetTargetPos());
                 selectedEgg = hit.collider.gameObject.transform;
 
             }
@@ -85,27 +85,27 @@ public class PlayerController : MonoBehaviour
 
     void DropEgg()
     {
-        //if (!isDragging) return;
-        //isDragging = false;
+        if (!isDragging) return;
+        isDragging = false;
 
-        //// Çarptýðý yumurtayý bulmak için SphereCast
-        //Collider[] hits = Physics.OverlapSphere(transform.position, 0.5f);
-        //foreach (var col in hits)
-        //{
-        //    if (col.gameObject != gameObject && col.CompareTag("Egg"))
-        //    {
-        //        SwapWith(col.gameObject);
-        //        return;
-        //    }
-        //}
+        // Çarptýðý yumurtayý bulmak için SphereCast
+        Collider[] hits = Physics.OverlapSphere(transform.position, 0.5f);
+        foreach (var col in hits)
+        {
+            if (col.gameObject != gameObject && col.CompareTag("Egg"))
+            {
+                SwapWith(col.gameObject);
+                return;
+            }
+        }
 
-        //// Çarpan olmadýysa geri dön
-        //transform.position = originalPosition;
+        // Çarpan olmadýysa geri dön
+        transform.position = originalPosition;
     }
 
     void SwapWith(GameObject otherEgg)
     {
-        // Slotlar
+        //// Slotlar
         //Transform mySlot = currentSlot;
         //Transform otherSlot = otherEgg.transform.parent;
 
