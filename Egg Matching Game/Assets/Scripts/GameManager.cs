@@ -10,9 +10,11 @@ public class GameManager : MonoBehaviour
     public List<EggColor> EggColorList = new List<EggColor>();
     public List<Vector3> SlotPositionList = new List<Vector3>();
     public List<int> eggSlotIndexList = new List<int>();
-    public List<GameObject> eggList= new List<GameObject>();
+    public List<GameObject> slotList= new List<GameObject>();
     public Dictionary< int, GameObject> eggSlotDic = new Dictionary<int, GameObject>();
     public Action<int, GameObject> onSlotIndexChange;
+    public int slotCount = 3;
+    private Color originalColor;
 
 
     private Vector3 targetPos;
@@ -31,8 +33,10 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-       
+        originalColor = Color.gray;
+        originalColor.a = 0.5f;
     }
+
     public void SetTargetPos(int eggIndex)
     {
         if (eggIndex < 0 || eggIndex >= SlotPositionList.Count)
@@ -119,6 +123,40 @@ public class GameManager : MonoBehaviour
         else
         {
             
+        }
+    }
+    public void Check()
+    {
+        foreach (var item in eggSlotDic)
+        {
+            Debug.Log(item.Key + " " + item.Value.name);
+        }
+        if (eggSlotDic.Count<=slotCount )
+        {
+            for(int i=0; i< slotCount; i++)
+            {
+                if (!eggSlotDic.ContainsKey(i))
+                {
+                    slotList[i].GetComponentInChildren<Renderer>().material.color = Color.red;
+                }else
+                {
+                    slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
+                }
+            }
+        }
+        if(eggSlotDic.Count== slotCount)
+        {
+            int trueCount = 0;
+            int i = 0;
+            foreach (var item in EggColorList)
+            {
+                if (eggSlotDic[i].GetComponent<Egg>().eggColor== item)
+                {
+                    trueCount++;
+                }
+                i++;
+            }
+            Debug.Log("True Count: " + trueCount);
         }
     }
 }

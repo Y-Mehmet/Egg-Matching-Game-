@@ -18,6 +18,7 @@ public class EggSpawner : MonoBehaviour
     private float eggDistance = 2f; 
     void Start()
     {
+        GameManager.instance.slotCount = slotCount;
         GetColor();
         Spawner();
         SetColor();
@@ -29,7 +30,8 @@ public class EggSpawner : MonoBehaviour
         for (int i = 0; i < slotCount; i++)
         {
             Vector3 eggPoss= GameManager.instance.SlotPositionList[i]+ new Vector3(0,eggDistance,0);
-            Instantiate(SlotPrefab, GameManager.instance.SlotPositionList[i], Quaternion.identity, SlotParent);
+            GameObject slot=Instantiate(SlotPrefab, GameManager.instance.SlotPositionList[i], Quaternion.identity, SlotParent);
+            GameManager.instance.slotList.Add(slot); 
             GameObject egg = Instantiate(EggPrefab, eggPoss, Quaternion.identity, EggParent);
             eggList.Add(egg);
             egg.GetComponent<Egg>().startPos = eggPoss;
