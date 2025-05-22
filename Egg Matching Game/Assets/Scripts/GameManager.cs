@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
     }
     public void AddEggListByIndex(int slotIndex , GameObject eggObj)
     {
-        Debug.Log("dic count " + eggSlotDic.Count);
+       // Debug.Log("dic count " + eggSlotDic.Count);
         int tempIndex=-1;
         foreach (KeyValuePair<int, GameObject> dic in eggSlotDic)
         {
@@ -96,9 +96,22 @@ public class GameManager : MonoBehaviour
                 
             }
         }
+        if(eggSlotDic.ContainsKey(slotIndex))
+        {
+            Debug.Log("egg slot index " + slotIndex + " already exist" );
+        }
         if (eggSlotDic.Count==0 || !eggSlotDic.ContainsKey(slotIndex))
         {
+            foreach (KeyValuePair<int,GameObject> kvp in eggSlotDic)
+            {
+                if(kvp.Value == eggObj)
+                {
+                    RemoveEggListByIndex(kvp.Key, kvp.Value);
+                    break;
+                }
+            }
             eggSlotDic[slotIndex] = eggObj;
+
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
         }
         else if (eggSlotDic.ContainsKey(slotIndex) && eggObj != eggSlotDic[slotIndex])
