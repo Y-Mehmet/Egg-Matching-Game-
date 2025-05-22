@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     public int slotCount = 3;
     public float TimeSpeed = 7;
     public Action<int> timeChanged;
+    public Action<int> trueEggCountChanged;
     private Color originalColor;
 
 
@@ -157,24 +159,42 @@ public class GameManager : MonoBehaviour
     }
     public void Check()
     {
-        foreach (var item in eggSlotDic)
-        {
-            //Debug.Log(item.Key + " " + item.Value.name);
-        }
+       
         if (eggSlotDic.Count<=slotCount )
         {
-            for(int i=0; i< slotCount; i++)
+            for (int i = 0; i < slotCount; i++)
             {
                 if (!eggSlotDic.ContainsKey(i))
                 {
-                    slotList[i].GetComponentInChildren<Renderer>().material.color = Color.red;
-                }else
+                    // Saydam kýrmýzý renk
+                    Color red = Color.red;
+                    red.a = 0.4f;
+                    slotList[i].GetComponentInChildren<Renderer>().material.color = red;
+
+                    // Önce var olan tüm tweenleri temizle
+                    slotList[i].transform.DOKill();
+
+                    // Sallama efekti baþlat
+                    int fixedIndex = i; // closure için
+                    slotList[fixedIndex].transform.DOShakePosition(
+                        duration: 3f,
+                        strength: 0.3f,
+                        vibrato: 10,
+                        randomness: 45f
+                    ).OnComplete(() =>
+                    {
+                        slotList[fixedIndex].GetComponentInChildren<Renderer>().material.color = originalColor;
+                    });
+                }
+                else
                 {
                     slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
                 }
             }
+            trueEggCountChanged.Invoke(0);
+
         }
-        if(eggSlotDic.Count== slotCount)
+        if (eggSlotDic.Count== slotCount)
         {
             int trueCount = 0;
             int i = 0;
@@ -186,7 +206,7 @@ public class GameManager : MonoBehaviour
                 }
                 i++;
             }
-            Debug.Log("True Count: " + trueCount);
+            trueEggCountChanged.Invoke(trueCount);
         }
     }
 }
