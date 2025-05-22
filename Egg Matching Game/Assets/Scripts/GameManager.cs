@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public Action<int> trueEggCountChanged;
     public Action<int> levelChanged;
     private Color originalColor;
-    public int level = 1;
+
 
 
     private Vector3 targetPos;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     {
         originalColor = Color.gray;
         originalColor.a = 0.5f;
-        levelChanged?.Invoke(level);
+        levelChanged?.Invoke(SceeneManager.instance.level);
     }
 
     public void SetTargetPos(int eggIndex)
@@ -208,8 +208,9 @@ public class GameManager : MonoBehaviour
             trueEggCountChanged.Invoke(trueCount);
             if(trueCount== slotCount)
             {
-                level++;
-                levelChanged?.Invoke(level);
+                SceeneManager.instance.level++;
+                SceeneManager.instance.LoadScene(SceeneManager.instance.level);
+                levelChanged?.Invoke(SceeneManager.instance.level);
             }
         }
         
