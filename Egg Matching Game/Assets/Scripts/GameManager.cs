@@ -19,7 +19,9 @@ public class GameManager : MonoBehaviour
     public float TimeSpeed = 7;
     public Action<int> timeChanged;
     public Action<int> trueEggCountChanged;
+    public Action<int> levelChanged;
     private Color originalColor;
+    public int level = 1;
 
 
     private Vector3 targetPos;
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour
     {
         originalColor = Color.gray;
         originalColor.a = 0.5f;
+        levelChanged?.Invoke(level);
     }
 
     public void SetTargetPos(int eggIndex)
@@ -159,23 +162,17 @@ public class GameManager : MonoBehaviour
     }
     public void Check()
     {
-       
-        if (eggSlotDic.Count<=slotCount )
+        if (eggSlotDic.Count <= slotCount)
         {
             for (int i = 0; i < slotCount; i++)
             {
                 if (!eggSlotDic.ContainsKey(i))
                 {
-                    // Saydam kýrmýzý renk
                     Color red = Color.red;
                     red.a = 0.4f;
                     slotList[i].GetComponentInChildren<Renderer>().material.color = red;
-
-                    // Önce var olan tüm tweenleri temizle
                     slotList[i].transform.DOKill();
-
-                    // Sallama efekti baþlat
-                    int fixedIndex = i; // closure için
+                    int fixedIndex = i;
                     slotList[fixedIndex].transform.DOShakePosition(
                         duration: 3f,
                         strength: 0.3f,
@@ -191,24 +188,33 @@ public class GameManager : MonoBehaviour
                     slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
                 }
             }
-            trueEggCountChanged.Invoke(0);
 
+            trueEggCountChanged.Invoke(0);
         }
-        if (eggSlotDic.Count== slotCount)
+
+        if (eggSlotDic.Count == slotCount)
         {
             int trueCount = 0;
             int i = 0;
             foreach (var item in EggColorList)
             {
-                if (eggSlotDic[i].GetComponent<Egg>().eggColor== item)
+                Egg eggScript = eggSlotDic[i].GetComponent<Egg>();
+                if (eggScript != null && eggScript.IsCorrect(item))
                 {
                     trueCount++;
                 }
                 i++;
             }
             trueEggCountChanged.Invoke(trueCount);
+            if(trueCount== slotCount)
+            {
+                level++;
+                levelChanged?.Invoke(level);
+            }
         }
+        
     }
+
 }
 public enum EggColor
 {
