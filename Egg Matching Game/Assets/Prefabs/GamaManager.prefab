@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2404433187706860034}
   - component: {fileID: 7111483795088876624}
   - component: {fileID: 805260166349800927}
+  - component: {fileID: 7285257214876777294}
+  - component: {fileID: 3207515941619154177}
   m_Layer: 0
   m_Name: GamaManager
   m_TagString: Untagged
@@ -52,7 +54,9 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 1, y: 0, z: 0}
   eggSlotIndexList: 
-  eggList: []
+  slotList: []
+  slotCount: 3
+  TimeSpeed: 7
 --- !u!114 &7111483795088876624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,3 +90,29 @@ MonoBehaviour:
   SlotParent: {fileID: 0}
   slotCount: 3
   mixColorList: 
+--- !u!114 &7285257214876777294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7855289486520203287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b10c316ea9e9e684abb4c0eb3c450660, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeText: {fileID: 0}
+--- !u!114 &3207515941619154177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7855289486520203287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 575344521f7b18947a79942700ec2453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startTime: 21

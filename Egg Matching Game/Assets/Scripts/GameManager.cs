@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public Action<int, GameObject> onSlotIndexChange;
     [HideInInspector]
     public int slotCount = 3;
+    public float TimeSpeed = 7;
+    public Action<int> timeChanged;
     private Color originalColor;
 
 
