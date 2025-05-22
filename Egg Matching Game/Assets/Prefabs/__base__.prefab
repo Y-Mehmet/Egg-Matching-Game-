@@ -351,8 +351,8 @@ Transform:
   m_GameObject: {fileID: 3307187828844694948}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 7, z: 0.1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 10, y: 20, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 277146334580439261}
@@ -388,7 +388,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: c718326297593714ba7fcec727649ef6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -774,6 +774,10 @@ PrefabInstance:
       propertyPath: timeText
       value: 
       objectReference: {fileID: 2274420529590820104}
+    - target: {fileID: 7285257214876777294, guid: 94ad99b07e375a94f83b60265bd0cfe7, type: 3}
+      propertyPath: trueEggCountText
+      value: 
+      objectReference: {fileID: 4709162366470259121}
     - target: {fileID: 7757386345163348936, guid: 94ad99b07e375a94f83b60265bd0cfe7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -932,6 +936,17 @@ PrefabInstance:
 --- !u!114 &2274420529590820104 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5602055590319076398, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
+  m_PrefabInstance: {fileID: 5921708541389334822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4709162366470259121 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1401864903898261655, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
   m_PrefabInstance: {fileID: 5921708541389334822}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

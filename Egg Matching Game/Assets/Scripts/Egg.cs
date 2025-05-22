@@ -8,6 +8,7 @@ public class Egg : MonoBehaviour
     public EggColor eggColor;
     
     public Vector3 startPos = new();
+    public List<IEggProperty> properties = new();
 
     private void OnEnable()
     {
@@ -50,15 +51,20 @@ public class Egg : MonoBehaviour
            
         }
     }
-    private void OnTriggerExit(Collider other)
+  
+
+    public bool IsCorrect(EggColor expectedColor)
     {
-        //ITrigger iTrigger = other.GetComponent<ITrigger>();
-        //if (iTrigger != null)
-        //{
-        //    iTrigger.TriggerExit(gameObject);
-        //}
+        foreach (var prop in properties)
+        {
+            var result = prop.Evaluate(expectedColor, eggColor);
+            if (result.HasValue) return result.Value;
+        }
+
+        // default davranýþ: sadece renk eþleþirse doðru
+        return eggColor == expectedColor;
     }
 
-    
+
 }
 
