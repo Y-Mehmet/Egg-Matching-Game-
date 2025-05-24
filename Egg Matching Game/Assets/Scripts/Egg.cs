@@ -13,6 +13,7 @@ public class Egg : MonoBehaviour
     private void OnEnable()
     {
         GameManager.instance.onSlotIndexChange += OnSlotIndexChange;
+
     }
     private void OnDisable()
     {
@@ -52,7 +53,7 @@ public class Egg : MonoBehaviour
         }
     }
   
-
+   
     public bool IsCorrect(EggColor expectedColor)
     {
         foreach (var prop in properties)

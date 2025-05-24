@@ -5,8 +5,11 @@ using System.Linq;
 
 public class EggSpawner : MonoBehaviour
 {
-    public GameObject EggPrefab, SlotPrefab;
+    public GameObject EggPrefab, SlotPrefab, JokerEggPrefab, AntiJokerEggPrefab, HiddenEggPrefeb;
     public Transform EggParent, SlotParent;
+    public int HiddenEggCount = 0; // Gizli yumurta sayýsý
+    public int JokerEggCount = 0; // Joker yumurta sayýsý
+    public int AntiJokerEggCount = 0; // Anti-joker yumurta sayýsý
 
 
 
@@ -15,15 +18,31 @@ public class EggSpawner : MonoBehaviour
     private bool TruePos = false;
     public List<EggColor> mixColorList = new List<EggColor>();
     private List<GameObject> eggList = new List<GameObject>();
-    private float eggDistance = 2f; 
+    private float eggDistance = 2f;
+    Material hidenMat,jokerMat, antiJokerMat;
     void Start()
     {
         GameManager.instance.slotCount = slotCount;
         GetColor();
         Spawner();
         SetColor();
+        GetMaterial();
     }
+    private void GetMaterial()
+    {
+        hidenMat = Resources.Load<Material>("Materials/HiddenMat");
+        jokerMat = Resources.Load<Material>("Materials/JokerMat");
+        antiJokerMat = Resources.Load<Material>("Materials/AntiJokerMat");
 
+        if (hidenMat != null)
+        {
+            Debug.Log("we found mat");
+        }
+        else
+        {
+            Debug.LogError("Material bulunamadý!");
+        }
+    }
    
     private void Spawner()
     {

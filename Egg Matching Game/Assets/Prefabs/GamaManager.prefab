@@ -86,6 +86,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EggPrefab: {fileID: 34487977242701994, guid: ee71f9c362ca1cf479059ccf67579d66, type: 3}
   SlotPrefab: {fileID: 5924444144765702331, guid: 8b6d4003c0fd4b2439b516287a7ec173, type: 3}
+  JokerEggPrefab: {fileID: 6290441586782355908, guid: 93a60d035f6101a4ebaf949956900685, type: 3}
+  AntiJokerEggPrefab: {fileID: 389451697136171311, guid: 16d9551393b81164a95ecb7a556d2dff, type: 3}
+  HiddenEggPrefeb: {fileID: 1664690418139216721, guid: 75aa3d898c0972a4192b7094b7e5475a, type: 3}
   EggParent: {fileID: 0}
   SlotParent: {fileID: 0}
   slotCount: 3
@@ -103,6 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeText: {fileID: 0}
+  trueEggCountText: {fileID: 0}
+  levelText: {fileID: 0}
 --- !u!114 &3207515941619154177
 MonoBehaviour:
   m_ObjectHideFlags: 0
