@@ -5,6 +5,7 @@ using System.Linq;
 
 public class EggSpawner : MonoBehaviour
 {
+    public static EggSpawner instance;
     public GameObject EggPrefab, SlotPrefab, JokerEggPrefab, AntiJokerEggPrefab, HiddenEggPrefeb;
     public Transform EggParent, SlotParent;
     public int HiddenEggCount = 0; // Gizli yumurta sayýsý
@@ -17,16 +18,27 @@ public class EggSpawner : MonoBehaviour
 
     private bool TruePos = false;
     public List<EggColor> mixColorList = new List<EggColor>();
-    private List<GameObject> eggList = new List<GameObject>();
+    public List<GameObject> eggList = new List<GameObject>();
     private float eggDistance = 2f;
     Material hidenMat,jokerMat, antiJokerMat;
+    private void Awake()
+    {
+        if(instance==null)
+        {
+            instance = this;
+        }else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         GameManager.instance.slotCount = slotCount;
+        GetMaterial();
         GetColor();
         Spawner();
         SetColor();
-        GetMaterial();
+        
     }
     private void GetMaterial()
     {
@@ -56,6 +68,7 @@ public class EggSpawner : MonoBehaviour
             egg.GetComponent<Egg>().startPos = eggPoss;
             
         }
+       
     }
     private void  GetColor()
     {
@@ -72,10 +85,64 @@ public class EggSpawner : MonoBehaviour
             string eggcolor = mixColorList[0].ToString();
            
                 eggList[i].GetComponent<Egg>().eggColor = mixColorList[0];
-                eggList[i].GetComponentInChildren<Renderer>().material.color = GameManager.instance.GetEggColor(mixColorList[0]);
+                eggList[i].GetComponentInChildren<Renderer>().material.color = ColorManager.instance.GetEggColor(mixColorList[0]);
                 mixColorList.Remove(mixColorList[0]);
             
             Debug.LogWarning(eggcolor + " "+i);
+        }
+        if (HiddenEggCount > 0)
+        {
+            for (int i = 0; i < HiddenEggCount; i++)
+            {
+
+                Renderer rend = eggList[i].transform.GetComponentInChildren<Renderer>();
+                if (rend != null)
+                {
+                    rend.material = new Material(hidenMat);
+                }
+                else
+                {
+                    Debug.LogWarning($"Yumurta {i} için Renderer bulunamadý!");
+                }
+                eggList[i].GetComponent<Egg>().properties.Add(new HiddenProperty());
+                eggList[i].name = "HiddenEgg";
+            }
+        }
+        if (JokerEggCount > 0)
+        {
+            for (int i = HiddenEggCount; i < HiddenEggCount+JokerEggCount; i++)
+            {
+
+                Renderer rend = eggList[i].transform.GetComponentInChildren<Renderer>();
+                if (rend != null)
+                {
+                    rend.material = new Material(jokerMat);
+                }
+                else
+                {
+                    Debug.LogWarning($"Yumurta {i} için Renderer bulunamadý!");
+                }
+                eggList[i].GetComponent<Egg>().properties.Add(new JokerProperty());
+                eggList[i].name = "JokerEgg";
+            }
+        }
+        if (AntiJokerEggCount > 0)
+        {
+            for (int i = HiddenEggCount+JokerEggCount; i < HiddenEggCount + JokerEggCount+ AntiJokerEggCount; i++)
+            {
+
+                Renderer rend = eggList[i].transform.GetComponentInChildren<Renderer>();
+                if (rend != null)
+                {
+                    rend.material = new Material(antiJokerMat);
+                }
+                else
+                {
+                    Debug.LogWarning($"Yumurta {i} için Renderer bulunamadý!");
+                }
+                eggList[i].GetComponent<Egg>().properties.Add(new AntiJokerProperty());
+                eggList[i].name = "AJokerEgg";
+            }
         }
     }
 }

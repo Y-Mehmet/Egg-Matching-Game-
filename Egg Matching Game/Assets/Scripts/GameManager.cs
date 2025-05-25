@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public Action<int> trueEggCountChanged;
     public Action<int> levelChanged;
     private Color originalColor;
+    private bool gameStarted = false;
 
 
 
@@ -45,6 +46,17 @@ public class GameManager : MonoBehaviour
         originalColor.a = 0.5f;
         levelChanged?.Invoke(SceeneManager.instance.level);
     }
+    
+
+    void Update()
+    {
+        if (!gameStarted && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            gameStarted = true;
+            Debug.Log("Game Start");
+            Shuffel.instance.StartShuffle(EggSpawner.instance.eggList);
+        }
+    }
 
     public void SetTargetPos(int eggIndex)
     {
@@ -59,37 +71,7 @@ public class GameManager : MonoBehaviour
     {
         return targetPos;
     }
-    public Color GetEggColor(EggColor color)
-    {
-        switch (color)
-        {
-            case EggColor.Yellow:
-                return Color.yellow;
-            case EggColor.Red:
-                return Color.red;
-            case EggColor.Green:
-                return Color.green;
-            case EggColor.Blue:
-                return Color.blue;
-            case EggColor.Orange:
-                return new Color(1f, 0.5f, 0f); // turuncu (RGB: 255,128,0)
-            case EggColor.Purple:
-                return new Color(0.5f, 0f, 0.5f); // mor (RGB: 128,0,128)
-            case EggColor.Pink:
-                return new Color(1f, 0.41f, 0.71f); // pembe (RGB: 255,105,180)
-            case EggColor.Cyan:
-                return Color.cyan;
-            case EggColor.White:
-                return Color.white;
-            case EggColor.Black:
-                return Color.black;
-            default:
-                Debug.LogError("Invalid EggColor");
-                return Color.white;
-        }
-
-
-    }
+    
     public void AddEggListByIndex(int slotIndex , GameObject eggObj)
     {
        // Debug.Log("dic count " + eggSlotDic.Count);
@@ -228,5 +210,6 @@ public enum EggColor
     Pink,
     Cyan,
     White,
-    Black
+    Black,
+    Random
 }
