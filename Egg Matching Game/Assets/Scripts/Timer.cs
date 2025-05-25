@@ -7,10 +7,18 @@ public class Timer : MonoBehaviour
     public int startTime = 21;
     private int currentTime;
     private float timeSpeed;
-   
 
+    private void OnEnable()
+    {
+        GameManager.instance.gameStart += StartTimer;
+        
+    }
+    void OnDisable()
+    {
+        GameManager.instance.gameStart -= StartTimer;
+    }
 
-    void Start()
+void StartTimer()
     {
         timeSpeed = GameManager.instance.TimeSpeed;
         currentTime= startTime;
@@ -19,10 +27,7 @@ public class Timer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
     private IEnumerator TimeRoutine()
     {
         while (currentTime > 0)

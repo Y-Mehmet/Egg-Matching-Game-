@@ -31,7 +31,16 @@ public class ColorManager : MonoBehaviour
         {
             int randomEggColorIndex = Random.Range(0, GameManager.instance.EggColorList.Count);
             eggColor = GameManager.instance.EggColorList[randomEggColorIndex]; // Rastgele renk seçimi
-            egg.GetComponentInChildren<Renderer>().material= baseEggMat; // Temel yumurta materyalini kullan
+            Renderer rend = egg.transform.GetComponentInChildren<Renderer>();
+            if (rend != null)
+            {
+                rend.material = new Material(baseEggMat);
+                Debug.LogWarning("new joker renderea new material atandý" + rend.name + " " + rend.material.name);  
+            }
+            else
+            {
+                Debug.LogWarning($"Yumurta {egg.name} için Renderer bulunamadý!");
+            }
         }
             egg.GetComponentInChildren<Renderer>().material.color = GetEggColor(eggColor);
          

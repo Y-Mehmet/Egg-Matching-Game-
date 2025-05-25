@@ -41,9 +41,9 @@ public class Shuffel : MonoBehaviour
                 
                 foreach (var egg in eggList)
                 {
-                    if (egg.GetComponent<Egg>().properties.Count>0 && egg.GetComponent<Egg>().properties[0]== new JokerProperty())
+                    if (egg.GetComponent<Egg>().properties.Count>0 )
                     {
-                        ColorManager.instance.SetMaterial(egg, EggColor.Random);
+                        egg.GetComponent<Egg>().properties[0].SetColor(egg,EggColor.Random); 
                     }
                 }
             }

@@ -20,8 +20,10 @@ public class GameManager : MonoBehaviour
     public Action<int> timeChanged;
     public Action<int> trueEggCountChanged;
     public Action<int> levelChanged;
+    public Action gameStart;
     private Color originalColor;
     private bool gameStarted = false;
+    public bool AnyPanelisOpen = false;
 
 
 
@@ -50,10 +52,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (!gameStarted && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (!gameStarted && !AnyPanelisOpen  && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             gameStarted = true;
             Debug.Log("Game Start");
+            gameStart?.Invoke();
+            trueEggCountChanged.Invoke(0);
             Shuffel.instance.StartShuffle(EggSpawner.instance.eggList);
         }
     }

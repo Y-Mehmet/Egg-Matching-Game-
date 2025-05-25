@@ -48,7 +48,7 @@ public class EggSpawner : MonoBehaviour
 
         if (hidenMat != null)
         {
-            Debug.Log("we found mat");
+            //Debug.Log("we found mat");
         }
         else
         {
@@ -88,7 +88,7 @@ public class EggSpawner : MonoBehaviour
                 eggList[i].GetComponentInChildren<Renderer>().material.color = ColorManager.instance.GetEggColor(mixColorList[0]);
                 mixColorList.Remove(mixColorList[0]);
             
-            Debug.LogWarning(eggcolor + " "+i);
+           // Debug.LogWarning(eggcolor + " "+i);
         }
         if (HiddenEggCount > 0)
         {

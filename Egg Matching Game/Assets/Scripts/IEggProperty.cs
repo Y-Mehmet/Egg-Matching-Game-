@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public interface IEggProperty
 {
     /// <summary>
@@ -5,4 +7,5 @@ public interface IEggProperty
     /// true: her zaman doðru, false: her zaman yanlýþ
     /// </summary>
     bool? Evaluate(EggColor expectedColor, EggColor actualColor);
+    void SetColor(GameObject egg, EggColor eggColor, bool isHiden=false);
 }
