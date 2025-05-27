@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> slotList= new List<GameObject>();
     public Dictionary< int, GameObject> eggSlotDic = new Dictionary<int, GameObject>();
     public Action<int, GameObject> onSlotIndexChange;
+    public Action onSlotedEggCountChange;
     [HideInInspector]
     public int slotCount = 3;
     public float TimeSpeed = 7;
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
         levelChanged?.Invoke(SceeneManager.instance.level);
     }
     
+    
 
     void Update()
     {
@@ -81,7 +83,7 @@ public class GameManager : MonoBehaviour
     
     public void AddEggListByIndex(int slotIndex , GameObject eggObj)
     {
-       // Debug.Log("dic count " + eggSlotDic.Count);
+        onSlotedEggCountChange?.Invoke();
         int tempIndex=-1;
         foreach (KeyValuePair<int, GameObject> dic in eggSlotDic)
         {

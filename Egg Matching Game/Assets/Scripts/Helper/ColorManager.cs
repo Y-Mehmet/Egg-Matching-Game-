@@ -24,6 +24,7 @@ public class ColorManager : MonoBehaviour
     {
         baseEggMat = Resources.Load<Material>("Materials/emptyEgg");
     }
+   
     public void SetMaterial(GameObject egg,EggColor eggColor= EggColor.Random)
     {
       

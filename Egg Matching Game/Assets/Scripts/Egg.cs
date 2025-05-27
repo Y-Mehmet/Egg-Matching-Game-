@@ -8,6 +8,7 @@ public class Egg : MonoBehaviour
     public EggColor eggColor;
     
     public Vector3 startPos = new();
+    public int startTopStackIndex = 0;
     public List<IEggProperty> properties = new();
 
     private void OnEnable()
@@ -34,9 +35,6 @@ public class Egg : MonoBehaviour
                 transform.DOMove(GameManager.instance.SlotPositionList[slotIndex], 0.5f).SetEase(Ease.OutBack);
             }
             
-        }else
-        {
-            
         }
     }
    
@@ -47,9 +45,6 @@ public class Egg : MonoBehaviour
         if (iTrigger != null)
         {
             iTrigger.Triggered(gameObject);
-        }else
-        {
-           
         }
     }
   

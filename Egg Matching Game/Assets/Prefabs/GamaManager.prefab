@@ -49,14 +49,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EggColorList: 000000000200000001000000
+  TopEggColorList: 00000000
   SlotPositionList:
   - {x: -1, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 1, y: 0, z: 0}
+  TopEggPosList: []
   eggSlotIndexList: 
   slotList: []
   slotCount: 3
   TimeSpeed: 7
+  AnyPanelisOpen: 0
 --- !u!114 &7111483795088876624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,8 +94,17 @@ MonoBehaviour:
   HiddenEggPrefeb: {fileID: 1664690418139216721, guid: 75aa3d898c0972a4192b7094b7e5475a, type: 3}
   EggParent: {fileID: 0}
   SlotParent: {fileID: 0}
+  HiddenEggCount: 0
+  JokerEggCount: 0
+  AntiJokerEggCount: 0
   slotCount: 3
+  topEggCount: 3
+  topEggCountPerColor: 1
   mixColorList: 
+  topEggColor: 
+  eggList: []
+  slotPos: []
+  topEggPos: []
 --- !u!114 &7285257214876777294
 MonoBehaviour:
   m_ObjectHideFlags: 0

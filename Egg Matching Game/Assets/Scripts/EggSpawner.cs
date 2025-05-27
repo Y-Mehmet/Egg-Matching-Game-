@@ -165,6 +165,7 @@ public class EggSpawner : MonoBehaviour
                 Vector3 eggPoss = topEggPos[i];
                 
                 GameObject egg = Instantiate(EggPrefab, eggPoss, Quaternion.identity, EggParent);
+                egg.GetComponent<Egg>().startTopStackIndex = i;
                 eggStack.Push(egg);
                 if (j == topEggCountPerColor - 1)
                 {

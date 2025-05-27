@@ -1,18 +1,31 @@
+using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerController : MonoBehaviour
 {
+        
     private Vector3 offset;
     private Camera cam;
     private Vector3 originalPosition;
     private Transform currentSlot;
     private Transform selectedEgg;
     public LayerMask eggLayerMask;
+    
     void Start()
     {
         cam = Camera.main;
         currentSlot = transform.parent; // Yumurtanýn baðlý olduðu slot
         originalPosition = transform.position;
+        
+    }
+    private void OnEnable()
+    {
+        GameManager.instance.onSlotedEggCountChange += DropEgg;
+    }
+    private void OnDisable()
+    {
+        GameManager.instance.onSlotedEggCountChange -= DropEgg;
     }
 
     void Update()
@@ -66,6 +79,27 @@ public class PlayerController : MonoBehaviour
 
                 //Debug.Log("Egg Pos : " + GameManager.instance.GetTargetPos());
                 selectedEgg = hit.collider.gameObject.transform;
+                int eggStackIndex= hit.collider.gameObject.GetComponent<Egg>().startTopStackIndex;
+                GameObject egg = EggSpawner.instance.eggStackList[eggStackIndex]
+                                    .FirstOrDefault(e => e == hit.collider.gameObject);
+
+                if (egg != null)
+                {
+                    EggSpawner.instance.eggStackList[eggStackIndex].Pop();
+                    if(EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg))
+                    {
+                        nextEgg.SetActive(true);
+                    }
+                }
+                
+                foreach (var item in EggSpawner.instance.eggStackList)
+                {
+                    if(item.Contains(hit.collider.gameObject))
+                    {
+                        item.Pop();
+                        item.Peek().SetActive(true);
+                    }
+                }
 
             }
         }
@@ -83,7 +117,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void DropEgg()
+    public void DropEgg()
     {
         if (!isDragging) return;
         isDragging = false;
