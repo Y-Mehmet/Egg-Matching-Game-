@@ -44,180 +44,90 @@ public class EggSpawner : MonoBehaviour
     {
         slotHalfWeight = eggWeight / 2f;
         GameManager.instance.slotCount = slotCount;
-        CalculatePos();
+        CalculatePositions();
         GetMaterial();
         GetColor();
         Spawner();
         SetColor();
         
     }
-    void CalculatePos()
+    Vector3 CalculateStartPos(int count, float eggWeight, float slotHalfWeight)
     {
-
-        Vector3 pos;
-       
-        if(slotCount<=5)
+        if (count <= 5)
         {
-            if(slotCount%2==0)
-            {
-                int halfSlotCount = (int)(slotCount / 2f);
-                float offset = (halfSlotCount - 1) * eggWeight;
-                slotStartPos = new Vector3(-slotHalfWeight - offset, 0, 0);
-            }else
-            {
-                int halfSlotCount = (int)(slotCount / 2f);
-                float offset = (halfSlotCount - 1) * eggWeight;
-                slotStartPos = new Vector3(-eggWeight-offset, 0, 0);
-            }
-          
+            int halfCount = count / 2;
+            float offset = (halfCount - 1) * eggWeight;
+            if (count % 2 == 0)
+                return new Vector3(-slotHalfWeight - offset, 0, 0);
+            else
+                return new Vector3(-eggWeight - offset, 0, 0);
         }
         else
         {
-            if (slotCount % 2 == 0)
+            if (count % 2 == 0)
             {
-                int tempSlotCount = (int)(slotCount / 2);
-               
-                
-                    int halfSlotCount = (int)(tempSlotCount / 2f);
-                    float offset = (halfSlotCount - 1) *  eggWeight;
-                slotStartPos = new Vector3((-eggWeight - offset), 0, 0);
-                slotSecondStartPos = slotStartPos;
-               
-
-
+                int halfCount = (count / 2) / 2;
+                float offset = (halfCount - 1) * eggWeight;
+                return new Vector3(-eggWeight - offset, 0, 0);
             }
             else
             {
-                if(slotCount==7)
-                {
-                    slotStartPos = new Vector3((-eggWeight), 0, 0);
-                    slotSecondStartPos = new Vector3((-slotHalfWeight - eggWeight), 0, 0);
-                   
-                }
-                else if(slotCount == 9)
-                {
-                    slotStartPos = new Vector3((- eggWeight*1.5f), 0, 0);
-                    slotSecondStartPos = new Vector3((-eggWeight*2), 0, 0);
-                   
-
-                }
-
+                if (count == 7)
+                    return new Vector3(-eggWeight, 0, 0);
+                else if (count == 9)
+                    return new Vector3(-eggWeight * 1.5f, 0, 0);
             }
         }
+        return Vector3.zero;
+    }
 
-        if (topEggCount <= 5)
-        {
-            if (topEggCount % 2 == 0)
-            {
-                int halfSlotCount = (int)(topEggCount / 2f);
-                float offset = (halfSlotCount - 1) * eggWeight;
-                topSlotStartPos = new Vector3(-slotHalfWeight - offset, 0, 0);
-            }
-            else
-            {
-                int halfSlotCount = (int)(topEggCount / 2f);
-                float offset = (halfSlotCount - 1) * eggWeight;
-                topSlotStartPos = new Vector3(-eggWeight - offset, 0, 0);
-            }
-
-        }
+    Vector3 CalculateSecondStartPos(int count, float eggWeight, float slotHalfWeight)
+    {
+        if (count == 7)
+            return new Vector3(-slotHalfWeight - eggWeight, 0, 0);
+        else if (count == 9)
+            return new Vector3(-eggWeight * 2, 0, 0);
         else
         {
-            if (topEggCount % 2 == 0)
-            {
-                int tempSlotCount = (int)(topEggCount / 2);
-
-
-                int halfSlotCount = (int)(tempSlotCount / 2f);
-                float offset = (halfSlotCount - 1) * eggWeight;
-                topSlotStartPos = new Vector3((-eggWeight - offset), 0, 0);
-                topSlotSecondStartPos = topSlotStartPos;
-
-
-            }
-            else
-            {
-                if (topEggCount == 7)
-                {
-                    topSlotStartPos = new Vector3((-eggWeight), 0, 0);
-                    topSlotSecondStartPos = new Vector3((-slotHalfWeight - eggWeight), 0, 0);
-
-                }
-                else if (topEggCount == 9)
-                {
-                    topSlotStartPos = new Vector3((-eggWeight * 1.5f), 0, 0);
-                    topSlotSecondStartPos = new Vector3((-eggWeight * 2),0, 0);
-
-
-                }
-
-            }
-        }
-
-        topSlotStartPos += topSlotOfsset*1.5f;
-        topSlotSecondStartPos += topSlotOfsset;
-        slotSecondStartPos += new Vector3(0, -1, 0);
-
-        if (slotCount<=5)
-        {
-            for (int i = 0; i < slotCount; i++)
-            {
-                pos = slotStartPos + new Vector3(i * eggWeight, 0, 0);
-                GameManager.instance.SlotPositionList.Add(pos);
-                slotPos.Add(pos);
-              
-               
-            }
-           
-        }
-        else
-        {
-            for(int i = 0; i <(int) (slotCount/2); i++)
-            {
-                pos = slotStartPos + new Vector3(i * eggWeight, 0, 0);
-                GameManager.instance.SlotPositionList.Add(pos);
-                slotPos.Add(pos);
-               
-
-            }
-            for (int i = (int)(slotCount/2); i < slotCount ; i++)
-            {
-                pos = slotSecondStartPos + new Vector3((i - (int)(slotCount / 2)) * eggWeight, 0, 0);
-                GameManager.instance.SlotPositionList.Add(pos);
-                slotPos.Add(pos);
-                
-
-            }
-            
-        }
-            if(topEggCount<=5)
-        {
-            for (int i = 0; i < topEggCount; i++)
-            {
-
-                pos = topSlotStartPos + new Vector3(i * eggWeight, 0, 0);
-                topEggPos.Add(pos);
-
-            }
-        }else
-        {
-            for (int i = 0; i < (int)(topEggCount / 2); i++)
-            {
-
-                pos = topSlotStartPos + new Vector3(i * eggWeight, 0, 0);
-                topEggPos.Add(pos);
-
-            }
-            for (int i = (int)(topEggCount / 2); i < topEggCount ; i++)
-            {
-
-                pos = topSlotSecondStartPos + new Vector3((i - (int)(topEggCount / 2) )* eggWeight, 0, 0);
-                topEggPos.Add(pos);
-
-            }
+            int halfCount = (count / 2) / 2;
+            float offset = (halfCount - 1) * eggWeight;
+            return new Vector3(-eggWeight - offset, 0, 0);
         }
     }
-  
+
+    void CalculatePositions()
+    {
+        slotStartPos = CalculateStartPos(slotCount, eggWeight, slotHalfWeight);
+        topSlotStartPos = CalculateStartPos(topEggCount, eggWeight, slotHalfWeight);
+
+        if (slotCount > 5)
+            slotSecondStartPos = CalculateSecondStartPos(slotCount, eggWeight, slotHalfWeight);
+        if (topEggCount > 5)
+            topSlotSecondStartPos = CalculateSecondStartPos(topEggCount, eggWeight, slotHalfWeight);
+
+        slotSecondStartPos += new Vector3(0, -1, 0);
+        topSlotStartPos += topSlotOfsset * 1.5f;
+        topSlotSecondStartPos += topSlotOfsset;
+
+        AddSlotPositions(slotCount, slotStartPos, slotSecondStartPos, GameManager.instance.SlotPositionList, slotPos);
+        AddSlotPositions(topEggCount, topSlotStartPos, topSlotSecondStartPos, null, topEggPos);
+    }
+
+    void AddSlotPositions(int count, Vector3 start, Vector3 secondStart, List<Vector3> globalList, List<Vector3> localList)
+    {
+        int half = count / 2;
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 basePos = (count > 5 && i >= half) ? secondStart : start;
+            int index = (count > 5 && i >= half) ? (i - half) : i;
+            Vector3 pos = basePos + new Vector3(index * eggWeight, 0, 0);
+
+            localList.Add(pos);
+            if (globalList != null)
+                globalList.Add(pos);
+        }
+    }
+
     private void GetMaterial()
     {
         hidenMat = Resources.Load<Material>("Materials/HiddenMat");
