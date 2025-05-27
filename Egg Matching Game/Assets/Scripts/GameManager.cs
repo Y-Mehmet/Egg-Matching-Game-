@@ -9,7 +9,10 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public List<EggColor> EggColorList = new List<EggColor>();
+    public List<EggColor> TopEggColorList= new List<EggColor>();
     public List<Vector3> SlotPositionList = new List<Vector3>();
+    public List<Vector3> TopEggPosList = new List<Vector3>();
+
     public List<int> eggSlotIndexList = new List<int>();
     public List<GameObject> slotList= new List<GameObject>();
     public Dictionary< int, GameObject> eggSlotDic = new Dictionary<int, GameObject>();
@@ -58,7 +61,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Game Start");
             gameStart?.Invoke();
             trueEggCountChanged.Invoke(0);
-            Shuffel.instance.StartShuffle(EggSpawner.instance.eggList);
+           // Shuffel.instance.StartShuffle(EggSpawner.instance.eggList);
         }
     }
 
@@ -141,10 +144,7 @@ public class GameManager : MonoBehaviour
             eggSlotDic.Remove(slotIndex);
            
         }
-        else
-        {
-            
-        }
+        
     }
     public void Check()
     {

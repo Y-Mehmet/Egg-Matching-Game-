@@ -23,7 +23,7 @@ public class Egg : MonoBehaviour
     {
         if (egg== gameObject)
         {
-            Debug.Log("slot index " + slotIndex+" list count "+ GameManager.instance.SlotPositionList.Count);
+           // Debug.Log("slot index " + slotIndex+" list count "+ GameManager.instance.SlotPositionList.Count);
           
             if (slotIndex == -1)
             {
