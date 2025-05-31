@@ -273,7 +273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1867825408027244295, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: EggColorList.Array.size
-      value: 9
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1867825408027244295, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: 'EggColorList.Array.data[3]'
@@ -305,7 +305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1867825408027244295, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: TopEggColorList.Array.size
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1867825408027244295, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: SlotPositionList.Array.size
@@ -470,6 +470,10 @@ PrefabInstance:
     - target: {fileID: 6176126526558403858, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391395067871769720, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
+      propertyPath: m_Size.z
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6659500757192485554, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_AnchorMax.y

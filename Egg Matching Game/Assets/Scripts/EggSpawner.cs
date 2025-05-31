@@ -183,16 +183,16 @@ public class EggSpawner : MonoBehaviour
     }
     private void  GetColor()
     {
-        foreach (var color in GameManager.instance.EggColorList)
+        foreach (var color in GameManager.instance.TopEggColorList)
         {
             mixColorList.Add(color);
         }
         mixColorList = mixColorList.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
-        foreach (var color in GameManager.instance.TopEggColorList)
-        {
-            topEggColor.Add(color);
-        }
-        topEggColor = topEggColor.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
+        //foreach (var color in GameManager.instance.TopEggColorList)
+        //{
+        //    topEggColor.Add(color);
+        //}
+        //topEggColor = topEggColor.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
     }
     private void SetColor()
     {
