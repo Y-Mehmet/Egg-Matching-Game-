@@ -15,7 +15,7 @@ public class Slot : MonoBehaviour,ITrigger
 
     private void Start()
     {
-        slotIndex = transform.GetSiblingIndex();
+       // slotIndex = transform.GetSiblingIndex();
         
     }
 

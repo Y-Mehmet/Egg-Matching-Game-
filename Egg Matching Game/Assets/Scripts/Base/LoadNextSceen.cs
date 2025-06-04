@@ -10,7 +10,7 @@ public class LoadNextSceen : MonoBehaviour
     private void OnEnable()
     {
         GetComponent<Button>().onClick.AddListener( LoadNextScene);
-        levelText.text = "Level " + SceeneManager.instance.level.ToString();
+        levelText.text = "Level " + SaveManager.Instance.levelIndex;
 
     }
     private void OnDisable()
@@ -20,7 +20,7 @@ public class LoadNextSceen : MonoBehaviour
     }
     private void LoadNextScene()
     {
-        SceeneManager.instance.level++;
-        SceeneManager.instance.LoadScene(SceeneManager.instance.level);
+       
+        SceeneManager.instance.LoadScene(SaveManager.Instance.levelIndex);
     }
 }

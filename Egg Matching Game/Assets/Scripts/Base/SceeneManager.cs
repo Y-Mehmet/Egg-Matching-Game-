@@ -3,7 +3,7 @@ using UnityEngine;
 public class SceeneManager : MonoBehaviour
 {
     public static SceeneManager instance;
-    public int level = 1;
+    //public int level = 1;
     private void Awake()
     {
         if(instance == null)
@@ -25,7 +25,7 @@ public class SceeneManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(7);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(5);
         }
     }
 }

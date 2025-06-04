@@ -30,8 +30,8 @@ public class ColorManager : MonoBehaviour
       
         if (eggColor == EggColor.Random)
         {
-            int randomEggColorIndex = Random.Range(0, GameManager.instance.EggColorList.Count);
-            eggColor = GameManager.instance.EggColorList[randomEggColorIndex]; // Rastgele renk seçimi
+            int randomEggColorIndex = Random.Range(0, GameManager.instance.GetLevelData().eggColors.Count);
+            eggColor = GameManager.instance.GetLevelData().eggColors[randomEggColorIndex]; // Rastgele renk seçimi
             Renderer rend = egg.transform.GetComponentInChildren<Renderer>();
             if (rend != null)
             {

@@ -15,8 +15,8 @@ public class EggSpawner : MonoBehaviour
 
 
 
-    public int slotCount = 3;
-    public int topEggCount = 3;
+    public int slotCount ;
+    public int topEggCount ;
     public int topEggCountPerColor = 1;
 
     private bool TruePos = false;
@@ -26,6 +26,8 @@ public class EggSpawner : MonoBehaviour
     public List<Stack<GameObject>> eggStackList = new List<Stack<GameObject>>();
     public List<Vector3> slotPos = new List<Vector3>();
     public List<Vector3> topEggPos = new List<Vector3>();
+
+
     private Vector3 slotStartPos, slotSecondStartPos, topSlotStartPos,topSlotSecondStartPos, topSlotOfsset= new Vector3(0,2,0);
     private float eggDistance = 2f, eggWeight = .7f, slotHalfWeight;
     Material hidenMat,jokerMat, antiJokerMat;
@@ -40,16 +42,41 @@ public class EggSpawner : MonoBehaviour
         }
     }
 
-    void Start()
+    private void OnEnable()
     {
+        GameManager.instance.levelChanged += SpawnEgg;
+    }
+    private void OnDisable()
+    {
+        GameManager.instance.levelChanged -= SpawnEgg;
+    }
+    public void SpawnEgg(int levelIndex)
+    {
+        mixColorList.Clear();
+        topEggColor.Clear();
+        foreach (var item in eggList)
+        {
+            Destroy(item.gameObject);
+        }
+        foreach (var item in GameManager.instance.slotList)
+        {
+            Destroy(item.gameObject);
+        }
+        GameManager.instance.slotList.Clear();
+        GameManager.instance.SlotPositionList.Clear();
+        eggList.Clear();
+        eggStackList.Clear();
+        slotPos.Clear();
+        topEggPos.Clear();
         slotHalfWeight = eggWeight / 2f;
+        slotCount = GameManager.instance.GetLevelData().GetSlotCount();
+        topEggCount = GameManager.instance.GetLevelData().GetTopEggCount();
         GameManager.instance.slotCount = slotCount;
         CalculatePositions();
         GetMaterial();
         GetColor();
         Spawner();
         SetColor();
-        
     }
     Vector3 CalculateStartPos(int count, float eggWeight, float slotHalfWeight)
     {
@@ -150,6 +177,7 @@ public class EggSpawner : MonoBehaviour
         {
             
             GameObject slot=Instantiate(SlotPrefab, slotPos[i], Quaternion.identity, SlotParent);
+            slot.GetComponent<Slot>().slotIndex = i;
             GameManager.instance.slotList.Add(slot); 
             
             
@@ -183,7 +211,7 @@ public class EggSpawner : MonoBehaviour
     }
     private void  GetColor()
     {
-        foreach (var color in GameManager.instance.TopEggColorList)
+        foreach (var color in GameManager.instance.GetLevelData().topEggColors)
         {
             mixColorList.Add(color);
         }

@@ -1,15 +1,18 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
 using DG.Tweening;
 
+using System.IO;
+using System.Collections;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public List<EggColor> EggColorList = new List<EggColor>();
-    public List<EggColor> TopEggColorList= new List<EggColor>();
+    //public List<LevelData> levelDatas = new List<LevelData>();
+    public LevelDataHolder levelDataHolder; 
     public List<Vector3> SlotPositionList = new List<Vector3>();
     public List<Vector3> TopEggPosList = new List<Vector3>();
 
@@ -28,6 +31,8 @@ public class GameManager : MonoBehaviour
     private Color originalColor;
     private bool gameStarted = false;
     public bool AnyPanelisOpen = false;
+    public bool IsFirstSave = true;
+    public SaveGameData gameData;
 
 
 
@@ -43,17 +48,48 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+        gameData = SaveSystem.Load(); 
+        if (gameData.isFirstLaunch)
+        {
+            Debug.Log("Bu ilk oyun açılışı!");
+            gameData.isFirstLaunch = false;
+            Save();
+        }
+
 
     }
     private void Start()
     {
         originalColor = Color.gray;
         originalColor.a = 0.5f;
-        levelChanged?.Invoke(SceeneManager.instance.level);
+
+
+        levelChanged?.Invoke(gameData.levelIndex);
     }
+    public void Save()
+    {
+        SaveSystem.Save(gameData);
+    }
+
     
     
+
+    
+   
+
+    public LevelData GetLevelData()
+    {
+       
+
+        if (levelDataHolder == null || levelDataHolder.levels.Count == 0)
+        {
+            Debug.LogError("LevelDataHolder boş veya atanmamış.");
+            return null;
+        }
+
+        int index = gameData.levelIndex % levelDataHolder.levels.Count; 
+        return levelDataHolder.levels[index];
+    }
 
     void Update()
     {
@@ -184,7 +220,7 @@ public class GameManager : MonoBehaviour
         {
             int trueCount = 0;
             int i = 0;
-            foreach (var item in EggColorList)
+            foreach (var item in GetLevelData().eggColors)
             {
                 Egg eggScript = eggSlotDic[i].GetComponent<Egg>();
                 if (eggScript != null && eggScript.IsCorrect(item))
@@ -196,13 +232,28 @@ public class GameManager : MonoBehaviour
             trueEggCountChanged.Invoke(trueCount);
             if(trueCount== slotCount)
             {
-                SceeneManager.instance.level++;
-                SceeneManager.instance.LoadScene(SceeneManager.instance.level);
-                levelChanged?.Invoke(SceeneManager.instance.level);
+
+               
+                gameData.IncraseLevelData();
+                GetLevelData();
+                levelChanged?.Invoke(gameData.levelIndex);
             }
         }
         
     }
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            Save();
+        }
+    }
+    private void OnApplicationQuit()
+    {
+        Save();
+    }
+
+
 
 }
 public enum EggColor
