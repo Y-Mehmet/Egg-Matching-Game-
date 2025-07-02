@@ -8,6 +8,7 @@ public class LoadNextSceen : MonoBehaviour
 {
     public TMP_Text levelText;
     private Button button;
+    private SaveGameData gameData;
 
     private void Awake()
     {
@@ -21,22 +22,15 @@ public class LoadNextSceen : MonoBehaviour
         button.onClick.AddListener(LoadNextScene);
 
         // Ayarlama iþlemini bir coroutine ile güvenli bir þekilde baþlatýyoruz.
-        StartCoroutine(SetupButtonWhenReady());
-    }
-
-    private IEnumerator SetupButtonWhenReady()
-    {
-        // 5. SaveManager hazýr olana kadar bekle.
-        //    Bu, script execution order (çalýþma sýrasý) sorunlarýný çözer.
-        yield return new WaitUntil(() => SaveManager.Instance != null);
-
-        // SaveManager hazýr olduðunda metni güvenle ayarla.
         if (levelText != null)
         {
-            levelText.text = "Level " + SaveManager.Instance.levelIndex;
+            gameData = SaveSystem.Load();
+            levelText.text = (gameData.levelIndex+1).ToString();
             Debug.Log("Level text set to: " + levelText.text);
         }
     }
+
+   
     private void OnDisable()
     {
 
@@ -45,6 +39,6 @@ public class LoadNextSceen : MonoBehaviour
     private void LoadNextScene()
     {
        
-        SceeneManager.instance.LoadScene(SaveManager.Instance.levelIndex);
+        SceeneManager.instance.LoadScene(1);
     }
 }
