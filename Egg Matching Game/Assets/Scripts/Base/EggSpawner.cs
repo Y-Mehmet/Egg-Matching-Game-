@@ -178,6 +178,7 @@ public class EggSpawner : MonoBehaviour
             
             GameObject slot=Instantiate(SlotPrefab, slotPos[i], Quaternion.identity, SlotParent);
             slot.GetComponent<Slot>().slotIndex = i;
+          
             GameManager.instance.slotList.Add(slot); 
             
             
@@ -194,6 +195,7 @@ public class EggSpawner : MonoBehaviour
                 
                 GameObject egg = Instantiate(EggPrefab, eggPoss, Quaternion.identity, EggParent);
                 egg.GetComponent<Egg>().startTopStackIndex = i;
+              
                 eggStack.Push(egg);
                 if (j == topEggCountPerColor - 1)
                 {

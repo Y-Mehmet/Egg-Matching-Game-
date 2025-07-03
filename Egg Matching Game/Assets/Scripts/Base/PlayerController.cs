@@ -68,39 +68,42 @@ public class PlayerController : MonoBehaviour
 
     void TryPickEgg(Vector2 screenPos)
     {
-        Ray ray = cam.ScreenPointToRay(screenPos);
-        if (Physics.Raycast(ray, out RaycastHit hit,Mathf.Infinity, eggLayerMask))
+        if(GameManager.instance.gameStarted)
         {
-            if (hit.collider.gameObject.CompareTag("Egg") )
+            Ray ray = cam.ScreenPointToRay(screenPos);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, eggLayerMask))
             {
-                offset = hit.collider.gameObject.transform.position - hit.point;
-                isDragging = true;
-                //GameManager.instance.SetTargetPos(hit.collider.gameObject.GetComponent<Egg>().slotIndex);
-
-                //Debug.Log("Egg Pos : " + GameManager.instance.GetTargetPos());
-                selectedEgg = hit.collider.gameObject.transform;
-                int eggStackIndex= hit.collider.gameObject.GetComponent<Egg>().startTopStackIndex;
-                GameObject egg = EggSpawner.instance.eggStackList[eggStackIndex]
-                                    .FirstOrDefault(e => e == hit.collider.gameObject);
-
-                if (egg != null)
+                if (hit.collider.gameObject.CompareTag("Egg"))
                 {
-                    EggSpawner.instance.eggStackList[eggStackIndex].Pop();
-                    if(EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg))
-                    {
-                        nextEgg.SetActive(true);
-                    }
-                }
-                
-                foreach (var item in EggSpawner.instance.eggStackList)
-                {
-                    if(item.Contains(hit.collider.gameObject))
-                    {
-                        item.Pop();
-                        item.Peek().SetActive(true);
-                    }
-                }
+                    offset = hit.collider.gameObject.transform.position - hit.point;
+                    isDragging = true;
+                    //GameManager.instance.SetTargetPos(hit.collider.gameObject.GetComponent<Egg>().slotIndex);
 
+                    //Debug.Log("Egg Pos : " + GameManager.instance.GetTargetPos());
+                    selectedEgg = hit.collider.gameObject.transform;
+                    int eggStackIndex = hit.collider.gameObject.GetComponent<Egg>().startTopStackIndex;
+                    GameObject egg = EggSpawner.instance.eggStackList[eggStackIndex]
+                                        .FirstOrDefault(e => e == hit.collider.gameObject);
+
+                    if (egg != null)
+                    {
+                        EggSpawner.instance.eggStackList[eggStackIndex].Pop();
+                        if (EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg))
+                        {
+                            nextEgg.SetActive(true);
+                        }
+                    }
+
+                    foreach (var item in EggSpawner.instance.eggStackList)
+                    {
+                        if (item.Contains(hit.collider.gameObject))
+                        {
+                            item.Pop();
+                            item.Peek().SetActive(true);
+                        }
+                    }
+
+                }
             }
         }
     }

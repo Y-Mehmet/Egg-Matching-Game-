@@ -4,27 +4,57 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    public int startTime = 21;
+    private int startTime = 180;
     private int currentTime;
     private float timeSpeed;
-
+    private Coroutine timeCoroutine;
     private void OnEnable()
     {
         GameManager.instance.gameStart += StartTimer;
-        
+        GameManager.instance.pauseGame += StopTimer;
+        GameManager.instance.continueGame += ContinueTimer;
+        GameManager.instance.gameReStart += StopTimeCoroutine;
+       
+
     }
     void OnDisable()
     {
         GameManager.instance.gameStart -= StartTimer;
+        GameManager.instance.pauseGame -= StopTimer;
+        GameManager.instance.continueGame -= ContinueTimer;
+        GameManager.instance.gameReStart -= StopTimeCoroutine;
     }
 
-void StartTimer()
+    void StartTimer()
     {
+        Time.timeScale = 1;
         timeSpeed = GameManager.instance.TimeSpeed;
         currentTime= startTime;
         GameManager.instance.timeChanged?.Invoke(currentTime);
-        StartCoroutine(TimeRoutine());
+        if(timeCoroutine != null)
+        {
+            StopCoroutine(timeCoroutine);
+        }
+        timeCoroutine = StartCoroutine(TimeRoutine());
     }
+    void StopTimeCoroutine()
+    {
+        if (timeCoroutine != null)
+        {
+            StopCoroutine(timeCoroutine);
+        }
+        Time.timeScale = 1;
+        GameManager.instance.timeChanged?.Invoke(startTime);
+    }
+    void StopTimer()
+    {
+        Time.timeScale = 0;
+    }
+    void ContinueTimer()
+    {
+        Time.timeScale = 1;
+    }
+    
 
     // Update is called once per frame
     

@@ -23,13 +23,16 @@ public class GameManager : MonoBehaviour
     public Action onSlotedEggCountChange;
     [HideInInspector]
     public int slotCount = 3;
-    public float TimeSpeed = 7;
+    public float TimeSpeed = 1;
     public Action<int> timeChanged;
     public Action<int> trueEggCountChanged;
     public Action<int> levelChanged;
     public Action gameStart;
+    public Action pauseGame;
+    public Action continueGame;
+    public Action gameReStart;
     private Color originalColor;
-    private bool gameStarted = false;
+    public bool gameStarted = false;
     public bool AnyPanelisOpen = false;
     public bool IsFirstSave = true;
     public SaveGameData gameData;
@@ -58,6 +61,16 @@ public class GameManager : MonoBehaviour
 
 
     }
+    private void OnEnable()
+    {
+        gameStart += GameStart;
+        Time.timeScale = 1;
+
+    }
+    private void OnDisable()
+    {
+        gameStart -= GameStart;
+    }
     private void Start()
     {
         originalColor = Color.gray;
@@ -66,9 +79,14 @@ public class GameManager : MonoBehaviour
 
         levelChanged?.Invoke(gameData.levelIndex);
     }
+    
     public void Save()
     {
         SaveSystem.Save(gameData);
+    }
+    public void ReStart()
+    {
+        levelChanged?.Invoke(gameData.levelIndex);
     }
 
     
@@ -91,16 +109,27 @@ public class GameManager : MonoBehaviour
         return levelDataHolder.levels[index];
     }
 
-    void Update()
+    //void Update()
+    //{
+    //    if (!gameStarted && !AnyPanelisOpen  && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+    //    {
+    //        gameStarted = true;
+    //        Debug.Log("Game Start");
+    //        gameStart?.Invoke();
+    //        trueEggCountChanged.Invoke(0);
+    //       // Shuffel.instance.StartShuffle(EggSpawner.instance.eggList);
+    //    }
+    //}
+    private void GameStart()
     {
-        if (!gameStarted && !AnyPanelisOpen  && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            gameStarted = true;
-            Debug.Log("Game Start");
-            gameStart?.Invoke();
-            trueEggCountChanged.Invoke(0);
-           // Shuffel.instance.StartShuffle(EggSpawner.instance.eggList);
-        }
+        gameStarted = true;
+        Debug.Log("Game Start");
+       
+        trueEggCountChanged.Invoke(0);
+    }
+    private void PauseGame()
+    {
+
     }
 
     public void SetTargetPos(int eggIndex)
