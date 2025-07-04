@@ -96,15 +96,22 @@ public class CountdownController : MonoBehaviour
         if(textToShow != "START!")
         {
             sequence.AppendInterval(pauseDuration);
+            // 3. Animasyon: Metni ortadan aþaðýya doðru götürürken ayný anda saydamlaþtýr
+            // Append: Sýraya yeni animasyon ekler (aþaðý hareket)
+            // Join: Son eklenen animasyonla AYNI ANDA çalýþacak yeni bir animasyon ekler (saydamlaþma)
+            sequence.Append(rectTransform.DOAnchorPosY(-moveDistance, moveOutDuration).SetEase(Ease.InQuad))
+                     .Join(countdownText.DOFade(0, moveOutDuration));
+        }
+        else
+        {
+            sequence.Append(rectTransform.DOAnchorPosX(moveDistance, moveOutDuration).SetEase(Ease.InQuad))
+                    .Join(countdownText.DOFade(0, moveOutDuration));
+            
         }
         
         
 
-        // 3. Animasyon: Metni ortadan aþaðýya doðru götürürken ayný anda saydamlaþtýr
-        // Append: Sýraya yeni animasyon ekler (aþaðý hareket)
-        // Join: Son eklenen animasyonla AYNI ANDA çalýþacak yeni bir animasyon ekler (saydamlaþma)
-        sequence.Append(rectTransform.DOAnchorPosY(-moveDistance, moveOutDuration).SetEase(Ease.InQuad))
-                .Join(countdownText.DOFade(0, moveOutDuration));
+        
 
         return sequence;
     }

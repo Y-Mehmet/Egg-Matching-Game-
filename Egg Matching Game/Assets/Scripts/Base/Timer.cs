@@ -27,7 +27,7 @@ public class Timer : MonoBehaviour
 
     void StartTimer()
     {
-        Time.timeScale = 1;
+        
         timeSpeed = GameManager.instance.TimeSpeed;
         currentTime= startTime;
         GameManager.instance.timeChanged?.Invoke(currentTime);

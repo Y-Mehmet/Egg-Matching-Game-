@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum PanelID
-{ 
-    Shop,
-    Home,
+{
+    
+    Shop,  
     Settings,
 
 }
