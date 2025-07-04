@@ -15,8 +15,8 @@ TagManager:
   - UI
   - Egg
   - Slot
-  - 
-  - 
+  - BGUI
+  - MidUI
   - 
   - 
   - 
@@ -40,6 +40,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: UI
+    uniqueID: 3746846019
+    locked: 0
+  - name: MidUI
+    uniqueID: 727174659
+    locked: 0
+  - name: BGUI
+    uniqueID: 1181270303
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

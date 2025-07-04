@@ -5,7 +5,8 @@ using UnityEngine;
 public enum PanelID
 {
     
-    Shop,  
+    DragonInfo,  
     Settings,
+    DragonPaint,
 
 }
