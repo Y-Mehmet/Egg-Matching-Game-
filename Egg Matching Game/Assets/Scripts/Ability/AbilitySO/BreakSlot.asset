@@ -15,6 +15,7 @@ MonoBehaviour:
   Type: 1
   Name: Break Slot
   Icon: {fileID: 21300000, guid: 928e288a2690d4fd99390dce406f3608, type: 3}
+  RequiredLevel: 7
   RequiresTarget: 1
   TargetTag: Slot
   action: {fileID: 11400000, guid: 3441fe92a86bdbf45b0d2dbe52848f57, type: 2}

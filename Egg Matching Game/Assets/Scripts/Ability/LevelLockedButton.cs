@@ -8,9 +8,7 @@ public class LevelLockedButton : MonoBehaviour
 {
     [Header("Ability Data")]
     public AbilityData abilityData;
-    [Header("Level Settings")]
-    [Tooltip("The minimum level required to unlock this button.")]
-    public int requiredLevel = 1; // You will set this value for each button in the Inspector.
+   
 
     [Tooltip("The object to be displayed when the button is locked (usually a lock icon).")]
     public GameObject lockObject; // Drag the 'close' GameObject here from the Inspector.
@@ -18,6 +16,7 @@ public class LevelLockedButton : MonoBehaviour
     [Header("Optional Components")]
     [Tooltip("(Optional) The text field where we will display the required level.")]
     public TMP_Text levelText; // The 'Level 4' Text (TMP) object.
+    public Image chilImage;
 
     private Button button;
     private SaveGameData gameData;
@@ -49,7 +48,7 @@ public class LevelLockedButton : MonoBehaviour
         int currentLevel = gameData.levelIndex + 1;
 
         // Check if the player's level is sufficient.
-        if (currentLevel >= requiredLevel)
+        if (currentLevel >= abilityData.RequiredLevel)
         {
             // If the player's level is high enough, unlock the button.
             SetButtonState(true);
@@ -63,7 +62,11 @@ public class LevelLockedButton : MonoBehaviour
         // If a levelText component is assigned, update it with the required level.
         if (levelText != null)
         {
-            levelText.text = "Level " + requiredLevel;
+            levelText.text = "Level " + abilityData.RequiredLevel;
+        }
+        if(chilImage!= null)
+        {
+            chilImage.sprite = abilityData.Icon;
         }
 
         // Add a listener for the button's click event.

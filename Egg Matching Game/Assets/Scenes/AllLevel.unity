@@ -177,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 564195615769011968, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 244.43
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 564195615769011968, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -343,6 +343,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5356201527612791380, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.52
+      objectReference: {fileID: 0}
     - target: {fileID: 5433116913206738305, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_Name
       value: __base__
@@ -357,7 +361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6659500757192485554, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 344.43
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6659500757192485554, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -448,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aced705145dcb1b4fbc4702420b4a3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hammerPrefab: {fileID: 0}
+  hammerPrefab: {fileID: 5318441892147702379, guid: cd8da8735699fe64080a6ecfb6be8486, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

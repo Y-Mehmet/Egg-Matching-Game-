@@ -346,9 +346,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 346ae1ec3c841574e8c8bd7d5d2edf22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredLevel: 3
+  abilityData: {fileID: 0}
   lockObject: {fileID: 6367122481304944305}
   levelText: {fileID: 6718316062354498815}
+  chilImage: {fileID: 7507427665730492443}
 --- !u!1 &6367122481304944305
 GameObject:
   m_ObjectHideFlags: 0

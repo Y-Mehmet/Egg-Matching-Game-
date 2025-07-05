@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1549236101756331582}
   - component: {fileID: 2754411632713524031}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: fx_circle_line_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 5820915924791082075}
   - component: {fileID: 2885462435867575331}
   - component: {fileID: -4390480428824086552}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: egg_slot_base
   m_TagString: Slot
   m_Icon: {fileID: 0}
@@ -141,10 +141,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.02
-  m_Height: 0.8
+  m_Radius: 0.14273646
+  m_Height: 0.8000001
   m_Direction: 1
-  m_Center: {x: 0, y: 0.504383, z: 0.005647093}
+  m_Center: {x: -0.006803602, y: 0.504383, z: -0.022455335}
 --- !u!54 &2885462435867575331
 Rigidbody:
   m_ObjectHideFlags: 0

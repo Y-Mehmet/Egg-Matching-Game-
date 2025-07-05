@@ -17,6 +17,8 @@ public class AbilityData : ScriptableObject
     public AbilityType Type;
     public string Name;
     public Sprite Icon;
+    public int RequiredLevel;
+
 
     [Header("Behavior")]
     public bool RequiresTarget; // Bu yetenek bir hedef seçmeyi gerektiriyor mu? (Yumurta, Slot vb.)

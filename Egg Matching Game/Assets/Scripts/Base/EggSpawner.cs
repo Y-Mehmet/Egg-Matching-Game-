@@ -58,7 +58,7 @@ public class EggSpawner : MonoBehaviour
         {
             Destroy(item.gameObject);
         }
-        foreach (var item in GameManager.instance.slotList)
+        foreach ( Transform item in SlotParent)
         {
             Destroy(item.gameObject);
         }

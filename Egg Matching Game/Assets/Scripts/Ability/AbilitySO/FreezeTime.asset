@@ -15,6 +15,7 @@ MonoBehaviour:
   Type: 0
   Name: Freeze Time
   Icon: {fileID: 21300000, guid: 29b1656cd12cc4ed79e239a27b7cebaa, type: 3}
+  RequiredLevel: 4
   RequiresTarget: 0
   TargetTag: 
   action: {fileID: 11400000, guid: c72bf40fb15b0c94baae892bc796b8de, type: 2}

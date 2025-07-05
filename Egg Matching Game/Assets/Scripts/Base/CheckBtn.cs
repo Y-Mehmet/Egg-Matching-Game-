@@ -15,9 +15,6 @@ public class CheckBtn : MonoBehaviour
     private void OnClick()
     {
         GameManager.instance.Check();
-        foreach( KeyValuePair<int, GameObject> kvp in GameManager.instance.eggSlotDic)
-        {
-           // Debug.Log($"slot index : {kvp.Key} color {kvp.Value.GetComponent<Egg>().eggColor.ToString()}");
-        }
+        
     }
 }

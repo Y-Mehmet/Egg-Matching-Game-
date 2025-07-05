@@ -6,6 +6,7 @@ using DG.Tweening;
 
 using System.IO;
 using System.Collections;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     public List<Vector3> SlotPositionList = new List<Vector3>();
     public List<Vector3> TopEggPosList = new List<Vector3>();
 
-    public List<int> eggSlotIndexList = new List<int>();
+ 
     public List<GameObject> slotList= new List<GameObject>();
     public Dictionary< int, GameObject> eggSlotDic = new Dictionary<int, GameObject>();
     public Action<int, GameObject> onSlotIndexChange;
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
 
         levelChanged?.Invoke(gameData.levelIndex);
     }
+    private int GetSlotCount() { return slotList.Count; }
     
     public void Save()
     {
@@ -109,17 +111,7 @@ public class GameManager : MonoBehaviour
         return levelDataHolder.levels[index];
     }
 
-    //void Update()
-    //{
-    //    if (!gameStarted && !AnyPanelisOpen  && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-    //    {
-    //        gameStarted = true;
-    //        Debug.Log("Game Start");
-    //        gameStart?.Invoke();
-    //        trueEggCountChanged.Invoke(0);
-    //       // Shuffel.instance.StartShuffle(EggSpawner.instance.eggList);
-    //    }
-    //}
+  
     private void GameStart()
     {
         gameStarted = true;
@@ -132,19 +124,19 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void SetTargetPos(int eggIndex)
-    {
-        if (eggIndex < 0 || eggIndex >= SlotPositionList.Count)
-        {
-            Debug.LogError("Invalid egg index");
-            return;
-        }
-        targetPos = SlotPositionList[eggIndex];
-    }
-    public Vector3 GetTargetPos()
-    {
-        return targetPos;
-    }
+    //public void SetTargetPos(int eggIndex)
+    //{
+    //    if (eggIndex < 0 || eggIndex >= SlotPositionList.Count)
+    //    {
+    //        Debug.LogError("Invalid egg index");
+    //        return;
+    //    }
+    //    targetPos = SlotPositionList[eggIndex];
+    //}
+    //public Vector3 GetTargetPos()
+    //{
+    //    return targetPos;
+    //}
     
     public void AddEggListByIndex(int slotIndex , GameObject eggObj)
     {
@@ -213,11 +205,54 @@ public class GameManager : MonoBehaviour
         }
         
     }
+    public void BreakSlotProses(int slotIndex)
+    {
+        if(eggSlotDic.TryGetValue(slotIndex, out GameObject egg))
+        {
+            egg.transform.position= egg.GetComponent<Egg>().startPos;
+            
+
+        }
+        if(eggSlotDic.ContainsKey(slotIndex))
+        eggSlotDic.Remove(slotIndex);
+        slotList.RemoveAt(slotIndex);
+        onSlotedEggCountChange?.Invoke();
+
+    }
+    public void BreakEggProses(GameObject Egg)
+    {
+        int i = 0;
+        foreach (var item in GetLevelData().eggColors)
+        {
+            if (eggSlotDic.TryGetValue(i, out GameObject egg))
+            {
+                
+                if (egg==Egg)
+                {
+                    eggSlotDic.Remove(i);
+                    
+                    break;
+                }
+            }
+            i++;
+        }
+        int j = 0;
+        foreach (var item in GetLevelData().eggColors)
+        {
+            if( Egg.GetComponent<Egg>().IsCorrect(item) )
+            {
+                slotList.RemoveAt(j);
+                break;
+            }
+            j++;
+        }
+    }
     public void Check()
     {
-        if (eggSlotDic.Count <= slotCount)
+        int sltCount = GetSlotCount();
+        if (eggSlotDic.Count <= sltCount)
         {
-            for (int i = 0; i < slotCount; i++)
+            for (int i = 0; i < sltCount; i++)
             {
                 if (!eggSlotDic.ContainsKey(i))
                 {
@@ -227,8 +262,8 @@ public class GameManager : MonoBehaviour
                     slotList[i].transform.DOKill();
                     int fixedIndex = i;
                     slotList[fixedIndex].transform.DOShakePosition(
-                        duration: 3f,
-                        strength: 0.3f,
+                        duration: 2f,
+                        strength: 0.05f,
                         vibrato: 10,
                         randomness: 45f
                     ).OnComplete(() =>
@@ -245,21 +280,24 @@ public class GameManager : MonoBehaviour
             trueEggCountChanged.Invoke(0);
         }
 
-        if (eggSlotDic.Count == slotCount)
+        if (eggSlotDic.Count == sltCount)
         {
             int trueCount = 0;
             int i = 0;
             foreach (var item in GetLevelData().eggColors)
             {
-                Egg eggScript = eggSlotDic[i].GetComponent<Egg>();
-                if (eggScript != null && eggScript.IsCorrect(item))
+                if(eggSlotDic.TryGetValue(i,out GameObject egg))
                 {
-                    trueCount++;
+                    Egg eggScript = egg.GetComponent<Egg>();
+                    if (eggScript != null && eggScript.IsCorrect(item))
+                    {
+                        trueCount++;
+                    }
                 }
                 i++;
             }
             trueEggCountChanged.Invoke(trueCount);
-            if(trueCount== slotCount)
+            if(trueCount== sltCount)
             {
 
                

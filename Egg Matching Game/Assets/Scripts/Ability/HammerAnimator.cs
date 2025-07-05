@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HammerAnimator : MonoBehaviour
@@ -9,14 +10,45 @@ public class HammerAnimator : MonoBehaviour
     // BÝR 'ANIMATION EVENT' ÝLE ÇAÐRILACAKTIR.
     public void OnSmashAnimationComplete()
     {
-        // Hedef objeyi yok et
+        StartCoroutine(OnSmashCorrotune());
+      
+    }
+    public void OnThrowBombAnimationComplated()
+    {
+        StartCoroutine(OnThrowCorrotune());
+    }
+    IEnumerator OnSmashCorrotune()
+    {
+
+        yield return new WaitForSeconds(2f); // Anlýk bir gecikme ekleyerek animasyonun tamamlanmasýný bekler
         if (targetToDestroy != null)
         {
-            // Ýsteðe baðlý: Patlama efekti, ses vb. burada eklenebilir.
-            Destroy(targetToDestroy);
+            int slotIndex= targetToDestroy.transform.GetSiblingIndex();
+            GameManager.instance.BreakSlotProses(slotIndex);
+            
+            targetToDestroy.SetActive(false);
+            targetToDestroy = null;
+
         }
 
         // Animasyon bittiði için çekiç objesini de yok et
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+    }
+    IEnumerator OnThrowCorrotune()
+    {
+
+        yield return new WaitForSeconds(2f); // Anlýk bir gecikme ekleyerek animasyonun tamamlanmasýný bekler
+        if (targetToDestroy != null)
+        {
+          
+            GameManager.instance.BreakEggProses(targetToDestroy);
+            targetToDestroy.SetActive(false);
+            targetToDestroy = null;
+            
+
+        }
+
+        // Animasyon bittiði için çekiç objesini de yok et
+        gameObject.SetActive(false);
     }
 }

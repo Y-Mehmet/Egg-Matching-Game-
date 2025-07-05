@@ -11,7 +11,19 @@ public class PlayerController : MonoBehaviour
     private Transform currentSlot;
     private Transform selectedEgg;
     public LayerMask eggLayerMask;
-    
+    public static PlayerController instance;
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         cam = Camera.main;
@@ -30,19 +42,21 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.instance.gameStarted)
+        {
 #if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0))
-        {
-            TryPickEgg(Input.mousePosition);
-        }
-        else if (Input.GetMouseButton(0))
-        {
-            DragEgg(Input.mousePosition);
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            DropEgg();
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                TryPickEgg(Input.mousePosition);
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                DragEgg(Input.mousePosition);
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                DropEgg();
+            }
 #else
         if (Input.touchCount > 0)
         {
@@ -62,13 +76,15 @@ public class PlayerController : MonoBehaviour
             }
         }
 #endif
+        }
+
     }
 
-    private bool isDragging = false;
+    public bool isDragging = false;
 
     void TryPickEgg(Vector2 screenPos)
     {
-        if(GameManager.instance.gameStarted)
+        
         {
             Ray ray = cam.ScreenPointToRay(screenPos);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, eggLayerMask))
