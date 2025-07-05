@@ -5,7 +5,8 @@ public enum AbilityType
 {
     FreezeTime,
     BreakSlot,
-    BreakEgg
+    BreakEgg,
+    Shuffle
 }
 
 // Bu satýr sayesinde Unity'de "Create > Game > Ability" menüsü ile yeni yetenek verileri oluþturabilirsiniz.
@@ -24,7 +25,7 @@ public class AbilityData : ScriptableObject
     [Tooltip("Eðer hedef gerekiyorsa, hangi Tag'e sahip objeleri hedefleyebilir?")]
     public string TargetTag; // "Egg" veya "Slot" gibi
 
-    [Header("Effect Settings")]
-    [Tooltip("Zaman Dondurma için saniye cinsinden süre")]
-    public float Duration = 10f; // Sadece FreezeTime için geçerli
+  
+    [Header("Ability Action")]
+    public AbilityAction action;
 }

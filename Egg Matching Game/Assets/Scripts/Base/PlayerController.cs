@@ -142,23 +142,7 @@ public class PlayerController : MonoBehaviour
 
     void SwapWith(GameObject otherEgg)
     {
-        //// Slotlar
-        //Transform mySlot = currentSlot;
-        //Transform otherSlot = otherEgg.transform.parent;
-
-        //// Pozisyon deðiþimi
-        //transform.SetParent(otherSlot);
-        //transform.position = otherSlot.position;
-
-        //otherEgg.transform.SetParent(mySlot);
-        //otherEgg.transform.position = mySlot.position;
-
-        //// Slot bilgilerini güncelle
-        //currentSlot = otherSlot;
-
-        //// originalPosition da güncellenmeli
-        //originalPosition = transform.position;
-        //otherEgg.GetComponent<EggDragHandler>().UpdateSlot(mySlot);
+        
     }
 
     public void UpdateSlot(Transform newSlot)

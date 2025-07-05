@@ -299,3 +299,9 @@ public enum EggColor
     Black,
     Random
 }
+public enum Tag
+{
+    Egg,
+    Slot,
+    
+}

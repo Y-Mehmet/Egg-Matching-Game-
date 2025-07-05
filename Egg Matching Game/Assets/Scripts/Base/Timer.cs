@@ -14,7 +14,8 @@ public class Timer : MonoBehaviour
         GameManager.instance.pauseGame += StopTimer;
         GameManager.instance.continueGame += ContinueTimer;
         GameManager.instance.gameReStart += StopTimeCoroutine;
-       
+        AbilityManager.Instance.frezzeTimeAction += StopTimerWhitSecond; // Zaman dondurma eylemi için
+
 
     }
     void OnDisable()
@@ -23,6 +24,7 @@ public class Timer : MonoBehaviour
         GameManager.instance.pauseGame -= StopTimer;
         GameManager.instance.continueGame -= ContinueTimer;
         GameManager.instance.gameReStart -= StopTimeCoroutine;
+        AbilityManager.Instance.frezzeTimeAction -= StopTimerWhitSecond; // Zaman dondurma eylemi için
     }
 
     void StartTimer()
@@ -49,6 +51,20 @@ public class Timer : MonoBehaviour
     void StopTimer()
     {
         Time.timeScale = 0;
+    }
+    void StopTimerWhitSecond(int delay)
+    {
+        if (timeCoroutine != null)
+        {
+            StopCoroutine(timeCoroutine);
+        }
+        StartCoroutine(StopTimerWhitSecondCorrotune(delay));
+    }
+    IEnumerator StopTimerWhitSecondCorrotune(int delay)
+    {
+       
+        yield return new WaitForSeconds(delay);
+        timeCoroutine = StartCoroutine(TimeRoutine());
     }
     void ContinueTimer()
     {

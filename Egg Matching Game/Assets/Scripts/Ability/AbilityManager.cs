@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Unity.VisualScripting.InputSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +11,13 @@ public class AbilityManager : MonoBehaviour // Singleton<T> kullanýyorsanýz onda
     [Header("Assets")]
     public GameObject hammerPrefab; // Çekiç animasyonu için prefab
 
-    [Header("UI")]
-    public Text infoText; // "Bir slot seçin" gibi bilgilendirme metni için
+ 
+
+    public Action<int> frezzeTimeAction; // Zaman dondurma eylemi için
+    
+    public Action<Tag> breakSlotAction; // Slot kýrma eylemi için
+    public Action breakEggAction; // Yumurta kýrma eylemi için
+    public Action shuffleAction;
 
     private AbilityData _currentAbility;
     private bool _isTargetingMode = false;
@@ -26,102 +33,43 @@ public class AbilityManager : MonoBehaviour // Singleton<T> kullanýyorsanýz onda
             Instance = this;
         }
     }
-
-    void Update()
+    private void OnEnable()
     {
-        // Hedefleme modundaysak fare týklamasýný dinle
-        if (_isTargetingMode)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                HandleTargetSelection();
-            }
+        breakSlotAction += BreakSlotAction;
 
-            // Sað týk ile hedeflemeyi iptal et
-            if (Input.GetMouseButtonDown(1))
-            {
-                CancelTargeting();
-            }
-        }
     }
-
-    // UI Butonu bu metodu çaðýracak
-    public void SelectAbility(AbilityData ability)
+    private void OnDisable()
     {
-        if (_isTargetingMode)
-        {
-            Debug.Log("Zaten bir yetenek seçili.");
-            return;
-        }
-
-        _currentAbility = ability;
-
-        if (_currentAbility.RequiresTarget)
-        {
-            // Hedefleme moduna geç
-            _isTargetingMode = true;
-            if (infoText != null) infoText.text = $"Bir '{_currentAbility.TargetTag}' seçin. (Ýptal için Sað Týk)";
-            // Burada imleci (cursor) deðiþtirmek gibi görsel efektler ekleyebilirsiniz.
-        }
-        else
-        {
-            // Hedef gerekmiyorsa direkt kullan
-            ExecuteAbility(null);
-        }
+        breakSlotAction -= BreakSlotAction;
     }
-
-    private void HandleTargetSelection()
+    
+   
+    private void BreakSlotAction(Tag tag)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        GameManager.instance.gameStarted = false;
+       while(true)
         {
-            // Týklanan obje doðru tag'e sahip mi?
-            if (hit.collider.CompareTag(_currentAbility.TargetTag))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.NameToLayer(tag.ToString())))
             {
-                ExecuteAbility(hit.collider.gameObject);
-            }
-            else
-            {
-                Debug.Log($"Yanlýþ hedef! Bir '{_currentAbility.TargetTag}' objesi seçmelisiniz.");
+                // Týklanan obje doðru tag'e sahip mi?
+                if (hit.collider.CompareTag(tag.ToString()))
+                {
+                    hit.transform.gameObject.SetActive(false);
+                    break;
+                }
+                else
+                {
+                    Debug.Log($"Yanlýþ hedef! Bir {tag} objesi seçmelisiniz.");
+                }
             }
         }
+
     }
 
-    private void ExecuteAbility(GameObject target)
-    {
-        if (_currentAbility == null) return;
+    
 
-        // Yeteneðin türüne göre ilgili fonksiyonu çalýþtýr
-        switch (_currentAbility.Type)
-        {
-            case AbilityType.FreezeTime:
-                StartCoroutine(FreezeTimeCoroutine(_currentAbility.Duration));
-                break;
-
-            case AbilityType.BreakSlot:
-            case AbilityType.BreakEgg:
-                AnimateAndDestroy(target);
-                break;
-
-                // YENÝ BÝR YETENEK EKLERSENÝZ BURAYA case EKLERSÝNÝZ
-        }
-
-        // Yeteneði kullandýktan sonra hedefleme modundan çýk
-        CancelTargeting();
-    }
-
-    private IEnumerator FreezeTimeCoroutine(float duration)
-    {
-        Debug.Log("Zaman dondu!");
-        // OYUNUNUZDAKÝ ZAMAN SAYACINI BURADA DURDURUN
-        // Örnek: GameManager.Instance.IsTimerPaused = true;
-
-        yield return new WaitForSeconds(duration);
-
-        Debug.Log("Zaman normale döndü!");
-        // ZAMAN SAYACINI BURADA DEVAM ETTÝRÝN
-        // Örnek: GameManager.Instance.IsTimerPaused = false;
-    }
+   
 
     private void AnimateAndDestroy(GameObject target)
     {
@@ -143,10 +91,5 @@ public class AbilityManager : MonoBehaviour // Singleton<T> kullanýyorsanýz onda
         }
     }
 
-    public void CancelTargeting()
-    {
-        _isTargetingMode = false;
-        _currentAbility = null;
-        if (infoText != null) infoText.text = "";
-    }
+   
 }

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class LevelLockedButton : MonoBehaviour
 {
+    [Header("Ability Data")]
+    public AbilityData abilityData;
     [Header("Level Settings")]
     [Tooltip("The minimum level required to unlock this button.")]
     public int requiredLevel = 1; // You will set this value for each button in the Inspector.
@@ -97,10 +99,6 @@ public class LevelLockedButton : MonoBehaviour
     /// </summary>
     private void OnButtonClick()
     {
-        // You can perform any action you want the button to do here.
-        // I'm adding the scene loading from your original code.
-        // IMPORTANT: Ensure your SceeneManager class exists in your project.
-        Debug.Log("Button for level " + requiredLevel + " clicked. Loading scene...");
-        SceeneManager.instance.LoadScene(1);
+        abilityData.action.Execute();
     }
 }
