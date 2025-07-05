@@ -24,32 +24,46 @@ public class ObjectPool : Singleton<ObjectPool>
     /// </summary>
     /// <param name="objectName">The name of the object to retrieve.</param>
     /// <returns>An active GameObject instance, or null if not found.</returns>
+    private void Start()
+    {
+        foreach (var prefab in PrefabsForPool)
+        {
+            // Instantiate each prefab and add it to the pool
+            var instance = Instantiate(prefab, Vector3.zero, Quaternion.identity, transform);
+            instance.transform.localPosition = Vector3.zero;
+            instance.name = prefab.name; // Set the name to match the prefab
+            instance.SetActive(false); // Initially set to inactive
+            _pooledObjects.Add(instance);
+        }
+    }
     public GameObject GetObjectFromPool(string objectName)
     {
-        // Try to find an inactive object in the pool with the given name
+        
+
+      
         var instance = _pooledObjects.FirstOrDefault(o => o.name == objectName);
 
         if (instance != null)
         {
-            // Reactivate and return the object
+            // Bulunan objeyi havuzdan çýkar, aktif et ve döndür
             _pooledObjects.Remove(instance);
             instance.SetActive(true);
             return instance;
         }
 
-        // If no pooled object found, try to instantiate from prefabs
+        // Havuzda yoksa, prefab listesinden yeni bir tane oluþturmayý dene
         var prefab = PrefabsForPool.FirstOrDefault(o => o.name == objectName);
 
         if (prefab != null)
         {
-            // Instantiate a new object and return it
+            // Yeni bir obje oluþtur ve döndür
             var newInstace = Instantiate(prefab, Vector3.zero, Quaternion.identity, transform);
             newInstace.transform.localPosition = Vector3.zero;
             newInstace.name = objectName;
             return newInstace;
         }
 
-        // If no matching prefab is found, log a warning
+        // Eþleþen bir prefab bulunamazsa uyarý ver
         Debug.LogWarning($"{objectName} prefab not found in the prefab list.");
         return null;
     }

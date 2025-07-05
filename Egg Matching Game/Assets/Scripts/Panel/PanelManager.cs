@@ -23,40 +23,53 @@ public class PanelManager : Singleton<PanelManager>
     // Function to show a panel (updated to use enum)
     public void ShowPanel(PanelID panelID, PanelShowBehavior behavior = PanelShowBehavior.SHOW_PREVISE)
     {
-        //  UIManager.ShowPanelClicked?.Invoke();
-       // SoundManager.instance.Play("ButtonClick");
-
       
 
-        // Convert enum to string to get panel
-        string panelIDString = panelID.ToString();
-
-        // Get panel instance from the object pool
-        GameObject instancePanel = _objectPool.GetObjectFromPool(panelIDString);
-
-        // If the panel object is found
-        if (instancePanel != null)
+      bool isActive = false;
+        foreach(Transform childTransform in _objectPool.transform)
         {
-            // If the behavior is to hide the previous panel and there's at least one active panel
-            if (behavior == PanelShowBehavior.HIDE_PREVISE && GetAmountPanelInList() > 0)
+            if (childTransform.name == panelID.ToString())
             {
-                var lastPanel = GetLastPanel();
-                if (lastPanel != null)
-                {
-                    lastPanel.PanelInstance.SetActive(false);
-                }
+                isActive = childTransform.gameObject.activeInHierarchy;
+                break;
             }
-
-            // Add the new panel to the list
-            _listInstance.Add(new PanelInstanceModel
-            {
-                PanelID = panelID, // Enum stored as string
-                PanelInstance = instancePanel
-            });
         }
-        else
+
+        if (isActive)
         {
-            Debug.LogWarning($"Panel not found: {panelID}");
+            Debug.Log("panel allredy active "+ panelID.ToString());
+        }else
+        {
+            // Convert enum to string to get panel
+            string panelIDString = panelID.ToString();
+
+            // Get panel instance from the object pool
+            GameObject instancePanel = _objectPool.GetObjectFromPool(panelIDString);
+
+            // If the panel object is found
+            if (instancePanel != null)
+            {
+                // If the behavior is to hide the previous panel and there's at least one active panel
+                if (behavior == PanelShowBehavior.HIDE_PREVISE && GetAmountPanelInList() > 0)
+                {
+                    var lastPanel = GetLastPanel();
+                    if (lastPanel != null)
+                    {
+                        lastPanel.PanelInstance.SetActive(false);
+                    }
+                }
+
+                // Add the new panel to the list
+                _listInstance.Add(new PanelInstanceModel
+                {
+                    PanelID = panelID, // Enum stored as string
+                    PanelInstance = instancePanel
+                });
+            }
+            else
+            {
+                Debug.LogWarning($"Panel not found: {panelID}");
+            }
         }
     }
 
