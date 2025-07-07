@@ -3,21 +3,28 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using DG.Tweening;
-
-using System.IO;
-using System.Collections;
 using System.Linq;
+using Sequence = DG.Tweening.Sequence;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    [Header("Shuffle Animation Settings")]
+    [SerializeField] private float swapDuration = 0.6f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
+    [SerializeField] private float delayBetweenSwaps = 0.1f;
+    [SerializeField] private Ease shuffleEase = Ease.InOutSine; // InOutSine gibi yumuşak geçişler bu animasyonda iyi durur
+    [SerializeField] private float zOffsetOnSwap = -2.0f; // Geri çekilme mesafesi
+    [Header("Assign Egg Animation")]
+    [SerializeField] private float assignAnimationDuration = 0.9f; // Animasyonun toplam süresi
+    [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
+    [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
 
     //public List<LevelData> levelDatas = new List<LevelData>();
     public LevelDataHolder levelDataHolder; 
     public List<Vector3> SlotPositionList = new List<Vector3>();
     public List<Vector3> TopEggPosList = new List<Vector3>();
+    private bool isShuffling = false;
 
- 
     public List<GameObject> slotList= new List<GameObject>();
     public Dictionary< int, GameObject> eggSlotDic = new Dictionary<int, GameObject>();
     public Action<int, GameObject> onSlotIndexChange;
@@ -59,18 +66,21 @@ public class GameManager : MonoBehaviour
             gameData.isFirstLaunch = false;
             Save();
         }
-
+        
 
     }
     private void OnEnable()
     {
         gameStart += GameStart;
+        
+
         Time.timeScale = 1;
 
     }
     private void OnDisable()
     {
         gameStart -= GameStart;
+       
     }
     private void Start()
     {
@@ -79,7 +89,45 @@ public class GameManager : MonoBehaviour
 
 
         levelChanged?.Invoke(gameData.levelIndex);
+        
     }
+    public void ShowOutline(List<GameObject> list)
+    {
+        foreach (var item in list)
+        {
+            GameObject child = item.transform.GetChild(0).transform.GetChild(0).gameObject;
+            if (child != null)
+            {
+                child.SetActive(true);
+                child.transform.DOKill();
+
+                child.transform.DOShakePosition(
+                    duration: 3f,
+                    strength: 0.05f,
+                    vibrato: 5,
+                    randomness: 30f
+                );
+            }
+            else
+            {
+                Debug.LogError("must be have child");
+            }
+        }
+    }
+   
+    public void HideOutline(Transform obj, List<GameObject> list)
+    {
+        foreach (var item in list)
+        {
+            GameObject child = item.transform.GetChild(0).transform.GetChild(0).gameObject;
+            if (child != null && item.transform!= obj.transform)
+            {
+                child.SetActive(false);
+            }
+           
+        }
+    }
+    
     private int GetSlotCount() { return slotList.Count; }
     
     public void Save()
@@ -119,25 +167,123 @@ public class GameManager : MonoBehaviour
        
         trueEggCountChanged.Invoke(0);
     }
-    private void PauseGame()
+    public void Shufle()
     {
+        // Eğer zaten bir karıştırma animasyonu çalışıyorsa, yenisini başlatma
+        if (isShuffling)
+        {
+            Debug.LogWarning("Shuffling is already in progress.");
+            return;
+        }
+        int sltCount = GetSlotCount();
+        int brokenEggCount = GetLevelData().GetBrokenEggCount();
+        int ceckedEggCount = sltCount - brokenEggCount;
+        List<GameObject> NotAssingentEggList = new List<GameObject>();
+        List<int> emtyslotIndexList= new List<int>();
+        if (eggSlotDic.Count < ceckedEggCount)
+        {
+            int j = 0;
 
+            foreach (var item in GetLevelData().tempTopEggColors)
+            {
+                // burada tempTopEggColors bulunan EggColor egSlotDic Value kısımda yoksa bunu NotAssingnetEggListe ekle sonra EggSpawner.instance.EggParent childi olan ve activeinhiyerarşı olan 
+                // childı bul ve bu notasangniedslotlistcounta doğru bir do tween harekteti bailat yine tabiki önce z de -2 çek sonra hedef slota ilerlet sonra da tekrar z de 0 çek 
+            }
+        }
+            // 1. Adım: Karıştırılabilecek yumurtaları bul ve listeye ekle
+            List<GameObject> canShuffleEggList = new List<GameObject>();
+        int i = 0;
+        foreach (var item in GetLevelData().eggColors)
+        {
+            if (eggSlotDic.TryGetValue(i, out GameObject egg))
+            {
+                Egg eggScript = egg.GetComponent<Egg>();
+                // Yanlış pozisyondaki yumurtaları listeye ekle
+                if (eggScript != null && !eggScript.IsCorrect(item))
+                {
+                    canShuffleEggList.Add(egg);
+                }
+            }
+            i++;
+        }
+
+        // Karıştırılacak en az 2 yumurta yoksa, işlemi sonlandır
+        if (canShuffleEggList.Count < 2)
+        {
+            Debug.Log("Not enough eggs to shuffle.");
+            return;
+        }
+
+        isShuffling = true;
+
+        // 2. Adım: Animasyon için bir DOTween Sequence oluştur
+        // Sequence, animasyonları arka arkaya veya aynı anda oynatmamızı sağlar
+        Sequence shuffleSequence = DOTween.Sequence();
+        float stepDuration = swapDuration / 3.0f;
+
+        // Animasyon sırasında pozisyonları takip etmek için geçici bir liste oluşturalım.
+        // Çünkü Transform'ların pozisyonları animasyon sırasında değişecektir.
+        List<Vector3> initialPositions = canShuffleEggList.Select(egg => egg.transform.position).ToList();
+
+        for (int n = canShuffleEggList.Count - 1; n > 0; n--)
+        {
+            int k = UnityEngine.Random.Range(0, n + 1);
+
+            GameObject eggA = canShuffleEggList[n];
+            GameObject eggB = canShuffleEggList[k];
+
+            Vector3 posA = initialPositions[n];
+            Vector3 posB = initialPositions[k];
+
+            // --- 1. Adım: Yumurtaları Z ekseninde geriye çek ---
+            Vector3 backPosA = new Vector3(posA.x, posA.y, posA.z + zOffsetOnSwap);
+            Vector3 backPosB = new Vector3(posB.x, posB.y, posB.z + zOffsetOnSwap);
+
+            // Append ile ilk yumurtanın geri gitme animasyonunu başlat
+            shuffleSequence.Append(eggA.transform.DOMove(backPosA, stepDuration).SetEase(shuffleEase));
+            // Join ile ikinci yumurtanın da aynı anda geri gitmesini sağla
+            shuffleSequence.Join(eggB.transform.DOMove(backPosB, stepDuration).SetEase(shuffleEase));
+
+
+            // --- 2. Adım: Geri pozisyondayken X/Y pozisyonlarını değiştir ---
+            // eggA, eggB'nin X/Y'sine ama hala geri Z pozisyonunda gidecek
+            Vector3 swapTargetForA = new Vector3(posB.x, posB.y, backPosA.z);
+            // eggB, eggA'nın X/Y'sine ama hala geri Z pozisyonunda gidecek
+            Vector3 swapTargetForB = new Vector3(posA.x, posA.y, backPosB.z);
+
+            shuffleSequence.Append(eggA.transform.DOMove(swapTargetForA, stepDuration).SetEase(shuffleEase));
+            shuffleSequence.Join(eggB.transform.DOMove(swapTargetForB, stepDuration).SetEase(shuffleEase));
+
+
+            // --- 3. Adım: Yeni yerlerinde Z ekseninde ileri giderek orijinal Z'ye dön ---
+            // eggA'nın son hedefi posB'dir
+            // eggB'nin son hedefi posA'dır
+            shuffleSequence.Append(eggA.transform.DOMove(posB, stepDuration).SetEase(shuffleEase));
+            shuffleSequence.Join(eggB.transform.DOMove(posA, stepDuration).SetEase(shuffleEase));
+
+
+            // İki yumurtanın tam takas animasyonu bittikten sonra bekleme ekle
+            if (delayBetweenSwaps > 0)
+            {
+                shuffleSequence.AppendInterval(delayBetweenSwaps);
+            }
+
+            // Mantıksal pozisyonları bir sonraki döngü için güncelle
+            (initialPositions[n], initialPositions[k]) = (initialPositions[k], initialPositions[n]);
+        }
+        // --- DEĞİŞEN KISIM BURADA BİTİYOR ----
+
+        // 4. Adım: Tüm animasyonlar bittiğinde yapılacaklar
+        shuffleSequence.OnComplete(() => {
+            Debug.Log("Shuffling complete!");
+            isShuffling = false; // Bayrağı indir, böylece tekrar karıştırılabilir
+            
+        });
+        Check();
     }
 
-    //public void SetTargetPos(int eggIndex)
-    //{
-    //    if (eggIndex < 0 || eggIndex >= SlotPositionList.Count)
-    //    {
-    //        Debug.LogError("Invalid egg index");
-    //        return;
-    //    }
-    //    targetPos = SlotPositionList[eggIndex];
-    //}
-    //public Vector3 GetTargetPos()
-    //{
-    //    return targetPos;
-    //}
-    
+
+
     public void AddEggListByIndex(int slotIndex , GameObject eggObj)
     {
         onSlotedEggCountChange?.Invoke();
@@ -213,10 +359,10 @@ public class GameManager : MonoBehaviour
             
 
         }
-        if(eggSlotDic.ContainsKey(slotIndex))
+        if(eggSlotDic.Count>0 && eggSlotDic.ContainsKey(slotIndex))
         eggSlotDic.Remove(slotIndex);
-        slotList.RemoveAt(slotIndex);
-        onSlotedEggCountChange?.Invoke();
+        RemoveSlotByIndex(slotIndex);
+        
 
     }
     public void BreakEggProses(GameObject Egg)
@@ -241,7 +387,7 @@ public class GameManager : MonoBehaviour
         {
             if( Egg.GetComponent<Egg>().IsCorrect(item) )
             {
-                slotList.RemoveAt(j);
+                GetLevelData().RemoveEggByEggColor(Egg.GetComponent<Egg>().eggColor);
                 break;
             }
             j++;
@@ -250,8 +396,11 @@ public class GameManager : MonoBehaviour
     public void Check()
     {
         int sltCount = GetSlotCount();
-        if (eggSlotDic.Count <= sltCount)
+        int brokenEggCount= GetLevelData().GetBrokenEggCount();
+        int ceckedEggCount = sltCount-brokenEggCount;
+        if (eggSlotDic.Count < ceckedEggCount)
         {
+            Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount+ " slot count "+sltCount);
             for (int i = 0; i < sltCount; i++)
             {
                 if (!eggSlotDic.ContainsKey(i))
@@ -278,9 +427,7 @@ public class GameManager : MonoBehaviour
             }
 
             trueEggCountChanged.Invoke(0);
-        }
-
-        if (eggSlotDic.Count == sltCount)
+        }else 
         {
             int trueCount = 0;
             int i = 0;
@@ -297,7 +444,7 @@ public class GameManager : MonoBehaviour
                 i++;
             }
             trueEggCountChanged.Invoke(trueCount);
-            if(trueCount== sltCount)
+            if(trueCount== ceckedEggCount)
             {
 
                
@@ -307,6 +454,18 @@ public class GameManager : MonoBehaviour
             }
         }
         
+    }
+    private void RemoveSlotByIndex(int index)
+    {
+        foreach( var slot in slotList)
+        {
+            if(slot.GetComponent<Slot>().slotIndex == index)
+            {
+                slotList.Remove(slot);
+                onSlotedEggCountChange?.Invoke();
+                return;
+            }
+        }
     }
     private void OnApplicationPause(bool pause)
     {

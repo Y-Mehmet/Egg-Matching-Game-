@@ -4,7 +4,8 @@ public class AbilityActionShuffle : AbilityAction
 {
     public override void Execute()
     {
-        AbilityManager.Instance.shuffleAction?.Invoke();
+        // AbilityManager.Instance.shuffleAction?.Invoke();
+        GameManager.instance.Shufle();
 
     }
 }

@@ -53,7 +53,7 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
-       
+        GameManager.instance.ShowOutline(EggSpawner.instance.eggList);
         StartCoroutine(BreakSlotCoroutine(tag));
     }
 
@@ -68,7 +68,7 @@ public class AbilityManager : MonoBehaviour
             Debug.LogWarning("Zaten bir hedefleme iþlemi devam ediyor.");
             return;
         }
-
+        GameManager.instance.ShowOutline(GameManager.instance.slotList);
         // Hedefleme coroutine'ini baþlat.
         StartCoroutine(BreakSlotCoroutine(tag));
     }
@@ -107,9 +107,13 @@ public class AbilityManager : MonoBehaviour
                         if (hit.collider.CompareTag(tag.ToString()))
                         {
                             Debug.Log($"Baþarýlý hedef: {hit.collider.name}. Obje yok edilecek.");
-                            
 
-
+                            if(tag==Tag.Slot)
+                            GameManager.instance.HideOutline(hit.transform, GameManager.instance.slotList );
+                            else
+                            {
+                                GameManager.instance.HideOutline(hit.transform, EggSpawner.instance.eggList);
+                            }
                             // Hedefi yok et (veya bir animasyon oynat)
                             AnimateAndDestroy(hit.transform.gameObject, tag);
                             //hit.transform.gameObject.SetActive(false); // Veya direkt yok et
@@ -160,6 +164,7 @@ public class AbilityManager : MonoBehaviour
             Destroy(hammerInstance);
             // Animasyon çalýþmazsa bile hedefi yok etmeliyiz
             target.SetActive(false);
+            
         }
     }
     private void ThrowBomb(GameObject target)

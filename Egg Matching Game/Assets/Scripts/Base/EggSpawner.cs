@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class EggSpawner : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class EggSpawner : MonoBehaviour
     {
         GameManager.instance.levelChanged -= SpawnEgg;
     }
+    
     public void SpawnEgg(int levelIndex)
     {
         mixColorList.Clear();
@@ -291,4 +293,5 @@ public class EggSpawner : MonoBehaviour
             }
         }
     }
+    
 }
