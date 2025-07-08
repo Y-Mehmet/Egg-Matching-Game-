@@ -5,17 +5,19 @@ using System;
 using DG.Tweening;
 using System.Linq;
 using Sequence = DG.Tweening.Sequence;
+using System.Drawing;
+using Color = UnityEngine.Color;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [Header("Shuffle Animation Settings")]
-    [SerializeField] private float swapDuration = 0.6f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
+    [SerializeField] private float swapDuration = 0.3f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
     [SerializeField] private float delayBetweenSwaps = 0.1f;
     [SerializeField] private Ease shuffleEase = Ease.InOutSine; // InOutSine gibi yumuşak geçişler bu animasyonda iyi durur
     [SerializeField] private float zOffsetOnSwap = -2.0f; // Geri çekilme mesafesi
     [Header("Assign Egg Animation")]
-    [SerializeField] private float assignAnimationDuration = 0.9f; // Animasyonun toplam süresi
+   [HideInInspector] [SerializeField] private float assignAnimationDuration = 0.3f; // Animasyonun toplam süresi
     [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
     [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
 
@@ -45,7 +47,7 @@ public class GameManager : MonoBehaviour
     public bool IsFirstSave = true;
     public SaveGameData gameData;
 
-
+    private bool isAssigningEggs = false;
 
     private Vector3 targetPos;
     private void Awake()
@@ -88,7 +90,7 @@ public class GameManager : MonoBehaviour
         originalColor.a = 0.5f;
 
 
-        levelChanged?.Invoke(gameData.levelIndex);
+        ReStart();
         
     }
     public void ShowOutline(List<GameObject> list)
@@ -137,6 +139,10 @@ public class GameManager : MonoBehaviour
     public void ReStart()
     {
         levelChanged?.Invoke(gameData.levelIndex);
+        if(eggSlotDic.Count > 0)
+        {
+            eggSlotDic.Clear();
+        }
     }
 
     
@@ -167,6 +173,130 @@ public class GameManager : MonoBehaviour
        
         trueEggCountChanged.Invoke(0);
     }
+    public void AssignMissingEggs()
+    {
+        // Zaten bir atama animasyonu çalışıyorsa, yenisini başlatma.
+        if (isAssigningEggs)
+        {
+            Debug.LogWarning("AssignMissingEggs animasyonu zaten çalışıyor.");
+            return;
+        }
+
+        isAssigningEggs = true;
+
+        // 1. ADIM: Tüm yumurta animasyonlarını yönetecek ana bir sekans oluştur.
+        Sequence masterSequence = DOTween.Sequence();
+
+        // 2. ADIM: Bir sonraki animasyonun ne zaman başlayacağını takip etmek için bir zaman sayacı oluştur.
+        float insertTime = 0.0f;
+        float staggerDelay = assignAnimationDuration / 3.0f; // Her animasyon arası gecikme (1/3'lük süre)
+
+        // 3. ADIM: Her bir slot için animasyon oluştur ve ana sekansa doğru zamanda yerleştir (Insert).
+        foreach (GameObject slotObj in slotList)
+        {
+            if (slotObj != null && slotObj.TryGetComponent<Slot>(out var slotScript))
+            {
+                GameObject egg = EggSpawner.instance.EggParent.GetChild(slotScript.slotIndex).gameObject;
+                if (egg != null)
+                {
+                    // Tek bir yumurta için animasyon sekansını al.
+                    Sequence singleEggAnimation = AnimateEggToSlot(egg, slotScript.slotIndex, slotObj.transform);
+
+                    // --- ÖNEMLİ DEĞİŞİKLİKLER BURADA ---
+
+                    // A) Lambda kapanış sorununu (closure issue) önlemek için döngü değişkenlerinin kopyasını al.
+                    // Bu sayede her OnComplete callback'i, doğru slot ve yumurta bilgisine sahip olur.
+                    Slot capturedSlot = slotScript;
+                    GameObject capturedEgg = egg;
+
+                    // B) Sözlüğe ekleme işlemini, ana sekansın sonuna değil,
+                    // HER BİR yumurtanın KENDİ animasyonu bittiği ana taşı.
+                    singleEggAnimation.OnComplete(() => {
+                        Debug.Log($"Egg has been assigned to slot {capturedSlot.slotIndex}. Dictionary updated.");
+                        eggSlotDic[capturedSlot.slotIndex] = capturedEgg;
+                        onSlotedEggCountChange?.Invoke();
+                    });
+
+                    // C) Animasyonu, ana sekansın sonuna eklemek yerine (Append),
+                    // hesapladığımız `insertTime` zamanına yerleştir (Insert).
+                    masterSequence.Insert(insertTime, singleEggAnimation);
+
+                    // D) Bir sonraki animasyonun başlangıç zamanını ilerlet.
+                    insertTime += staggerDelay;
+                }
+                else
+                {
+                    Debug.LogWarning($"Slot {slotScript.slotIndex} için yumurta bulunamadı.");
+                }
+            }
+        }
+
+        // 4. ADIM: TÜM animasyonlar bittiğinde ne olacağını belirle.
+        masterSequence.OnComplete(() => {
+            Debug.Log("Tüm yumurtaların atanma animasyon dalgası tamamlandı.");
+            isAssigningEggs = false;
+           
+        });
+    }
+
+    /// <summary>
+    /// Belirtilen yumurta için bir animasyon sekansı OLUŞTURUR ve DÖNDÜRÜR.
+    /// Not: Bu metod animasyonu kendisi BAŞLATMAZ.
+    /// </summary>
+    /// <returns>Oluşturulan DOTween Sekansı</returns>
+    private Sequence AnimateEggToSlot(GameObject egg, int slotIndex, Transform targetTransform)
+    {
+        // Yumurtayı başlangıç için hazırla
+        egg.SetActive(true);
+        egg.transform.localScale = Vector3.one;
+
+        Vector3 startPosition = egg.transform.position;
+        Vector3 finalPosition = targetTransform.position;
+        float stepDuration = assignAnimationDuration / 6.0f;
+
+        Vector3 startBackPosition = new Vector3(startPosition.x, startPosition.y, startPosition.z + zOffsetOnAssign);
+        Vector3 finalBackPosition = new Vector3(finalPosition.x, finalPosition.y, finalPosition.z + zOffsetOnAssign);
+
+        // DOTween Sequence oluştur
+        Sequence sequence = DOTween.Sequence();
+
+        // Animasyon sırasında yumurtanın başka bir işlem tarafından etkilenmesini önlemek için
+        // DOTween'in hedefleme özelliğini kullanabiliriz.
+        sequence.SetTarget(egg);
+
+        // 1. ANİMASYON (PARALEL): Ölçek Değişimi
+        sequence.Insert(0,
+    // İlk animasyon
+    egg.transform.DOScale(1.25f, 3 * stepDuration).SetEase(Ease.OutSine)
+    // İlk animasyon BİTİNCE
+    .OnComplete(() => {
+        // İkinci animasyonu BAŞLAT
+        egg.transform.DOScale(0.75f, 2 * stepDuration).SetEase(Ease.OutSine)
+        // İkinci animasyon BİTİNCE
+        .OnComplete(() => {
+            // Üçüncü animasyonu BAŞLAT
+            egg.transform.DOScale(1f, stepDuration).SetEase(Ease.OutSine);
+        });
+    })
+);
+
+
+
+        // 3. ANİMASYON (SIRALI): 3 Aşamalı Hareket
+        sequence.Insert(0,egg.transform.DOMove(startBackPosition, 0).SetEase(assignEase));
+        sequence.Insert(0, egg.transform.DOMove(finalBackPosition, assignAnimationDuration).SetEase(assignEase));
+        sequence.Insert(assignAnimationDuration, egg.transform.DOMove(finalPosition, 0).SetEase(assignEase));
+
+        // Animasyon bittiğinde ölçeği ve rotasyonu sıfırla
+        sequence.AppendCallback(() => {
+            egg.transform.localScale = Vector3.one;
+            egg.transform.rotation = Quaternion.identity;
+        });
+
+        // Oluşturulan sekansı döndür
+        return sequence;
+    }
+
     public void Shufle()
     {
         // Eğer zaten bir karıştırma animasyonu çalışıyorsa, yenisini başlatma
@@ -182,13 +312,7 @@ public class GameManager : MonoBehaviour
         List<int> emtyslotIndexList= new List<int>();
         if (eggSlotDic.Count < ceckedEggCount)
         {
-            int j = 0;
-
-            foreach (var item in GetLevelData().tempTopEggColors)
-            {
-                // burada tempTopEggColors bulunan EggColor egSlotDic Value kısımda yoksa bunu NotAssingnetEggListe ekle sonra EggSpawner.instance.EggParent childi olan ve activeinhiyerarşı olan 
-                // childı bul ve bu notasangniedslotlistcounta doğru bir do tween harekteti bailat yine tabiki önce z de -2 çek sonra hedef slota ilerlet sonra da tekrar z de 0 çek 
-            }
+            AssignMissingEggs();
         }
             // 1. Adım: Karıştırılabilecek yumurtaları bul ve listeye ekle
             List<GameObject> canShuffleEggList = new List<GameObject>();
@@ -197,12 +321,15 @@ public class GameManager : MonoBehaviour
         {
             if (eggSlotDic.TryGetValue(i, out GameObject egg))
             {
-                Egg eggScript = egg.GetComponent<Egg>();
-                // Yanlış pozisyondaki yumurtaları listeye ekle
-                if (eggScript != null && !eggScript.IsCorrect(item))
+                if( egg.TryGetComponent<Egg>(out Egg eggScript))
                 {
-                    canShuffleEggList.Add(egg);
+                    // Yanlış pozisyondaki yumurtaları listeye ekle
+                    if (eggScript != null && !eggScript.IsCorrect(item))
+                    {
+                        canShuffleEggList.Add(egg);
+                    }
                 }
+                
             }
             i++;
         }
@@ -279,7 +406,7 @@ public class GameManager : MonoBehaviour
             isShuffling = false; // Bayrağı indir, böylece tekrar karıştırılabilir
             
         });
-        Check();
+      
     }
 
 
@@ -450,7 +577,7 @@ public class GameManager : MonoBehaviour
                
                 gameData.IncraseLevelData();
                 GetLevelData();
-                levelChanged?.Invoke(gameData.levelIndex);
+                ReStart();
             }
         }
         
