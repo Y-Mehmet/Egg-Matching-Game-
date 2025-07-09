@@ -9,7 +9,16 @@ public class LevelData : ScriptableObject
     public List<EggColor> eggColors;
     public List<EggColor> topEggColors;
     public List<EggColor> tempTopEggColors;
-    
+    public int brokenEggCount = 0;
+
+    public void RestartLevelData()
+    {
+        if(tempTopEggColors.Count > 0)
+        {
+            tempTopEggColors.Clear();
+        }
+        brokenEggCount = 0;
+    }
     public int GetSlotCount()
     {
         return eggColors.Count;
@@ -23,10 +32,8 @@ public class LevelData : ScriptableObject
         return brokenEggCount;
     }
 
-    public float levelDuration = 60f;
-    public int enemyCount = 5;
-    public float spawnRate = 1.5f;
-    public int brokenEggCount = 0;
+
+  
     
 
     public void RemoveEggByEggColor(EggColor color)

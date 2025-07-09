@@ -138,6 +138,7 @@ public class GameManager : MonoBehaviour
     }
     public void ReStart()
     {
+        GetLevelData().RestartLevelData();
         levelChanged?.Invoke(gameData.levelIndex);
         if(eggSlotDic.Count > 0)
         {
@@ -168,6 +169,7 @@ public class GameManager : MonoBehaviour
   
     private void GameStart()
     {
+       
         gameStarted = true;
         Debug.Log("Game Start");
        
@@ -197,7 +199,7 @@ public class GameManager : MonoBehaviour
             if (slotObj != null && slotObj.TryGetComponent<Slot>(out var slotScript))
             {
                 GameObject egg = EggSpawner.instance.EggParent.GetChild(slotScript.slotIndex).gameObject;
-                if (egg != null)
+                if (egg != null && egg.activeInHierarchy)
                 {
                     // Tek bir yumurta için animasyon sekansını al.
                     Sequence singleEggAnimation = AnimateEggToSlot(egg, slotScript.slotIndex, slotObj.transform);
@@ -313,6 +315,7 @@ public class GameManager : MonoBehaviour
         if (eggSlotDic.Count < ceckedEggCount)
         {
             AssignMissingEggs();
+            transform.gameObject.SetActive(false);
         }
             // 1. Adım: Karıştırılabilecek yumurtaları bul ve listeye ekle
             List<GameObject> canShuffleEggList = new List<GameObject>();
@@ -522,6 +525,13 @@ public class GameManager : MonoBehaviour
     }
     public void Check()
     {
+        LevelData currentLevel = GetLevelData();
+        // Önce level verisinin var olup olmadığını kontrol et
+        if (currentLevel == null)
+        {
+            Debug.LogError("CHECK YAPILAMADI: Geçerli bir level verisi bulunamadı! GameManager üzerindeki LevelDataHolder'ı kontrol edin.");
+            return; // Metodu güvenli bir şekilde sonlandır
+        }
         int sltCount = GetSlotCount();
         int brokenEggCount= GetLevelData().GetBrokenEggCount();
         int ceckedEggCount = sltCount-brokenEggCount;
@@ -554,11 +564,12 @@ public class GameManager : MonoBehaviour
             }
 
             trueEggCountChanged.Invoke(0);
-        }else 
+        }else
         {
+            Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
             int trueCount = 0;
             int i = 0;
-            foreach (var item in GetLevelData().eggColors)
+            foreach (var item in currentLevel.eggColors)
             {
                 if(eggSlotDic.TryGetValue(i,out GameObject egg))
                 {
