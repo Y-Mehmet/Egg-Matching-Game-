@@ -6,6 +6,7 @@ public class AbilityActionBreakEgg : AbilityAction
     public override void Execute()
     {
         AbilityManager.Instance.breakEggAction?.Invoke(tag);
+        AbilityManager.Instance.curentAbilityTypeChanged?.Invoke(AbilityType.BreakEgg);
 
     }
 }

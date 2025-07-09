@@ -15,7 +15,8 @@ public class AbilityManager : MonoBehaviour
     public Action<Tag> breakSlotAction; // Bu eylemin kendisi bir Coroutine baþlatacak
     public Action<Tag> breakEggAction;
     public Action shuffleAction;
-
+    public Action<AbilityType> curentAbilityTypeChanged;
+    public AbilityType currentAbilityType;
     // Hedefleme modunda olup olmadýðýmýzý takip eden bir bayrak (flag)
     private bool _isTargetingMode = false;
 
@@ -43,6 +44,10 @@ public class AbilityManager : MonoBehaviour
     {
         breakSlotAction -= StartBreakSlotTargeting;
         breakEggAction -= StartBreakEgg;
+    }
+    private void OnAbilityTypeChanged(AbilityType abilityType)
+    {
+        currentAbilityType=abilityType;
     }
     private void StartBreakEgg(Tag tag)
     {

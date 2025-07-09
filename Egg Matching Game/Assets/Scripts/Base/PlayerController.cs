@@ -132,6 +132,11 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Vector3 targetPos = hit.point + offset;
+            if(targetPos.y<-1.9f)
+            { targetPos.y = -1.9f; }
+
+            if(targetPos.x< -2.0f || targetPos.x > 2.0f)
+            { targetPos.x = Mathf.Clamp(targetPos.x, -2.0f, 2.0f); }
             selectedEgg.position= new Vector3(targetPos.x, targetPos.y, selectedEgg.position.z); // sabit Y
         }
     }

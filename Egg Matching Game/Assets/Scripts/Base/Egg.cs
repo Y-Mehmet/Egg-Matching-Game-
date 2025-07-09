@@ -28,11 +28,16 @@ public class Egg : MonoBehaviour
           
             if (slotIndex == -1)
             {
+                transform.position += new Vector3(0,0,-2);
                 transform.DOMove(startPos, 0.5f).SetEase(Ease.OutBack);
+                transform.position += new Vector3(0, 0, -2);
+
             }
             else
             {
+                transform.position += new Vector3(0, 0, -2);
                 transform.DOMove(GameManager.instance.SlotPositionList[slotIndex], 0.5f).SetEase(Ease.OutBack);
+                transform.position += new Vector3(0, 0, -2);
             }
             
         }

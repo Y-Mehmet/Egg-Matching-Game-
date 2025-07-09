@@ -25,13 +25,26 @@ public class LevelLockedButton : MonoBehaviour
     {
         // Get the Button component once and store it in a variable.
         button = GetComponent<Button>();
+        button.interactable = false;
     }
 
     // This function is called every time the object becomes active. This ensures it stays updated when UI panels are opened/closed.
     private void OnEnable()
     {
-        // Load the saved game data.
-        // IMPORTANT: Ensure your SaveSystem and SaveGameData classes exist in your project.
+        GameManager.instance.gameStart += SetButtonInteractable; 
+
+        // Add a listener for the button's click event.
+        button.onClick.AddListener(OnButtonClick);
+    }
+    
+    private void OnDisable()
+    {
+        GameManager.instance.gameStart -= SetButtonInteractable;
+        // It's good practice to remove the listener when the object is disabled to prevent memory leaks.
+        button.onClick.RemoveListener(OnButtonClick);
+    }
+    private void SetButtonInteractable()
+    {
         gameData = SaveSystem.Load();
 
         // Check for null to prevent errors if no save file exists (e.g., first time playing).
@@ -64,21 +77,11 @@ public class LevelLockedButton : MonoBehaviour
         {
             levelText.text = "Level " + abilityData.RequiredLevel;
         }
-        if(chilImage!= null)
+        if (chilImage != null)
         {
             chilImage.sprite = abilityData.Icon;
         }
-
-        // Add a listener for the button's click event.
-        button.onClick.AddListener(OnButtonClick);
     }
-
-    private void OnDisable()
-    {
-        // It's good practice to remove the listener when the object is disabled to prevent memory leaks.
-        button.onClick.RemoveListener(OnButtonClick);
-    }
-
     /// <summary>
     /// Sets the state of the button (locked/unlocked).
     /// </summary>

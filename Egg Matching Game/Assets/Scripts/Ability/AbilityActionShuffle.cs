@@ -6,6 +6,7 @@ public class AbilityActionShuffle : AbilityAction
     {
         // AbilityManager.Instance.shuffleAction?.Invoke();
         GameManager.instance.Shufle();
+        AbilityManager.Instance.curentAbilityTypeChanged?.Invoke(AbilityType.Shuffle);
 
     }
 }

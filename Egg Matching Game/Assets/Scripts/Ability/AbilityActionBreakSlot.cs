@@ -8,6 +8,7 @@ public class AbilityActionBreakSlot : AbilityAction
     {
         
         AbilityManager.Instance.breakSlotAction?.Invoke(tag);
+        AbilityManager.Instance.curentAbilityTypeChanged?.Invoke(AbilityType.BreakSlot);
     }
 
 }
