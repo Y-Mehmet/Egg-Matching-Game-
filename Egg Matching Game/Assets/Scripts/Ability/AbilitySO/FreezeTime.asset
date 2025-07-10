@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Name: Freeze Time
-  Icon: {fileID: 21300000, guid: 29b1656cd12cc4ed79e239a27b7cebaa, type: 3}
+  Icon: {fileID: 21300000, guid: a2e736ed9660ada4ab6c3b16092c8596, type: 3}
   RequiredLevel: 4
   Title: Freeze Time!
   Description: Time freezes for 10 seconds hurry!
+  ParticlePerfabs: {fileID: 2569670644346746303, guid: 7586d41b14d142b489ba15f409d7a9f7, type: 3}
+  AbilityWorkerPrefab: {fileID: 0}
+  ParticleStartTime: 0
   RequiresTarget: 0
   TargetTag: 
   action: {fileID: 11400000, guid: c72bf40fb15b0c94baae892bc796b8de, type: 2}

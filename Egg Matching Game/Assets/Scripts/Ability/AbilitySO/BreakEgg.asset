@@ -18,6 +18,9 @@ MonoBehaviour:
   RequiredLevel: 7
   Title: Missile!
   Description: Tap any egg to remove it!
+  ParticlePerfabs: {fileID: 692868336356184282, guid: 4e6a1dc7a8db75143a25e5e6db15c2cb, type: 3}
+  AbilityWorkerPrefab: {fileID: 5597142095043412677, guid: f7783f52e5285c942bfedf1f2b4315c7, type: 3}
+  ParticleStartTime: 0
   RequiresTarget: 0
   TargetTag: 
   action: {fileID: 11400000, guid: c79bfe23f70cac34a9fa763599ac1682, type: 2}
