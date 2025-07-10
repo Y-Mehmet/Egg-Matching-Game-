@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     //public List<LevelData> levelDatas = new List<LevelData>();
     public LevelDataHolder levelDataHolder; 
+    
     public List<Vector3> SlotPositionList = new List<Vector3>();
     public List<Vector3> TopEggPosList = new List<Vector3>();
     private bool isShuffling = false;

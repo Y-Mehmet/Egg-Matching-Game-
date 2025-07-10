@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   Name: Break Egg
-  Icon: {fileID: 21300000, guid: e2709569e1f20314a8ca7e2a626f6033, type: 3}
+  Icon: {fileID: 21300000, guid: 283f0d182990441cdab922e8e48895c7, type: 3}
   RequiredLevel: 7
+  Title: Missile!
+  Description: Tap any egg to remove it!
   RequiresTarget: 0
   TargetTag: 
   action: {fileID: 11400000, guid: c79bfe23f70cac34a9fa763599ac1682, type: 2}

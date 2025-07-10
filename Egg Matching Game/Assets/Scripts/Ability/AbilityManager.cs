@@ -17,8 +17,10 @@ public class AbilityManager : MonoBehaviour
     public Action shuffleAction;
     public Action<AbilityType> curentAbilityTypeChanged;
     public AbilityType currentAbilityType;
+    public AbiliityDataHolder abilityDataHolder;
     // Hedefleme modunda olup olmadýðýmýzý takip eden bir bayrak (flag)
     private bool _isTargetingMode = false;
+
 
     void Awake()
     {
@@ -172,24 +174,5 @@ public class AbilityManager : MonoBehaviour
             
         }
     }
-    private void ThrowBomb(GameObject target)
-    {
-        if (hammerPrefab == null || target == null) return;
-
-        // Bu fonksiyonun içeriði zaten iyi, olduðu gibi kalabilir.
-        GameObject hammerInstance = Instantiate(hammerPrefab, target.transform.position, Quaternion.identity);
-        HammerAnimator hammerAnimator = hammerInstance.GetComponent<HammerAnimator>();
-        if (hammerAnimator != null)
-        {
-            hammerAnimator.targetToDestroy = target;
-            hammerAnimator.OnThrowBombAnimationComplated();
-        }
-        else
-        {
-            Debug.LogError("Hammer prefab'ýnda HammerAnimator script'i bulunamadý!");
-            Destroy(hammerInstance);
-            // Animasyon çalýþmazsa bile hedefi yok etmeliyiz
-            target.SetActive(false);
-        }
-    }
+    
 }

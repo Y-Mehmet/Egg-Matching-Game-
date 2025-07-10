@@ -32,42 +32,28 @@ public class AbilityPurchasePanel : MonoBehaviour
     }
     private void OnEnable()
     {
-        Sprite loadedSprite = Resources.Load<Sprite>("Sprites/MySprite");
+        if(AbilityManager.Instance!= null && AbilityManager.Instance.abilityDataHolder != null)
+        {
+            // AbilityManager'dan gerekli verileri al
+            var abilityData = AbilityManager.Instance.abilityDataHolder.abilities.Find(a => a.Type == AbilityManager.Instance.currentAbilityType);
+            if (abilityData != null)
+            {
+                // UI bileþenlerini güncelle
+                nameText.text = abilityData.Title;
+                desciriptionText.text = abilityData.Description;
+                abilityImage.sprite = abilityData.Icon;
+            }
+            else
+            {
+                Debug.LogWarning("Ability data not found for the current ability type.");
+            }
+        }
+        else
+        {
+            Debug.LogError("AbilityManager or its abilityDataHolder is not set.");
+        }
+        
     }
 
 
-    //public void ShowPanel()
-    //{
-    //    AbilityManager.Instance.currentAbilityType
-    //    costText.text = cost.ToString();
-    //    resourceIcon.sprite = icon;
-
-    //    // Onaylandýðýnda ne yapýlacaðýný sakla
-    //    this.onConfirmAction = onConfirm;
-
-    //    // Paneli göster
-    //    panelRoot.SetActive(true);
-    //}
-
-    ///// <summary>
-    ///// Onay butonuna basýldýðýnda çalýþýr.
-    ///// </summary>
-    //private void OnConfirm()
-    //{
-    //    // Sakladýðýmýz onay eylemini çalýþtýr.
-    //    onConfirmAction?.Invoke();
-
-    //    // Paneli kapat
-    //    ClosePanel();
-    //}
-
-    ///// <summary>
-    ///// Paneli kapatýr.
-    ///// </summary>
-    //private void ClosePanel()
-    //{
-    //    // Paneli gizle
-    //    panelRoot.SetActive(false);
-    //    onConfirmAction = null; // Hafýzada kalmasýn diye temizle
-    //}
 }
