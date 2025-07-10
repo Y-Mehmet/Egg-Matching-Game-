@@ -32,7 +32,7 @@ public class AbilityPurchasePanel : MonoBehaviour
     }
     private void OnEnable()
     {
-       // ShowPanel();
+        Sprite loadedSprite = Resources.Load<Sprite>("Sprites/MySprite");
     }
 
 
