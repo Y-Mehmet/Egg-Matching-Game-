@@ -57,6 +57,24 @@ public class OneObjectPool : MonoBehaviour
         }
         return null;
     }
+    public ObjectName StringToCastOnjectName(string objName)
+    {
+        switch(objName)
+        {
+            case "Hammer":
+                return ObjectName.Hammer;
+            case "Missile":
+                return ObjectName.Missile;
+            case "BrokenSlot":
+                return ObjectName.BrokenSlot;
+            case "FreezePariclePrefab":
+                return ObjectName.FreezePariclePrefab;
+            default:
+                Debug.LogWarning("Object name not recognized: " + objName);
+                return ObjectName.Hammer; // Default to Hammer or handle as needed
+        
+        }
+    }
     
 
 }
@@ -65,4 +83,5 @@ public enum ObjectName
     Hammer,
     Missile,
     BrokenSlot,
+    FreezePariclePrefab,
 }

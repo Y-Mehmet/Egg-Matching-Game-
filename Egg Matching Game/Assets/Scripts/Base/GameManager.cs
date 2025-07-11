@@ -12,13 +12,14 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public GameObject AbilityBarPanel;
     [Header("Shuffle Animation Settings")]
     [SerializeField] private float swapDuration = 0.3f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
     [SerializeField] private float delayBetweenSwaps = 0.1f;
     [SerializeField] private Ease shuffleEase = Ease.InOutSine; // InOutSine gibi yumuşak geçişler bu animasyonda iyi durur
     [SerializeField] private float zOffsetOnSwap = -2.0f; // Geri çekilme mesafesi
     [Header("Assign Egg Animation")]
-   [HideInInspector] [SerializeField] private float assignAnimationDuration = 0.3f; // Animasyonun toplam süresi
+   [SerializeField] private float assignAnimationDuration = 0.6f; // Animasyonun toplam süresi
     [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
     [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
 
@@ -362,6 +363,7 @@ public class GameManager : MonoBehaviour
         // 4. Adım: Tüm animasyonlar bittiğinde yapılacaklar
         shuffleSequence.OnComplete(() => {
             Debug.Log("Shuffling complete!");
+            PanelManager.Instance.HideLastPanel();
             isShuffling = false; // Bayrağı indir, böylece tekrar karıştırılabilir
             
         });

@@ -13,7 +13,7 @@ public class AbilityPurchasePanel : MonoBehaviour
    
     [SerializeField] private TMP_Text nameText, desciriptionText;     // "Cost: 50" yazacak metin
     [SerializeField] private Image abilityImage;    // Coin/Gem ikonunu gösterecek resim
-    [SerializeField] private GameObject AbilityButtonBarPanel; // Satýn alma butonu
+    [SerializeField] private GameObject  mainAbilityBarPanel; // Satýn alma butonu
  
 
 
@@ -33,16 +33,15 @@ public class AbilityPurchasePanel : MonoBehaviour
     }
     private void OnEnable()
     {
-        if(AbilityManager.Instance!= null && AbilityManager.Instance.abilityDataHolder != null)
+        if(mainAbilityBarPanel==null && GameManager.instance.AbilityBarPanel!= null)
+        {
+            mainAbilityBarPanel = GameManager.instance.AbilityBarPanel;
+        }
+   
+        mainAbilityBarPanel.SetActive(false);
+        if (AbilityManager.Instance!= null && AbilityManager.Instance.abilityDataHolder != null)
         {
           
-            Vector2 currentPosition = AbilityButtonBarPanel.GetComponent<RectTransform>().anchoredPosition;
-
-            // Sadece x deðerini deðiþtir
-            currentPosition.x = 450-((int)AbilityManager.Instance.currentAbilityType*225);
-
-            // Yeni pozisyonu ata
-            AbilityButtonBarPanel.GetComponent<RectTransform>().anchoredPosition = currentPosition;
             // AbilityManager'dan gerekli verileri al
             var abilityData = AbilityManager.Instance.abilityDataHolder.abilities.Find(a => a.Type == AbilityManager.Instance.currentAbilityType);
             if (abilityData != null)
@@ -51,6 +50,11 @@ public class AbilityPurchasePanel : MonoBehaviour
                 nameText.text = abilityData.Title;
                 desciriptionText.text = abilityData.Description;
                 abilityImage.sprite = abilityData.Icon;
+                if(abilityData.ParticlePerfabs!= null)
+                {
+                    OneObjectPool.Instance.GetObjectWhitName(OneObjectPool.Instance.StringToCastOnjectName(abilityData.ParticlePerfabs.name));
+                }
+
             }
             else
             {
@@ -62,6 +66,11 @@ public class AbilityPurchasePanel : MonoBehaviour
             Debug.LogError("AbilityManager or its abilityDataHolder is not set.");
         }
         
+    }
+    private void OnDisable()
+    {
+        mainAbilityBarPanel.SetActive(true);
+      
     }
 
 

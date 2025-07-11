@@ -10,6 +10,7 @@ public class PanelManager : Singleton<PanelManager>
 {
     // List that stores panel instances
     public List<PanelInstanceModel> _listInstance = new List<PanelInstanceModel>();
+    
 
     // Reference to the object pool
     private ObjectPool _objectPool;

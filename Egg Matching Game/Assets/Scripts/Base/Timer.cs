@@ -64,6 +64,7 @@ public class Timer : MonoBehaviour
     {
        
         yield return new WaitForSeconds(delay);
+        PanelManager.Instance.HideLastPanel();
         timeCoroutine = StartCoroutine(TimeRoutine());
     }
     void ContinueTimer()

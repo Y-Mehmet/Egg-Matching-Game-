@@ -415,7 +415,7 @@ PrefabInstance:
     - target: {fileID: 7507427665730492443, guid: 595f52917dbd7d6448178bde57bdd305, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e2709569e1f20314a8ca7e2a626f6033, type: 3}
+      objectReference: {fileID: 21300000, guid: 6a5dc51452ae24521baf3a74c57344da, type: 3}
     - target: {fileID: 7524608295840226863, guid: 595f52917dbd7d6448178bde57bdd305, type: 3}
       propertyPath: abilityData
       value: 
@@ -533,7 +533,7 @@ PrefabInstance:
     - target: {fileID: 7507427665730492443, guid: 595f52917dbd7d6448178bde57bdd305, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 928e288a2690d4fd99390dce406f3608, type: 3}
+      objectReference: {fileID: 21300000, guid: 6a5dc51452ae24521baf3a74c57344da, type: 3}
     - target: {fileID: 7524608295840226863, guid: 595f52917dbd7d6448178bde57bdd305, type: 3}
       propertyPath: abilityData
       value: 
@@ -647,7 +647,7 @@ PrefabInstance:
     - target: {fileID: 7507427665730492443, guid: 595f52917dbd7d6448178bde57bdd305, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 690d883f38977b14aaf3781a660e9514, type: 3}
+      objectReference: {fileID: 21300000, guid: 6a5dc51452ae24521baf3a74c57344da, type: 3}
     - target: {fileID: 7524608295840226863, guid: 595f52917dbd7d6448178bde57bdd305, type: 3}
       propertyPath: abilityData
       value: 
@@ -761,7 +761,7 @@ PrefabInstance:
     - target: {fileID: 7507427665730492443, guid: 595f52917dbd7d6448178bde57bdd305, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: cba6fba15682e49cdab63583abb7be7c, type: 3}
+      objectReference: {fileID: 21300000, guid: 6a5dc51452ae24521baf3a74c57344da, type: 3}
     - target: {fileID: 7524608295840226863, guid: 595f52917dbd7d6448178bde57bdd305, type: 3}
       propertyPath: abilityData
       value: 

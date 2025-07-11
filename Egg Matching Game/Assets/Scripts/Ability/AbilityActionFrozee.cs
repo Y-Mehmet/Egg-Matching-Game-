@@ -9,6 +9,7 @@ public class AbilityActionFrozee : AbilityAction
 
         AbilityManager.Instance.curentAbilityTypeChanged?.Invoke(AbilityType.FreezeTime);
         AbilityManager.Instance.frezzeTimeAction?.Invoke(10);
+
         
 
     }

@@ -52,7 +52,8 @@ public class AbilityManager : MonoBehaviour
     private void OnAbilityTypeChanged(AbilityType abilityType)
     {
         currentAbilityType=abilityType;
-        
+        PanelManager.Instance.ShowPanel(PanelID.AbilityPurchasePanel, PanelShowBehavior.SHOW_PREVISE);
+
     }
     private void StartBreakEgg(Tag tag)
     {
@@ -63,7 +64,7 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
-        PanelManager.Instance.ShowPanel(PanelID.AbilityPurchasePanel, PanelShowBehavior.SHOW_PREVISE);
+        //PanelManager.Instance.ShowPanel(PanelID.AbilityPurchasePanel, PanelShowBehavior.SHOW_PREVISE);
         GameManager.instance.ShowOutline(EggSpawner.instance.eggList);
         StartCoroutine(BreakSlotCoroutine(tag));
     }
