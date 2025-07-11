@@ -25,4 +25,5 @@ public class ShowPanelButton : MonoBehaviour
         _panelManager.ShowPanel(panelID, behavior);
        // GameManager.Instance.IsRegionPanelOpen = true;
     }
+    
 }

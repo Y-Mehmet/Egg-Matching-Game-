@@ -8,5 +8,9 @@ public enum PanelID
     DragonInfo,  
     Settings,
     DragonPaint,
+    PlayPause,
+    TopToStart_Panel,
+    AbilityPurchasePanel,
+
 
 }

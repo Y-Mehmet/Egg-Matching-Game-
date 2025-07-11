@@ -9,7 +9,7 @@ public class FragmentController : MonoBehaviour
     public float explosionForce = 2f;
 
     [Tooltip("Fizik kullanmadan yerçekimi hissi vermek için aþaðý yönlü kuvvet.")]
-    public float gravityForce = 3f;
+    public float gravityForce = 5f;
 
     [Tooltip("Parçalarýn ne kadar döneceðini belirler.")]
     public float rotationStrength = 360f;
@@ -99,7 +99,7 @@ public class FragmentController : MonoBehaviour
                 .OnComplete(() =>
                 {
                     // Animasyon bittiðinde parçayý pasif hale getir (Destroy etme)
-                    fragment.gameObject.SetActive(false);
+                    gameObject.SetActive(false);
                 });
         }
     }
@@ -118,8 +118,8 @@ public class FragmentController : MonoBehaviour
             fragment.localPosition = initialPositions[i];
             fragment.localRotation = initialRotations[i];
 
-            // Parçayý görünür/aktif yap ki bir sonraki OnEnable'da hazýr olsun
-            fragment.gameObject.SetActive(true);
+            
         }
+       
     }
 }

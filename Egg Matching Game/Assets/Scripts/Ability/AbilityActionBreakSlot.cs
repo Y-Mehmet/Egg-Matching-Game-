@@ -6,9 +6,9 @@ public class AbilityActionBreakSlot : AbilityAction
     public Tag tag;
     public override void Execute()
     {
-        
-        AbilityManager.Instance.breakSlotAction?.Invoke(tag);
         AbilityManager.Instance.curentAbilityTypeChanged?.Invoke(AbilityType.BreakSlot);
+        AbilityManager.Instance.breakSlotAction?.Invoke(tag);
+        
     }
 
 }

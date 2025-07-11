@@ -2,11 +2,9 @@ using UnityEngine;
 
 public class PlaySettingBtn : MonoBehaviour
 {
-    public GameObject playSettingPanel; // Ayarlar paneli referansý
+   
     private void OnEnable()
     {
-        // Butonun týklanma olayýný dinle
-        playSettingPanel.SetActive(false); // Baþlangýçta paneli gizle
         
         GetComponent<UnityEngine.UI.Button>().onClick.AddListener(TogglePlaySettingPanel);
         GameManager.instance.gameStart += PanelSetActiveFalse; // Oyun baþladýðýnda paneli aç
@@ -23,14 +21,13 @@ public class PlaySettingBtn : MonoBehaviour
     }
     private void TogglePlaySettingPanel()
     {
-        // Panelin aktiflik durumunu deðiþtir
-        playSettingPanel.SetActive(!playSettingPanel.activeSelf);
+       PanelManager.Instance.ShowPanel(PanelID.PlayPause, PanelShowBehavior.HIDE_PREVISE); // Paneli açma veya kapama iþlemi
         GameManager.instance.pauseGame?.Invoke(); // Oyun duraklatma olayýný tetikle
 
 
     }
     private void PanelSetActiveFalse()
     {
-        playSettingPanel.SetActive(false); // Oyun baþladýðýnda paneli gizle
+       PanelManager.Instance.HideAllPanel();
     }
 }

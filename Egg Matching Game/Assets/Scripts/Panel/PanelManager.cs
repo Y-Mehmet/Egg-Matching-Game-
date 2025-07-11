@@ -18,6 +18,10 @@ public class PanelManager : Singleton<PanelManager>
     {
         // Get instance of the object pool
         _objectPool = ObjectPool.Instance;
+        if (_objectPool == null)
+        {
+            Debug.LogError("ObjectPool instance is null. Make sure ObjectPool is initialized before PanelManager.");
+        }
     }
 
     // Function to show a panel (updated to use enum)
@@ -26,7 +30,11 @@ public class PanelManager : Singleton<PanelManager>
       
 
       bool isActive = false;
-        foreach(Transform childTransform in _objectPool.transform)
+        if (_objectPool == null)
+        {
+            _objectPool = ObjectPool.Instance;
+        }
+        foreach (Transform childTransform in _objectPool.transform)
         {
             if (childTransform.name == panelID.ToString())
             {

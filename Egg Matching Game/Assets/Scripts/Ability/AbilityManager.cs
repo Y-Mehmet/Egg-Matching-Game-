@@ -9,8 +9,7 @@ public class AbilityManager : MonoBehaviour
     public static AbilityManager Instance { get; private set; }
 
     [Header("Assets")]
-    public GameObject hammerPrefab;
-
+ 
     public Action<int> frezzeTimeAction;
     public Action<Tag> breakSlotAction; // Bu eylemin kendisi bir Coroutine baþlatacak
     public Action<Tag> breakEggAction;
@@ -40,16 +39,20 @@ public class AbilityManager : MonoBehaviour
         // Bunun yerine, bir "baþlatýcý" metoda baðlanýr.
         breakSlotAction += StartBreakSlotTargeting;
         breakEggAction += StartBreakEgg;
+        curentAbilityTypeChanged += OnAbilityTypeChanged;
     }
 
     private void OnDisable()
     {
         breakSlotAction -= StartBreakSlotTargeting;
         breakEggAction -= StartBreakEgg;
+        curentAbilityTypeChanged -= OnAbilityTypeChanged;
     }
+    
     private void OnAbilityTypeChanged(AbilityType abilityType)
     {
         currentAbilityType=abilityType;
+        
     }
     private void StartBreakEgg(Tag tag)
     {
@@ -60,6 +63,7 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
+        PanelManager.Instance.ShowPanel(PanelID.AbilityPurchasePanel, PanelShowBehavior.SHOW_PREVISE);
         GameManager.instance.ShowOutline(EggSpawner.instance.eggList);
         StartCoroutine(BreakSlotCoroutine(tag));
     }
@@ -123,9 +127,7 @@ public class AbilityManager : MonoBehaviour
                             }
                             // Hedefi yok et (veya bir animasyon oynat)
                             AnimateAndDestroy(hit.transform.gameObject, tag);
-                            //hit.transform.gameObject.SetActive(false); // Veya direkt yok et
-
-                            // Hedefleme baþarýlý oldu, döngüden çýk.
+                            PanelManager.Instance.HideLastPanel();
                             break;
                         }
                     }
@@ -151,10 +153,16 @@ public class AbilityManager : MonoBehaviour
 
     private void AnimateAndDestroy(GameObject target, Tag tag)
     {
-        if (hammerPrefab == null || target == null) return;
-
-        // Bu fonksiyonun içeriði zaten iyi, olduðu gibi kalabilir.
-        GameObject hammerInstance = Instantiate(hammerPrefab, target.transform.position, Quaternion.identity);
+        if ( target == null) return;
+        GameObject hammerInstance = null;
+        if(tag==Tag.Slot)
+        {
+            hammerInstance = OneObjectPool.Instance.GetObjectWhitName(ObjectName.Hammer);
+        }else if(tag == Tag.Egg)
+        {
+            hammerInstance = OneObjectPool.Instance.GetObjectWhitName(ObjectName.Missile);
+        }
+       
         HammerAnimator hammerAnimator = hammerInstance.GetComponent<HammerAnimator>();
         if (hammerAnimator != null)
         {

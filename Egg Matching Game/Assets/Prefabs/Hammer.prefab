@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1920674940456319706}
   - component: {fileID: 8608973592627480585}
   m_Layer: 0
-  m_Name: Hummer
+  m_Name: Hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -7,7 +7,7 @@ using System; // Action kullanmak için
 public class CountdownController : MonoBehaviour
 {
     [Header("UI Referanslarý")]
-    public GameObject tapToStartPanel;   // Baþlangýç paneli (içinde buton olan)
+      // Baþlangýç paneli (içinde buton olan)
     public TMP_Text countdownText;       // 3, 2, 1 yazýsýný gösterecek text
 
     [Header("Animasyon Ayarlarý")]
@@ -34,13 +34,13 @@ public class CountdownController : MonoBehaviour
     {
         // Oyun baþýnda geri sayým metni ve baþlangýç paneli ayarlarý
         countdownText.gameObject.SetActive(false);
-        tapToStartPanel.SetActive(true);
+        PanelManager.Instance.ShowPanel(PanelID.TopToStart_Panel, PanelShowBehavior.HIDE_PREVISE); // "Tap to Start" panelini gösteriyoruz
     }
 
     // Bu metodu "Tap to Start" butonunun OnClick event'ine baðlayacaðýz.
     public void StartCountdown()
     {
-        tapToStartPanel.SetActive(false);
+        PanelManager.Instance.HideLastPanel();
         StartCoroutine(CountdownCoroutine());
     }
 

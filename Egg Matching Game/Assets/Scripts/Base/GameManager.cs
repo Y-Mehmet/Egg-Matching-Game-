@@ -641,6 +641,7 @@ public class GameManager : MonoBehaviour
             if(slot.GetComponent<Slot>().slotIndex == index)
             {
                 slotList.Remove(slot);
+                slot.SetActive(false);
                 onSlotedEggCountChange?.Invoke();
                 return;
             }
