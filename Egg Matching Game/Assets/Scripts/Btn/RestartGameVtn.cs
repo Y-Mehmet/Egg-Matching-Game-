@@ -13,6 +13,7 @@ public class RestartGameVtn : MonoBehaviour
     private void OnClick()
     {
         GameManager.instance.gameReStart?.Invoke();
+        ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
 
     }
 }

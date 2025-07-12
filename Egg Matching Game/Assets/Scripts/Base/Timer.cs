@@ -84,7 +84,8 @@ public class Timer : MonoBehaviour
             currentTime--;
             GameManager.instance.timeChanged?.Invoke(currentTime);
         }
-        Debug.Log("game over!"); 
+
+        GameManager.instance.gameOver?.Invoke();
 
     }
 }

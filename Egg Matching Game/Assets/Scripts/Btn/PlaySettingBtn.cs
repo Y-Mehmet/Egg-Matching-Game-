@@ -21,7 +21,7 @@ public class PlaySettingBtn : MonoBehaviour
     }
     private void TogglePlaySettingPanel()
     {
-       PanelManager.Instance.ShowPanel(PanelID.PlayPause, PanelShowBehavior.HIDE_PREVISE); // Paneli açma veya kapama iþlemi
+        PanelManager.Instance.ShowPanel(PanelID.PlayPause, PanelShowBehavior.HIDE_PREVISE); // Paneli açma veya kapama iþlemi
         GameManager.instance.pauseGame?.Invoke(); // Oyun duraklatma olayýný tetikle
 
 

@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
     public Action pauseGame;
     public Action continueGame;
     public Action gameReStart;
+    public Action gameOver;
+    
     private Color originalColor;
     public bool gameStarted = false;
     public bool AnyPanelisOpen = false;
@@ -77,7 +79,8 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         gameStart += GameStart;
-        
+        gameOver += GameOver;
+
 
         Time.timeScale = 1;
 
@@ -85,7 +88,8 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         gameStart -= GameStart;
-       
+        gameOver -= GameOver;
+
     }
     private void Start()
     {
@@ -95,6 +99,10 @@ public class GameManager : MonoBehaviour
 
         ReStart();
         
+    }
+    private void GameOver()
+    {
+        ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
     }
     public void ShowOutline(List<GameObject> list)
     {

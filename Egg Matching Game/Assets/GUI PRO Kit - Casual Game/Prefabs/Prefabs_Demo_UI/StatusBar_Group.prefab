@@ -5652,6 +5652,7 @@ GameObject:
   - component: {fileID: 2628845926908670062}
   - component: {fileID: 2628845926908670048}
   - component: {fileID: 2628845926908670049}
+  - component: {fileID: 8038492214476763939}
   m_Layer: 5
   m_Name: StatusBar_Group
   m_TagString: Untagged
@@ -5721,6 +5722,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &8038492214476763939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2628845926908670063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4803a08500d7f84386ea7b38bcc2733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyText: {fileID: 2628845925999912048}
+  coinText: {fileID: 2628845927228281542}
+  gemText: {fileID: 2628845926525999913}
 --- !u!1 &2628845926909258304
 GameObject:
   m_ObjectHideFlags: 0

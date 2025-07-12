@@ -42,7 +42,7 @@ public class SettingManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
         // UI elemanlarýna dinleyicileri (listeners) ekle.
         // Bu sayede kullanýcý bir ayarý deðiþtirdiðinde ilgili metodumuz çalýþýr.
@@ -54,6 +54,16 @@ public class SettingManager : MonoBehaviour
         // Oyunu açtýðýmýzda kayýtlý ayarlarý yükle
         LoadSettings();
     }
+    private void OnDisable()
+    {
+        // Dinleyicileri kaldýrmak iyi bir pratiktir, böylece gereksiz çaðrýlar olmaz.
+        pushAlarmToggle.onClick.RemoveListener(OnPushAlarmToggleChanged);
+        soundFxSlider.onValueChanged.RemoveListener(OnSoundFxSliderChanged);
+        musicSlider.onValueChanged.RemoveListener(OnMusicSliderChanged);
+        vibrationToggle.onClick.RemoveListener(OnVibrationToggleChanged);
+
+    }
+
 
     /// <summary>
     /// Cihaz hafýzasýndan (PlayerPrefs) kayýtlý ayarlarý yükler ve UI'ý günceller.
@@ -181,13 +191,5 @@ public class SettingManager : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        // Obje deaktif olduðunda veya yok olduðunda dinleyicileri kaldýrmak iyi bir pratiktir.
-        // Bu, olasý hafýza sýzýntýlarýný ve hatalarý önler.
-        pushAlarmToggle.onClick.RemoveAllListeners();
-        soundFxSlider.onValueChanged.RemoveAllListeners();
-        musicSlider.onValueChanged.RemoveAllListeners();
-        vibrationToggle.onClick.RemoveAllListeners();
-    }
+   
 }

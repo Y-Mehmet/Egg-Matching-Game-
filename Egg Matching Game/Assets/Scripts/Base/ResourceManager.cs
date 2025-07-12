@@ -1,5 +1,3 @@
-// ResourceManager.cs
-using Mono.Cecil;
 using System;
 using UnityEngine;
 
@@ -7,6 +5,14 @@ public class ResourceManager : MonoBehaviour
 {
     // --- Singleton Pattern ---
     public static ResourceManager Instance { get; private set; }
+    public Action<ResourceType, int> OnResourceChanged;
+
+    private int coins;
+    private int gems;
+    private int energy;
+
+    // Yüklenen tüm oyun verilerini tutan referansýmýz.
+    private SaveGameData gameData;
 
     private void Awake()
     {
@@ -17,26 +23,12 @@ public class ResourceManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Opsiyonel: Sahne deðiþimlerinde kaybolmasýn
-            LoadResources(); // Kaynaklarý yükle
+            DontDestroyOnLoad(gameObject);
+            LoadResources(); // Kaynaklarý SaveSystem üzerinden yükle
         }
     }
+   
 
-    // --- Events (Actions) ---
-    // Bir kaynaðýn miktarý deðiþtiðinde bu event'ler tetiklenir.
-    // UI elemanlarý bu event'leri dinleyerek kendilerini güncelleyebilir.
-    public event Action<ResourceType, int> OnResourceChanged;
-
-    // --- Resource Data ---
-    private int coins;
-    private int gems;
-    private int energy;
-
-    // --- Public Methods ---
-
-    /// <summary>
-    /// Belirtilen türdeki kaynaðýn mevcut miktarýný döndürür.
-    /// </summary>
     public int GetResourceAmount(ResourceType type)
     {
         switch (type)
@@ -48,9 +40,6 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Belirtilen türdeki kaynaða belirtilen miktarda ekler.
-    /// </summary>
     public void AddResource(ResourceType type, int amount)
     {
         if (amount <= 0) return;
@@ -62,18 +51,13 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.Energy: energy += amount; break;
         }
 
-        // Deðiþikliði dinleyen herkese haber ver.
         OnResourceChanged?.Invoke(type, GetResourceAmount(type));
-        SaveResources(); // Deðiþikliði kaydet
+        SaveResources(); // Deðiþikliði yeni sistemle kaydet
     }
 
-    /// <summary>
-    /// Belirtilen türdeki kaynaktan belirtilen miktarda harcamaya çalýþýr.
-    /// </summary>
-    /// <returns>Harcama baþarýlýysa true, yeterli kaynak yoksa false döner.</returns>
     public bool SpendResource(ResourceType type, int amount)
     {
-        if (amount <= 0) return true; // 0 veya eksi harcama her zaman baþarýlýdýr.
+        if (amount <= 0) return true;
 
         if (HasEnoughResource(type, amount))
         {
@@ -84,48 +68,57 @@ public class ResourceManager : MonoBehaviour
                 case ResourceType.Energy: energy -= amount; break;
             }
 
-            // Deðiþikliði dinleyen herkese haber ver.
             OnResourceChanged?.Invoke(type, GetResourceAmount(type));
-            SaveResources(); // Deðiþikliði kaydet
+            SaveResources(); // Deðiþikliði yeni sistemle kaydet
             return true;
         }
         else
         {
-            // Yeterli kaynak yok.
-            Debug.LogWarning($"Not enough {type} to spend. Required: {amount}, Have: {GetResourceAmount(type)}");
+            Debug.LogWarning($"Yeterli {type} yok. Gerekli: {amount}, Mevcut: {GetResourceAmount(type)}");
             return false;
         }
     }
 
-    /// <summary>
-    /// Belirtilen türdeki kaynaktan yeterli miktarda olup olmadýðýný kontrol eder.
-    /// </summary>
     public bool HasEnoughResource(ResourceType type, int amount)
     {
         return GetResourceAmount(type) >= amount;
     }
 
+    // --- Yeni Kayýt ve Yükleme Metotlarý ---
 
-    // --- Saving & Loading ---
-    // Kaynaklarý PlayerPrefs veya baþka bir kayýt sistemine kaydeder/yükler.
     private void SaveResources()
     {
-        PlayerPrefs.SetInt("PlayerCoins", coins);
-        PlayerPrefs.SetInt("PlayerGems", gems);
-        PlayerPrefs.SetInt("PlayerEnergy", energy);
-        PlayerPrefs.Save();
+        if (gameData == null)
+        {
+            Debug.LogError("gameData referansý boþ, kayýt iþlemi baþarýsýz oldu. Oyunun doðru baþlatýldýðýndan emin olun.");
+            return;
+        }
+
+        // 1. ResourceManager'daki güncel deðerleri gameData objesine yaz.
+        gameData.coins = this.coins;
+        gameData.gems = this.gems;
+        gameData.energy = this.energy;
+
+        // 2. Güncellenmiþ gameData objesini dosyaya kaydet.
+        SaveSystem.Save(gameData);
     }
 
     private void LoadResources()
     {
-        coins = PlayerPrefs.GetInt("PlayerCoins", 100); // Baþlangýçta 100 coin verelim.
-        gems = PlayerPrefs.GetInt("PlayerGems", 10);
-        energy = PlayerPrefs.GetInt("PlayerEnergy", 50);
+        // 1. SaveSystem'den tüm oyun verisini yükle.
+        gameData = SaveSystem.Load();
 
-        // Yükleme sonrasý UI'ý güncellemek için event'leri tetikle
-        OnResourceChanged?.Invoke(ResourceType.Coin, coins);
-        OnResourceChanged?.Invoke(ResourceType.Gem, gems);
-        OnResourceChanged?.Invoke(ResourceType.Energy, energy);
+        // 2. Yüklenen veriyi ResourceManager'daki alanlara ata.
+        this.coins = gameData.coins;
+        this.gems = gameData.gems;
+        this.energy = gameData.energy;
+
+        // 3. UI ve diðer sistemleri bilgilendir.
+        OnResourceChanged?.Invoke(ResourceType.Coin, this.coins);
+        OnResourceChanged?.Invoke(ResourceType.Gem, this.gems);
+        OnResourceChanged?.Invoke(ResourceType.Energy, this.energy);
+
+        Debug.Log("Kaynaklar merkezi SaveSystem'den baþarýyla yüklendi.");
     }
 }
 // ResourceType.cs
