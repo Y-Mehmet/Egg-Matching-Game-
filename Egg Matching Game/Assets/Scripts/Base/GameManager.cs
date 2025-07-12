@@ -259,9 +259,44 @@ public class GameManager : MonoBehaviour
             isShuffling = false;
             yield break;
         }
+        List<Transform> emtyOrWrongColorSlotTransformList = new List<Transform>();
+        foreach( GameObject slot in slotList)
+        {
+            if(slot.TryGetComponent<Slot>(out Slot slotScript) && !eggSlotDic.ContainsKey(slotScript.slotIndex) )
+            {
+                emtyOrWrongColorSlotTransformList.Add(slot.transform);
+            }
+            else if( !currentLevel.GetTempTopEggColorList().Contains(eggSlotDic[slotScript.slotIndex].GetComponent<Egg>().eggColor))
+            {
+                emtyOrWrongColorSlotTransformList.Add(slot.transform);
+                onSlotIndexChange?.Invoke(-1, eggSlotDic[slotScript.slotIndex]);
+                yield return new WaitForSeconds(.5f);
+            }
+        }
+        if(emtyOrWrongColorSlotTransformList.Count>0)
+        {
+            foreach (Transform egg in EggSpawner.instance.EggParent)
+            {
+                
+                if (!eggSlotDic.ContainsValue(egg.gameObject) && GetLevelData().GetTempTopEggColorList().Contains(egg.GetComponent<Egg>().eggColor))
+                {
+
+                    
+                    Sequence eggAnimation = AnimateEggToSlot(egg.gameObject, emtyOrWrongColorSlotTransformList[0]);
+
+                    
+                    yield return eggAnimation.WaitForCompletion();
+                    eggSlotDic[emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex] = egg.gameObject;
+                    emtyOrWrongColorSlotTransformList.RemoveAt(0);
+                    if (emtyOrWrongColorSlotTransformList.Count == 0)
+                        break;
+                }
+            }
+        }
         int sltCount = GetSlotCount();
         int brokenEggCount = currentLevel.GetBrokenEggCount();
         int ceckedEggCount = sltCount - brokenEggCount;
+        
 
         // Eğer eksik yumurta varsa, ata ve bitmesini bekle
         if (eggSlotDic.Count < ceckedEggCount)
@@ -535,7 +570,11 @@ public class GameManager : MonoBehaviour
         if(eggSlotDic.Count>0 && eggSlotDic.ContainsKey(slotIndex))
         eggSlotDic.Remove(slotIndex);
         RemoveSlotByIndex(slotIndex);
-        
+        GetLevelData().RemoveSlotByEggColor();
+
+
+
+
 
     }
     public void BreakEggProses(GameObject Egg)
@@ -577,7 +616,14 @@ public class GameManager : MonoBehaviour
         }
         int sltCount = GetSlotCount();
         int brokenEggCount= GetLevelData().GetBrokenEggCount();
-        int ceckedEggCount = sltCount-brokenEggCount;
+        
+        int startSlotCount= GetLevelData().eggColors.Count;
+        int currentEggCount = startSlotCount - brokenEggCount;
+        int currentSlotCount = startSlotCount - GetLevelData().GetBrokenEggCount();
+
+
+        int ceckedEggCount = currentEggCount>currentSlotCount? currentSlotCount:currentEggCount;
+        
         if (eggSlotDic.Count < ceckedEggCount)
         {
             Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount+ " slot count "+sltCount);

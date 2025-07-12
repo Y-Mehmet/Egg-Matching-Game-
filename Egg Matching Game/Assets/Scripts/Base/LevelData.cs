@@ -6,10 +6,11 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     
-    public List<EggColor> eggColors;
+    public List<EggColor> eggColors;// slot egg 
     public List<EggColor> topEggColors;
     public List<EggColor> tempTopEggColors;
     public int brokenEggCount = 0;
+    public int brokenSlotCount = 0;
 
     public void RestartLevelData()
     {
@@ -18,6 +19,7 @@ public class LevelData : ScriptableObject
             tempTopEggColors.Clear();
         }
         brokenEggCount = 0;
+        brokenSlotCount = 0;
     }
     public int GetSlotCount()
     {
@@ -31,14 +33,30 @@ public class LevelData : ScriptableObject
     {
         return brokenEggCount;
     }
+    public int GetBrokenSlotCount()
+    {
+        return brokenSlotCount;
+    }
+    public List<EggColor> GetTempTopEggColorList()
+    {
+        if (tempTopEggColors == null || tempTopEggColors.Count == 0)
+        {
+            foreach (var item in topEggColors)
+            {
+                tempTopEggColors.Add(item);
+            }
+        }
+        return tempTopEggColors;
+    }
 
 
-  
-    
+
+
 
     public void RemoveEggByEggColor(EggColor color)
     {
-        if(tempTopEggColors == null || tempTopEggColors.Count==0)
+        GetTempTopEggColorList();
+        if (tempTopEggColors == null || tempTopEggColors.Count==0)
         {
            foreach(var item in topEggColors)
             {
@@ -60,5 +78,9 @@ public class LevelData : ScriptableObject
                 Debug.LogWarning(item + " does not match " + color + ", not removed.");
             }
         }
+    }
+    public void RemoveSlotByEggColor()
+    {
+        brokenSlotCount++;
     }
 }
