@@ -10,6 +10,7 @@ public class ResourceManager : MonoBehaviour
     private int coins;
     private int gems;
     private int energy;
+    private int playCount; // Oyun oynama sayýsý, SaveGameData'da da var
 
     // Yüklenen tüm oyun verilerini tutan referansýmýz.
     private SaveGameData gameData;
@@ -49,6 +50,7 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.Coin: coins += amount; break;
             case ResourceType.Gem: gems += amount; break;
             case ResourceType.Energy: energy += amount; break;
+            case ResourceType.PlayCount: playCount += amount; break; // Oyun oynama sayýsýný artýrýyoruz
         }
 
         OnResourceChanged?.Invoke(type, GetResourceAmount(type));
@@ -66,6 +68,7 @@ public class ResourceManager : MonoBehaviour
                 case ResourceType.Coin: coins -= amount; break;
                 case ResourceType.Gem: gems -= amount; break;
                 case ResourceType.Energy: energy -= amount; break;
+                
             }
 
             OnResourceChanged?.Invoke(type, GetResourceAmount(type));
@@ -98,6 +101,7 @@ public class ResourceManager : MonoBehaviour
         gameData.coins = this.coins;
         gameData.gems = this.gems;
         gameData.energy = this.energy;
+        gameData.playCount= this.playCount; // Oyun oynama sayýsýný da kaydediyoruz
 
         // 2. Güncellenmiþ gameData objesini dosyaya kaydet.
         SaveSystem.Save(gameData);
@@ -112,6 +116,7 @@ public class ResourceManager : MonoBehaviour
         this.coins = gameData.coins;
         this.gems = gameData.gems;
         this.energy = gameData.energy;
+        this.playCount = gameData.playCount; // Oyun oynama sayýsýný da yükle
 
         // 3. UI ve diðer sistemleri bilgilendir.
         OnResourceChanged?.Invoke(ResourceType.Coin, this.coins);
@@ -120,11 +125,24 @@ public class ResourceManager : MonoBehaviour
 
         Debug.Log("Kaynaklar merkezi SaveSystem'den baþarýyla yüklendi.");
     }
+    public void GetReweard()
+    {
+        if(GameManager.instance.currentRewarded== RewardedType.Resource)
+        {
+            AddResource(ResourceType.Coin, 40 * 3);
+            AddResource(ResourceType.Gem, 1 * 3);
+        }else if(GameManager.instance.currentRewarded == RewardedType.Energy)
+        {
+            AddResource(ResourceType.Energy, 1);
+        }
+        
+    }
 }
 // ResourceType.cs
 public enum ResourceType
 {
     Coin,
     Gem,
-    Energy
+    Energy,
+    PlayCount
 }

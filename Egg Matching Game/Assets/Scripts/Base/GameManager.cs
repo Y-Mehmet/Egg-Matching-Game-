@@ -8,6 +8,7 @@ using Sequence = DG.Tweening.Sequence;
 using System.Drawing;
 using Color = UnityEngine.Color;
 using System.Collections;
+using Mono.Cecil;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
    [SerializeField] private float assignAnimationDuration = 0.6f; // Animasyonun toplam süresi
     [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
     [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
+    
+    public RewardedType currentRewarded= RewardedType.Resource;
 
     //public List<LevelData> levelDatas = new List<LevelData>();
     public LevelDataHolder levelDataHolder; 
@@ -45,6 +48,7 @@ public class GameManager : MonoBehaviour
     public Action continueGame;
     public Action gameReStart;
     public Action gameOver;
+    public Action<RewardedType> currentRewardedTypeChanged; 
     
     private Color originalColor;
     public bool gameStarted = false;
@@ -80,6 +84,7 @@ public class GameManager : MonoBehaviour
     {
         gameStart += GameStart;
         gameOver += GameOver;
+        currentRewardedTypeChanged += CurrentRewaredTypeChange;
 
 
         Time.timeScale = 1;
@@ -89,6 +94,7 @@ public class GameManager : MonoBehaviour
     {
         gameStart -= GameStart;
         gameOver -= GameOver;
+        currentRewardedTypeChanged -= CurrentRewaredTypeChange;
 
     }
     private void Start()
@@ -99,6 +105,10 @@ public class GameManager : MonoBehaviour
 
         ReStart();
         
+    }
+    private void CurrentRewaredTypeChange(RewardedType type)
+    {
+        currentRewarded = type;
     }
     private void GameOver()
     {
@@ -149,6 +159,16 @@ public class GameManager : MonoBehaviour
     }
     public void ReStart()
     {
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) <= 0)
+        {
+            Debug.LogWarning("Yeterli enerji yok, sahne yüklenemiyor.");
+            return;
+        }
+        ResourceManager.Instance.AddResource(ResourceType.PlayCount, 1); // Oyun oynama sayısını artırıyoruz
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 3 == 2 && gameData.levelIndex!=0 )
+        {
+            EndLevel();
+        }
         GetLevelData().RestartLevelData();
         trueEggCountChanged?.Invoke(0);
         levelChanged?.Invoke(gameData.levelIndex);
@@ -157,12 +177,31 @@ public class GameManager : MonoBehaviour
             eggSlotDic.Clear();
         }
     }
+    public void EndLevel()
+    {
+        Debug.Log("Seviye Tamamlandı!");
 
-    
-    
+        // Geçiş reklamını göstermeden önce hazır olup olmadığını kontrol edin (isteğe bağlı ama iyi bir pratik)
+        // Eğer reklam hazırsa göster
+        if (AdsManager.Instance != null && AdsManager.Instance.interstitialAds != null)
+        {
+            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+            Debug.Log("Geçiş Reklamı Çağrıldı!");
+        }
+        else
+        {
+            Debug.LogWarning("Geçiş Reklamı hazır değil veya AdsManager bulunamadı.");
+        }
 
-    
-   
+
+
+    }
+
+
+
+
+
+
 
     public LevelData GetLevelData()
     {
@@ -685,7 +724,8 @@ public class GameManager : MonoBehaviour
                
                 gameData.IncraseLevelData();
                 GetLevelData();
-                ReStart();
+                PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel, PanelShowBehavior.HIDE_PREVISE);
+                
             }
         }
         
@@ -737,4 +777,9 @@ public enum Tag
     Egg,
     Slot,
     
+}
+public enum RewardedType
+{
+    Energy,
+    Resource,
 }

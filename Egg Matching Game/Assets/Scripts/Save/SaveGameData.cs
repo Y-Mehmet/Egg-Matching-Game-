@@ -10,6 +10,7 @@ public class SaveGameData
     public int coins = 100;
     public int gems = 0;
     public int energy = 5;
+    public int playCount = 0;
 
     public void IncraseLevelData()
     {

@@ -38,11 +38,8 @@ public class LoadNextSceen : MonoBehaviour
     }
     private void LoadNextScene()
     {
-       if(ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) <= 0)
-        {
-            Debug.LogWarning("Yeterli enerji yok, sahne yüklenemiyor.");
-            return;
-        }
+       
         SceeneManager.instance.LoadScene(1);
     }
+    
 }

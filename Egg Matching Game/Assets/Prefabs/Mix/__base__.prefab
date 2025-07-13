@@ -832,6 +832,7 @@ MonoBehaviour:
   - {fileID: 6124923020510234005, guid: bb8a750b11eb61446b59bb8cf73e5060, type: 3}
   - {fileID: 5597142095043412677, guid: f7783f52e5285c942bfedf1f2b4315c7, type: 3}
   - {fileID: 5752155423694984650, guid: 820ce85e7e6f8524c927d5d5af6eb91e, type: 3}
+  - {fileID: 2569670644346746303, guid: 7586d41b14d142b489ba15f409d7a9f7, type: 3}
 --- !u!4 &3853663652969447898 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1850896077848387951, guid: 98afe9a56fd373a41b83b60936b63e1a, type: 3}
@@ -858,6 +859,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2404433187706860034, guid: 94ad99b07e375a94f83b60265bd0cfe7, type: 3}
+      propertyPath: swapDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404433187706860034, guid: 94ad99b07e375a94f83b60265bd0cfe7, type: 3}
       propertyPath: AbilityBarPanel
       value: 
       objectReference: {fileID: 4727770599865731122}
@@ -865,6 +870,10 @@ PrefabInstance:
       propertyPath: levelDataHolder
       value: 
       objectReference: {fileID: 11400000, guid: df422ac14782d4146a9ba4adfe54faeb, type: 2}
+    - target: {fileID: 2404433187706860034, guid: 94ad99b07e375a94f83b60265bd0cfe7, type: 3}
+      propertyPath: delayBetweenSwaps
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2404433187706860034, guid: 94ad99b07e375a94f83b60265bd0cfe7, type: 3}
       propertyPath: SlotPositionList.Array.size
       value: 0
@@ -1163,6 +1172,10 @@ PrefabInstance:
     - target: {fileID: 1653657138677235388, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1696651624420570348, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 1919923135193878070, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1778,7 +1791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8806253036485599558, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
       propertyPath: PrefabsForPool.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8806253036485599558, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
       propertyPath: 'PrefabsForPool.Array.data[0]'
@@ -1804,6 +1817,10 @@ PrefabInstance:
       propertyPath: 'PrefabsForPool.Array.data[5]'
       value: 
       objectReference: {fileID: 6546784179836139944, guid: b6056e2151359d2458c6698a98e46a35, type: 3}
+    - target: {fileID: 8806253036485599558, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
+      propertyPath: 'PrefabsForPool.Array.data[6]'
+      value: 
+      objectReference: {fileID: 441817477530574355, guid: 8bbf3bb9266deaf48ba9b8b9f78afa73, type: 3}
     - target: {fileID: 9197435579202415307, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

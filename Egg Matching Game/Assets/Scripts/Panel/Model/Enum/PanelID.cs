@@ -11,6 +11,7 @@ public enum PanelID
     PlayPause,
     TopToStart_Panel,
     AbilityPurchasePanel,
+    LevelUpPanel,
 
 
 }
