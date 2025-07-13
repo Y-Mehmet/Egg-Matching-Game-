@@ -5230,6 +5230,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelText: {fileID: 1055175191239856099}
+  gemCountText: {fileID: 7464972013911680611}
+  coinCountText: {fileID: 5813916501735801252}
   adsBtn: {fileID: 6217878664491866005}
   contunioBtn: {fileID: 424906277700126515}
 --- !u!1 &574327763118309236

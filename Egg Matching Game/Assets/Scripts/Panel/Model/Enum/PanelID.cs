@@ -12,6 +12,7 @@ public enum PanelID
     TopToStart_Panel,
     AbilityPurchasePanel,
     LevelUpPanel,
+    RefillEnergyPanel,
 
 
 }

@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class LevelUpPanel : MonoBehaviour
 {
-    public TMP_Text levelText;
+    public TMP_Text levelText, gemCountText, coinCountText;
     public Button adsBtn, contunioBtn;
-    
+
+
     private void OnEnable()
     {
               
@@ -17,7 +18,9 @@ public class LevelUpPanel : MonoBehaviour
             Debug.LogError("LevelUpPanel: UI elemanlarý eksik! Lütfen tüm referanslarý atayýn.");
             return;
         }
-
+        levelText.text = "" + GameManager.instance.gameData.levelIndex + 1;
+        gemCountText.text = "" + ResourceManager.Instance.gemsPerGame;
+        coinCountText.text = "" + ResourceManager.Instance.coinsPerGame;
         adsBtn.onClick.AddListener(OnAdsButtonClicked);
         contunioBtn.onClick.AddListener(OnContinueButtonClicked);
     }
@@ -27,7 +30,7 @@ public class LevelUpPanel : MonoBehaviour
     }
     private void Start()
     {
-        levelText.text = ""+ GameManager.instance.gameData.levelIndex + 1;
+       
     }
     private void OnDisable()
     {
@@ -53,7 +56,9 @@ public class LevelUpPanel : MonoBehaviour
     }
     private void OnContinueButtonClicked()
     {
-        GameManager.instance.ReStart();
+        ResourceManager.Instance.AddResource(ResourceType.Coin, ResourceManager.Instance.coinsPerGame   );
+        ResourceManager.Instance.AddResource(ResourceType.Gem, ResourceManager.Instance.gemsPerGame);
         PanelManager.Instance.HideLastPanel();
+        SceeneManager.instance.LoadScene(0);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using UnityEngine.SceneManagement;
 
 public class RewardedAds : MonoBehaviour ,IUnityAdsLoadListener ,IUnityAdsShowListener
 {
@@ -58,13 +59,15 @@ public class RewardedAds : MonoBehaviour ,IUnityAdsLoadListener ,IUnityAdsShowLi
             if(GameManager.instance != null && ResourceManager.Instance!= null)
             {
                 ResourceManager.Instance.GetReweard();
-                GameManager.instance.ReStart();
+                //if (GameManager.instance.currentRewarded == RewardedType.Resource)
+                //    GameManager.instance.ReStart();
             }
             else
             {
                 Debug.LogWarning("GameManager veya gameData bulunamadý.");
             }
             PanelManager.Instance.HideLastPanel();
+            SceeneManager.instance.LoadScene(0);
 
         }
     }

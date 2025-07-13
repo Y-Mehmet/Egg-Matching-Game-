@@ -507,7 +507,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69943baad118488409654bcb74efaf64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playSettingPanel: {fileID: 0}
 --- !u!1 &3082432558352301037
 GameObject:
   m_ObjectHideFlags: 0

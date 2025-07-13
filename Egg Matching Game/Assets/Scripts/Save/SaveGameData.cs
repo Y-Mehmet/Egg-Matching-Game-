@@ -11,9 +11,11 @@ public class SaveGameData
     public int gems = 0;
     public int energy = 5;
     public int playCount = 0;
+    public string nextEnergyTimeString=string.Empty;
 
     public void IncraseLevelData()
     {
         levelIndex++;
     }
+    
 }
