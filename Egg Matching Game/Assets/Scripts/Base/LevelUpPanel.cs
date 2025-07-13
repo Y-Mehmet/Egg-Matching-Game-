@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ public class LevelUpPanel : MonoBehaviour
     private void OnEnable()
     {
               
-        if(adsBtn== null || contunioBtn == null || levelText == null)
+        if( levelText == null)
         {
             Debug.LogError("LevelUpPanel: UI elemanlarý eksik! Lütfen tüm referanslarý atayýn.");
             return;
@@ -19,6 +20,10 @@ public class LevelUpPanel : MonoBehaviour
 
         adsBtn.onClick.AddListener(OnAdsButtonClicked);
         contunioBtn.onClick.AddListener(OnContinueButtonClicked);
+    }
+    private IEnumerator enumerator()
+    {
+        yield return null;
     }
     private void Start()
     {

@@ -1790,10 +1790,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8806253036485599558, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
-      propertyPath: PrefabsForPool.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8806253036485599558, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
       propertyPath: 'PrefabsForPool.Array.data[0]'
       value: 
       objectReference: {fileID: 7228627265293360274, guid: 01a33daddb1ab6641ad64394f0af2bd8, type: 3}
@@ -1817,10 +1813,6 @@ PrefabInstance:
       propertyPath: 'PrefabsForPool.Array.data[5]'
       value: 
       objectReference: {fileID: 6546784179836139944, guid: b6056e2151359d2458c6698a98e46a35, type: 3}
-    - target: {fileID: 8806253036485599558, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
-      propertyPath: 'PrefabsForPool.Array.data[6]'
-      value: 
-      objectReference: {fileID: 441817477530574355, guid: 8bbf3bb9266deaf48ba9b8b9f78afa73, type: 3}
     - target: {fileID: 9197435579202415307, guid: 8f96b22c1f07bff4dae947b3c59e1cdf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

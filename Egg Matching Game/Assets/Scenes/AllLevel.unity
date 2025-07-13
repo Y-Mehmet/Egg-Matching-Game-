@@ -167,10 +167,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2889123970152761440, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
-      propertyPath: PrefabsForPool.Array.size
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 5433116913206738305, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_Name
       value: __base__

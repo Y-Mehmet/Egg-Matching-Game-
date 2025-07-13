@@ -36620,7 +36620,6 @@ GameObject:
   - component: {fileID: 4440485419011812593}
   - component: {fileID: 3453192379203445820}
   - component: {fileID: 932852395592546948}
-  - component: {fileID: 1973664366966621711}
   m_Layer: 5
   m_Name: Text_LevelUp!
   m_TagString: Untagged
@@ -36746,21 +36745,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1973664366966621711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4983966291670360229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d88cdcfc72b40e49a2926ce1c2608bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelText: {fileID: 0}
-  adsBtn: {fileID: 0}
-  contunioBtn: {fileID: 0}
 --- !u!1 &5042484443499075241
 GameObject:
   m_ObjectHideFlags: 0

@@ -155,6 +155,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 441817477530574355, guid: 8bbf3bb9266deaf48ba9b8b9f78afa73, type: 3}
 --- !u!1001 &4045012815337333926
 PrefabInstance:
   m_ObjectHideFlags: 0
