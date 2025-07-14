@@ -7,13 +7,17 @@ public class ResourceManager : MonoBehaviour
     // --- Singleton Pattern ---
     public static ResourceManager Instance { get; private set; }
     public Action<ResourceType, int> OnResourceChanged;
+    public Action<RewardedType> currentRewardedTypeChanged;
+    public RewardedType currentRewarded = RewardedType.Resource;
 
     private int coins;
     private int gems;
     private int energy;
     private int playCount; // Oyun oynama sayýsý, SaveGameData'da da var
+    private int levelIndex ; // Oyun seviyesini tutan deðiþken
     public int coinsPerGame = 40; // Her oyun sonunda kazanýlan para miktarý
     public int gemsPerGame = 1; // Her oyun sonunda kazanýlan elmas miktarý
+
 
     // Yüklenen tüm oyun verilerini tutan referansýmýz.
     private SaveGameData gameData;
@@ -36,11 +40,23 @@ public class ResourceManager : MonoBehaviour
             LoadResources(); // Kaynaklarý SaveSystem üzerinden yükle
         }
     }
+    private void OnEnable()
+    {
+        currentRewardedTypeChanged += CurrentRewaredTypeChange;
+    }
+    private void OnDisable()
+    {
+        currentRewardedTypeChanged -= CurrentRewaredTypeChange; // Dinleyiciyi kaldýr
+    }
 
     private void Start()
     {
         // Enerji yenileme döngüsünü baþlat
         StartCoroutine(RechargeEnergyCoroutine());
+    }
+    private void CurrentRewaredTypeChange(RewardedType type)
+    {
+        currentRewarded = type;
     }
 
     // Oyuncu oyundan çýktýðýnda son bir kez kaydetmek için.
@@ -55,6 +71,8 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.Coin: return coins;
             case ResourceType.Gem: return gems;
             case ResourceType.Energy: return energy;
+            case ResourceType.PlayCount: return playCount; // Oyun oynama sayýsýný döndürüyoruz
+            case ResourceType.LevelIndex: return levelIndex; // Oyun seviyesini döndürüyoruz
             default: return 0;
         }
     }
@@ -72,6 +90,7 @@ public class ResourceManager : MonoBehaviour
                 if (energy > maxEnergy) energy = maxEnergy; // Enerji max deðeri geçemez
                 break;
             case ResourceType.PlayCount: playCount += amount; break; // Oyun oynama sayýsýný artýrýyoruz
+            case ResourceType.LevelIndex: levelIndex += amount; break; // Oyun seviyesini artýrýyoruz
         }
 
         OnResourceChanged?.Invoke(type, GetResourceAmount(type));
@@ -84,16 +103,24 @@ public class ResourceManager : MonoBehaviour
 
         if (HasEnoughResource(type, amount))
         {
+            // Enerji harcamadan önce tam dolu olup olmadýðýný kontrol et
+            bool wasEnergyMaxed = (type == ResourceType.Energy && this.energy == maxEnergy);
+
             switch (type)
             {
                 case ResourceType.Coin: coins -= amount; break;
                 case ResourceType.Gem: gems -= amount; break;
                 case ResourceType.Energy: energy -= amount; break;
+            }
 
+            // Eðer enerji harcandýysa ve daha önce tam doluysa, sayacý þimdi baþlat.
+            if (wasEnergyMaxed && this.energy < maxEnergy)
+            {
+                StartEnergyRechargeTimerIfNeeded();
             }
 
             OnResourceChanged?.Invoke(type, GetResourceAmount(type));
-            SaveResources(); // Deðiþikliði yeni sistemle kaydet
+            SaveResources();
             return true;
         }
         else
@@ -123,6 +150,7 @@ public class ResourceManager : MonoBehaviour
         gameData.gems = this.gems;
         gameData.energy = this.energy;
         gameData.playCount = this.playCount; // Oyun oynama sayýsýný da kaydediyoruz
+        gameData.levelIndex = this.levelIndex; // Oyun seviyesini de kaydediyoruz
 
         // YENÝ: Zaman bilgisini kaydet
         gameData.nextEnergyTimeString = this.nextEnergyTime.ToBinary().ToString();
@@ -138,6 +166,7 @@ public class ResourceManager : MonoBehaviour
         this.gems = gameData.gems;
         this.energy = gameData.energy;
         this.playCount = gameData.playCount;
+        this.levelIndex = gameData.levelIndex;
 
         // YENÝ: Zaman bilgisini yükle
         if (!string.IsNullOrEmpty(gameData.nextEnergyTimeString))
@@ -188,32 +217,42 @@ public class ResourceManager : MonoBehaviour
                     DateTime newNextTime = nextEnergyTime.AddMinutes(energyGained * energyRechargeDuration.TotalMinutes);
                     nextEnergyTime = newNextTime;
                 }
+                OnResourceChanged?.Invoke(ResourceType.Energy, energy);
             }
         }
     }
 
-    /// <summary>
-    /// Oyuncu oyundayken enerjinin dolmasýný saðlayan arkaplan döngüsü.
-    /// </summary>
     private IEnumerator RechargeEnergyCoroutine()
     {
+        // Oyun baþlangýcýnda, eðer çevrimdýþý kazanýmdan sonra hala enerji max deðilse sayacý baþlat.
+        yield return new WaitForSeconds(1f); // Diðer sistemlerin yüklenmesi için kýsa bir bekleme
+        StartEnergyRechargeTimerIfNeeded();
+
         while (true)
         {
-            // Her saniye kontrol et
-            yield return new WaitForSeconds(1f);
+            // Her saniye kontrol etmek yerine 5 saniyede bir kontrol etmek performansý artýrabilir.
+            yield return new WaitForSeconds(5f);
 
             if (energy < maxEnergy)
             {
+                // Zaman doldu mu kontrol et
                 if (GetUTCNow() >= nextEnergyTime)
                 {
-                    AddResource(ResourceType.Energy, 1);
+                    Debug.Log("Enerji yenileme zamaný geldi. +1 Enerji eklendi.");
+                    energy++; // Direkt olarak enerjiyi artýrýyoruz. AddResource'a gerek yok çünkü tüm kontroller burada.
 
-                    // Eðer hala max enerjinin altýndaysak, bir sonraki zamanlayýcýyý kur.
+                    // Enerji eklendikten sonra hala maksimum seviyenin altýndaysak, yeni bir sayaç baþlat.
                     if (energy < maxEnergy)
                     {
                         nextEnergyTime = GetUTCNow().Add(energyRechargeDuration);
+                        Debug.Log($"Enerji hala max deðil. Yeni sayaç baþlatýldý. Sonraki zaman: {nextEnergyTime}");
+                    }
+                    else
+                    {
+                        Debug.Log("Enerji maksimuma ulaþtý. Sayaç durduruldu.");
                     }
 
+                    OnResourceChanged?.Invoke(ResourceType.Energy, energy);
                     SaveResources(); // Deðiþikliði kaydet
                 }
             }
@@ -221,14 +260,18 @@ public class ResourceManager : MonoBehaviour
     }
     public void GetReweard()
     {
-        if (GameManager.instance.currentRewarded == RewardedType.Resource)
+        if (ResourceManager.Instance.currentRewarded == RewardedType.Resource)
         {
             AddResource(ResourceType.Coin, coinsPerGame * 3);
             AddResource(ResourceType.Gem, gemsPerGame * 3);
+            OnResourceChanged?.Invoke(ResourceType.Coin, coins);
+            OnResourceChanged?.Invoke(ResourceType.Gem, gems);
+
         }
-        else if (GameManager.instance.currentRewarded == RewardedType.Energy)
+        else if (ResourceManager.Instance.currentRewarded == RewardedType.Energy)
         {
             AddResource(ResourceType.Energy, 1);
+            OnResourceChanged?.Invoke(ResourceType.Energy, energy);
         }
 
     }// Bu metotlarý ResourceManager.cs dosyanýzýn içine ekleyin
@@ -281,6 +324,27 @@ public class ResourceManager : MonoBehaviour
         return timeRemaining.ToString(@"mm\:ss");
     }
     /// <summary>
+    /// Enerji maksimumun altýndaysa ve zamanlayýcý zaten gelecekte bir zamana ayarlý deðilse,
+    /// yeni bir enerji yenileme sayacý baþlatýr.
+    /// </summary>
+    private void StartEnergyRechargeTimerIfNeeded()
+    {
+        // Sadece enerji max'ýn altýndaysa ve zamanlayýcý geçmiþte kalmýþsa (yani aktif bir sayým yoksa) tetiklenir.
+        if (energy < maxEnergy && GetUTCNow() >= nextEnergyTime)
+        {
+            nextEnergyTime = GetUTCNow().Add(energyRechargeDuration);
+            Debug.Log($"Enerji sayacý baþlatýldý. Sonraki enerji zamaný: {nextEnergyTime}");
+            SaveResources(); // Zamanlayýcý baþladýðýnda durumu kaydet
+        }
+    }
+    public void IncraseLevelData()
+    {
+
+
+        levelIndex++;
+        GameManager.instance.Save();
+    }
+    /// <summary>
     /// Zaman dilimi sorunlarýný önlemek için her zaman UTC zamanýný kullanýr.
     /// </summary>
     private DateTime GetUTCNow()
@@ -294,5 +358,6 @@ public class ResourceManager : MonoBehaviour
     Coin,
     Gem,
     Energy,
-    PlayCount
+    PlayCount,
+    LevelIndex,
 }

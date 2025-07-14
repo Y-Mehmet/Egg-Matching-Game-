@@ -58,7 +58,7 @@ public class LevelLockedButton : MonoBehaviour
         }
 
         // The player's current level (assuming levelIndex starts from 0, so we add 1).
-        int currentLevel = gameData.levelIndex + 1;
+        int currentLevel = gameData.levelIndex ;
 
         // Check if the player's level is sufficient.
         if (currentLevel >= abilityData.RequiredLevel)

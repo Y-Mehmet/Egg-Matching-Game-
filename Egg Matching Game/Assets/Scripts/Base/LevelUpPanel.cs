@@ -18,7 +18,7 @@ public class LevelUpPanel : MonoBehaviour
             Debug.LogError("LevelUpPanel: UI elemanlarý eksik! Lütfen tüm referanslarý atayýn.");
             return;
         }
-        levelText.text = "" + GameManager.instance.gameData.levelIndex + 1;
+        levelText.text = "" + (ResourceManager.Instance.GetResourceAmount(ResourceType.LevelIndex)) ;
         gemCountText.text = "" + ResourceManager.Instance.gemsPerGame;
         coinCountText.text = "" + ResourceManager.Instance.coinsPerGame;
         adsBtn.onClick.AddListener(OnAdsButtonClicked);
@@ -36,6 +36,8 @@ public class LevelUpPanel : MonoBehaviour
     {
         adsBtn.onClick.RemoveListener(OnAdsButtonClicked);
         contunioBtn.onClick.RemoveListener(OnContinueButtonClicked);
+        PanelManager.Instance.HideAllPanel();
+        
     }
     private void OnAdsButtonClicked()
     {
@@ -44,7 +46,7 @@ public class LevelUpPanel : MonoBehaviour
         // Ödüllü reklamý göstermeden önce hazýr olup olmadýðýný kontrol edin
         if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
         {
-            GameManager.instance.currentRewardedTypeChanged?.Invoke(RewardedType.Resource);
+            ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Resource);
             AdsManager.Instance.rewardedAds.ShowRewardedAd();
             Debug.Log("Ödüllü Reklam Çaðrýldý!");
         }
@@ -58,7 +60,7 @@ public class LevelUpPanel : MonoBehaviour
     {
         ResourceManager.Instance.AddResource(ResourceType.Coin, ResourceManager.Instance.coinsPerGame   );
         ResourceManager.Instance.AddResource(ResourceType.Gem, ResourceManager.Instance.gemsPerGame);
-        PanelManager.Instance.HideLastPanel();
+        
         SceeneManager.instance.LoadScene(0);
     }
 }

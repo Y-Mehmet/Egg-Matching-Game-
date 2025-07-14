@@ -30,7 +30,7 @@ public class TopResourceBarPanel : MonoBehaviour
                 gemText.text = amount.ToString();
                 break;
             case ResourceType.Energy:
-                energyText.text = amount+"/5";
+                energyText.text = amount+"/"+ResourceManager.Instance.maxEnergy;
                 break;
             default:
                 Debug.LogWarning("Unknown resource type: " + type);

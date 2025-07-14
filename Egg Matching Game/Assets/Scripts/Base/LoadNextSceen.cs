@@ -8,7 +8,7 @@ public class LoadNextSceen : MonoBehaviour
 {
     public TMP_Text levelText;
     private Button button;
-    private SaveGameData gameData;
+    
 
     private void Awake()
     {
@@ -24,8 +24,8 @@ public class LoadNextSceen : MonoBehaviour
         // Ayarlama iþlemini bir coroutine ile güvenli bir þekilde baþlatýyoruz.
         if (levelText != null)
         {
-            gameData = SaveSystem.Load();
-            levelText.text = (gameData.levelIndex+1).ToString();
+            
+            levelText.text = (ResourceManager.Instance.GetResourceAmount(ResourceType.LevelIndex)+1).ToString();
             Debug.Log("Level text set to: " + levelText.text);
         }
     }

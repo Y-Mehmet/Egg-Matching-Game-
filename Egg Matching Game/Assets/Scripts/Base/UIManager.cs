@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     }
     private void UpdateLevel(int level)
     {
+        level++;
         levelText.text = "Level " + level;
     }
     private string FormatTime(int totalSeconds)

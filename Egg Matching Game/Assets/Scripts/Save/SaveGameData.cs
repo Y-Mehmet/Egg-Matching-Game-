@@ -1,4 +1,6 @@
-﻿[System.Serializable]
+﻿using System.Diagnostics;
+
+[System.Serializable]
 public class SaveGameData
 {
     // Mevcut veriler
@@ -13,9 +15,6 @@ public class SaveGameData
     public int playCount = 0;
     public string nextEnergyTimeString=string.Empty;
 
-    public void IncraseLevelData()
-    {
-        levelIndex++;
-    }
+    
     
 }

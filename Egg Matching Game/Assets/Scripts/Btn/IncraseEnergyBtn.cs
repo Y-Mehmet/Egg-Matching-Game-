@@ -4,7 +4,17 @@ public class IncraseEnergyBtn : MonoBehaviour
 {
     private void OnEnable()
     {
-       GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OnClick);
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) >= ResourceManager.Instance.maxEnergy)
+        {
+            transform.GetChild(0).gameObject.SetActive(false); 
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OnClick);
+        }
+            
+        
     }
     private void OnDisable()
     {
@@ -12,7 +22,7 @@ public class IncraseEnergyBtn : MonoBehaviour
     }
     private void OnClick()
     {
-        if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) < 5)
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) < ResourceManager.Instance.maxEnergy)
         {
             PanelManager.Instance.ShowPanel(PanelID.RefillEnergyPanel);
         }

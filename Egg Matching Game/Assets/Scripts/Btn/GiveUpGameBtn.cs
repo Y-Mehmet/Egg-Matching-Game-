@@ -12,6 +12,7 @@ public class GiveUpGameBtn : MonoBehaviour
     }
     private void OnClick()
     {
+        ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
         SceeneManager.instance.LoadScene(0);
     }
 }

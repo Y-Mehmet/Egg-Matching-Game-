@@ -91,7 +91,7 @@ public class AddPanel : MonoBehaviour
     {
         if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
         {
-            GameManager.instance.currentRewardedTypeChanged?.Invoke(RewardedType.Energy);
+            ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Energy);
             AdsManager.Instance.rewardedAds.ShowRewardedAd();
             Debug.Log("Ödüllü Reklam Çaðrýldý!");
         }

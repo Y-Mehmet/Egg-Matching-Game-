@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
     [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
     
-    public RewardedType currentRewarded= RewardedType.Resource;
+    
 
     //public List<LevelData> levelDatas = new List<LevelData>();
     public LevelDataHolder levelDataHolder; 
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     public Action continueGame;
     public Action gameReStart;
     public Action gameOver;
-    public Action<RewardedType> currentRewardedTypeChanged; 
+   
     
     private Color originalColor;
     public bool gameStarted = false;
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
     {
         gameStart += GameStart;
         gameOver += GameOver;
-        currentRewardedTypeChanged += CurrentRewaredTypeChange;
+        
 
 
         Time.timeScale = 1;
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     {
         gameStart -= GameStart;
         gameOver -= GameOver;
-        currentRewardedTypeChanged -= CurrentRewaredTypeChange;
+       
         // Menü kapandığında banner reklamı gizle (isteğe bağlı, oyununuzun tasarımına göre değişir)
         if (AdsManager.Instance != null && AdsManager.Instance.bannerAds != null)
         {
@@ -115,10 +115,7 @@ public class GameManager : MonoBehaviour
         ReStart();
         
     }
-    private void CurrentRewaredTypeChange(RewardedType type)
-    {
-        currentRewarded = type;
-    }
+    
     private void GameOver()
     {
         ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
@@ -174,7 +171,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         ResourceManager.Instance.AddResource(ResourceType.PlayCount, 1); // Oyun oynama sayısını artırıyoruz
-        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 3 == 2 && gameData.levelIndex!=0 )
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 3 == 2  )
         {
             EndLevel();
         }
@@ -730,9 +727,10 @@ public class GameManager : MonoBehaviour
             if(trueCount== ceckedEggCount)
             {
 
-               
-                gameData.IncraseLevelData();
-                GetLevelData();
+
+
+
+                ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
                 PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel, PanelShowBehavior.HIDE_PREVISE);
                 
             }
