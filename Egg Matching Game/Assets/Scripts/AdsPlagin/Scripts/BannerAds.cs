@@ -91,7 +91,7 @@ public class BannerAds : MonoBehaviour
     {
         Debug.Log("Banner Ad Loaded.");
         // Reklam yüklendiðinde otomatik olarak göster
-        ShowBannerAd();
+        //ShowBannerAd();
     }
     #endregion
 }

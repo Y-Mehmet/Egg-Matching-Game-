@@ -21,7 +21,7 @@ public class AbilityData : ScriptableObject
     public string Title, Description;
     public GameObject ParticlePerfabs, AbilityWorkerPrefab;
     public int ParticleStartTime = 0;
-
+    public int cost = 0;
     [Header("Behavior")]
     public bool RequiresTarget; // Bu yetenek bir hedef seçmeyi gerektiriyor mu? (Yumurta, Slot vb.)
 

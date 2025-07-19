@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Bu satýrý ekleyin!
 
 public class AdsManager : MonoBehaviour
 {
@@ -10,8 +12,6 @@ public class AdsManager : MonoBehaviour
     public RewardedAds rewardedAds;
 
     public static AdsManager Instance { get; private set; }
-
-
 
     private void Awake()
     {
@@ -23,10 +23,18 @@ public class AdsManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+   
+       
 
-        bannerAds.LoadBannerAd();
+        // Baþlangýçta reklamlarý yükle (Awake'te yüklemek yerine, ihtiyaca göre LoadBannerAd() içini düzenleyebilirsiniz)
+        // bannerAds.LoadBannerAd(); // Bu satýrý þimdilik yoruma alýyoruz, sahneye göre yöneteceðiz.
         interstitialAds.LoadInterstitialAd();
         rewardedAds.LoadRewardedAd();
     }
-    
+
+    private void OnDestroy()
+    {
+    }
+
+   
 }

@@ -13,6 +13,9 @@ public enum PanelID
     AbilityPurchasePanel,
     LevelUpPanel,
     RefillEnergyPanel,
+    BuyAbilityPanel,
+    InUpPanel,
+    RateUs,
 
 
 }

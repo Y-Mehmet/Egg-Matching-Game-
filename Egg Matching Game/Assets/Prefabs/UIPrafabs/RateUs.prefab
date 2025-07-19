@@ -55,7 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7861384816947281860}
   m_Layer: 5
-  m_Name: Rate
+  m_Name: RateUs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1626391119847790933}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 1670575954298122980}
   - component: {fileID: 8449011067489870660}
   - component: {fileID: 8848608855176751088}
+  - component: {fileID: 7586114904691450616}
   m_Layer: 5
   m_Name: Button_Maybe
   m_TagString: Untagged
@@ -338,7 +339,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8449011067489870660}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7586114904691450616}
+        m_TargetAssemblyTypeName: HideLastPanelButton, Assembly-CSharp
+        m_MethodName: DoHidePanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7586114904691450616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2453678680822930153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56cecaf833e4b144d8e6a214f27d6755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2539038402315744673
 GameObject:
   m_ObjectHideFlags: 0

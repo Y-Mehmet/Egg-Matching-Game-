@@ -18,6 +18,10 @@ MonoBehaviour:
   RequiredLevel: 7
   Title: Shuffle
   Description: Only the eggs in the wrong positions are being shuffled watch carefully!
+  ParticlePerfabs: {fileID: 0}
+  AbilityWorkerPrefab: {fileID: 0}
+  ParticleStartTime: 0
+  cost: 1900
   RequiresTarget: 0
   TargetTag: 
   action: {fileID: 11400000, guid: e9869bc338168b847846cdb9da1260aa, type: 2}
