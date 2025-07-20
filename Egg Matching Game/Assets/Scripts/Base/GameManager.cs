@@ -672,7 +672,7 @@ public class GameManager : MonoBehaviour
         
         int startSlotCount= GetLevelData().eggColors.Count;
         int currentEggCount = startSlotCount - brokenEggCount;
-        int currentSlotCount = startSlotCount - GetLevelData().GetBrokenEggCount();
+        int currentSlotCount = startSlotCount - GetLevelData().GetBrokenSlotCount();
 
 
         int ceckedEggCount = currentEggCount>currentSlotCount? currentSlotCount:currentEggCount;
@@ -723,8 +723,9 @@ public class GameManager : MonoBehaviour
                 }
                 i++;
             }
+            Debug.Log("True Egg Count : " + trueCount + "  Cecked Egg Count : " + ceckedEggCount+   " Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
             trueEggCountChanged.Invoke(trueCount);
-            if(trueCount== ceckedEggCount)
+            if(trueCount>= ceckedEggCount)
             {
 
 

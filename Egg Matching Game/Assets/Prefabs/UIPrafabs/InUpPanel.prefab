@@ -15574,7 +15574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 20
+    m_Left: 0
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -15690,7 +15690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 7549825459052051685}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 0
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -15783,7 +15783,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 702.5, y: -1800.1272}
+  m_AnchoredPosition: {x: 682.5, y: -1800.1272}
   m_SizeDelta: {x: 1365, y: 984.45715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4701693654911311901
@@ -20784,7 +20784,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 702.5, y: -492.22858}
+  m_AnchoredPosition: {x: 682.5, y: -492.22858}
   m_SizeDelta: {x: 1345, y: 984.45715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8625426953775349934

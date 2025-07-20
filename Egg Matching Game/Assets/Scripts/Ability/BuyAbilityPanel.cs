@@ -6,6 +6,7 @@ public class BuyAbilityPanel : MonoBehaviour
 {
     [SerializeField] private Button buyBtn;
     [SerializeField] private TMP_Text costText, desciriptionText;
+    [SerializeField] private Image boosterImage;
     
     private void OnEnable()
     {
@@ -13,6 +14,7 @@ public class BuyAbilityPanel : MonoBehaviour
         buyBtn.onClick.AddListener(OnClick);
         costText.text = abilityData.cost + "";
         desciriptionText.text = abilityData.Description;
+        boosterImage.sprite = abilityData.Icon;
         
     }
     private void OnDisable()
