@@ -8,8 +8,8 @@ using Unity.VisualScripting;
 public class EggSpawner : MonoBehaviour
 {
     public static EggSpawner instance;
-    public GameObject EggPrefab, SlotPrefab, JokerEggPrefab, AntiJokerEggPrefab, HiddenEggPrefeb;
-    public Transform EggParent, SlotParent;
+    public GameObject EggPrefab, SlotPrefab, JokerEggPrefab, AntiJokerEggPrefab, HiddenEggPrefeb, dragonPrefab;
+    public Transform EggParent, SlotParent, dragon;
     public int HiddenEggCount = 0; // Gizli yumurta sayýsý
     public int JokerEggCount = 0; // Joker yumurta sayýsý
     public int AntiJokerEggCount = 0; // Anti-joker yumurta sayýsý
@@ -42,6 +42,11 @@ public class EggSpawner : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void Start()
+    {
+        dragon = Instantiate(dragonPrefab, Vector3.zero, Quaternion.identity).transform;
+        dragon.gameObject.SetActive(false);
+    }
 
     private void OnEnable()
     {
@@ -54,6 +59,8 @@ public class EggSpawner : MonoBehaviour
     
     public void SpawnEgg(int levelIndex)
     {
+        if(dragon!=null)
+        dragon.gameObject.SetActive(false);
         mixColorList.Clear();
         topEggColor.Clear();
         foreach (var item in eggList)

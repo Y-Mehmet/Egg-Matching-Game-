@@ -9,6 +9,7 @@ using System.Drawing;
 using Color = UnityEngine.Color;
 using System.Collections;
 using Mono.Cecil;
+using JetBrains.Annotations;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,10 +25,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
     [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
     
-    
+    private float fadeDuration=1f; // Materyal geçiş süresi
 
     //public List<LevelData> levelDatas = new List<LevelData>();
-    public LevelDataHolder levelDataHolder; 
+    public LevelDataHolder levelDataHolder;
+    public DragonData DragonDataSO;
     
     public List<Vector3> SlotPositionList = new List<Vector3>();
     public List<Vector3> TopEggPosList = new List<Vector3>();
@@ -727,17 +729,62 @@ public class GameManager : MonoBehaviour
             trueEggCountChanged.Invoke(trueCount);
             if(trueCount>= ceckedEggCount)
             {
-
+                ChangeMaterial();
 
                 Debug.LogWarning("congs");
+                //if(eggSlotDic.Count > 0)
+                //{
+                //    foreach (var item in eggSlotDic)
+                //    {
+                //        if (item.Value != null)
+                //        {
+                //            EggSpawner.instance.dragon = item.Value.transform;
+                //        }
+                //    }
+                //}
+                //EggSpawner.instance.dragon.gameObject.SetActive(true);
+                
 
-                ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
-                PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel, PanelShowBehavior.HIDE_PREVISE);
+                //ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
+                //PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel, PanelShowBehavior.HIDE_PREVISE);
                 
             }
         }
         
     }
+   private void ChangeMaterial()
+    {
+        foreach (var item in eggSlotDic)
+        {
+            Renderer objectRenderer = item.Value.GetComponent<Renderer>();
+            if (item.Value != null)
+            {
+                // Bir animasyon zinciri (Sequence) oluşturuyoruz
+                Sequence mySequence = DOTween.Sequence();
+
+                // 1. ADIM: Mevcut materyali yavaşça görünmez yap (Fade out)
+                // Not: .material kullandığımız için materyalin bir kopyası üzerinde çalışıyoruz.
+                mySequence.Append(objectRenderer.material.DOFade(0f, fadeDuration));
+
+                // 2. ADIM: Fade out bittiğinde materyali değiştir ve yeni materyali anında görünmez yap
+                mySequence.AppendCallback(() => {
+                   Material newMaterial= DragonDataSO.dragonMaterial[DragonManager.Instance.DragonIndex];
+                    Color newColor = newMaterial.color;
+                    newColor.a = 0f;
+
+                    // Önce rengi ayarla, sonra materyali ata
+                    // Bu kısım önemli, çünkü yeni materyalin doğrudan 0 alfa ile başlamasını sağlıyoruz
+                    newMaterial.color = newColor;
+                    objectRenderer.material = newMaterial;
+                });
+
+                // 3. ADIM: Şimdi yeni materyali yavaşça görünür yap (Fade in)
+                // Tekrar .material diyoruz ki doğru kopyayı fade edelim
+                mySequence.Append(objectRenderer.material.DOFade(1f, fadeDuration));
+            }
+        }
+    }
+    
     private void RemoveSlotByIndex(int index)
     {
         foreach( var slot in slotList)
