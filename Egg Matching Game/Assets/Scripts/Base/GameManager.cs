@@ -729,7 +729,7 @@ public class GameManager : MonoBehaviour
             {
 
 
-
+                Debug.LogWarning("congs");
 
                 ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
                 PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel, PanelShowBehavior.HIDE_PREVISE);
