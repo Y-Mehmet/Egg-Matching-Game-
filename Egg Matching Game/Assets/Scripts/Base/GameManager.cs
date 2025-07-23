@@ -10,11 +10,14 @@ using Color = UnityEngine.Color;
 using System.Collections;
 using Mono.Cecil;
 using JetBrains.Annotations;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance;
     public GameObject AbilityBarPanel;
+    public bool isSelectTrueDaragonEgg;
     [Header("Shuffle Animation Settings")]
     [SerializeField] private float swapDuration = 0.3f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
     [SerializeField] private float delayBetweenSwaps = 0.1f;
@@ -25,7 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
     [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
     
-    private float fadeDuration=1f; // Materyal geçiş süresi
+    private float fadeDuration=3f; // Materyal geçiş süresi
 
     //public List<LevelData> levelDatas = new List<LevelData>();
     public LevelDataHolder levelDataHolder;
@@ -50,8 +53,9 @@ public class GameManager : MonoBehaviour
     public Action continueGame;
     public Action gameReStart;
     public Action gameOver;
-   
-    
+    public AbilityData abilityData;
+
+
     private Color originalColor;
     public bool gameStarted = false;
     public bool AnyPanelisOpen = false;
@@ -459,6 +463,100 @@ public class GameManager : MonoBehaviour
         });
 
     }
+    public void ShuffleRandomly()
+    {
+        StartCoroutine(ShuffleRandomlyCoroutine());
+    }
+
+    private IEnumerator ShuffleRandomlyCoroutine()
+    {
+        // 1. Adım: Mevcut bir karıştırma işlemi var mı diye kontrol et
+        if (isShuffling)
+        {
+            Debug.LogWarning("Karıştırma zaten devam ediyor.");
+            yield break;
+        }
+        yield return new WaitForSeconds(fadeDuration);
+        // 2. Adım: Karıştırılacak yumurtaları al
+        // eggSlotDic'deki tüm yumurtaları doğrudan listeye alıyoruz.
+        List<GameObject> eggsToShuffle = new List<GameObject>(eggSlotDic.Values);
+
+        if (eggsToShuffle.Count < 2)
+        {
+            Debug.Log("Karıştırmak için yeterli yumurta yok (en az 2 tane olmalı).");
+            PanelManager.Instance.ShowPanel(PanelID.BreakDragonEggPanel);
+            abilityData.action.Execute();
+            yield break;
+        }
+
+        isShuffling = true;
+       
+
+        // 3. Adım: Yumurtaların başlangıç pozisyonlarını ve slotlarını sakla
+        Dictionary<GameObject, int> eggToOriginalSlotIndex = new Dictionary<GameObject, int>();
+        foreach (var pair in eggSlotDic)
+        {
+            eggToOriginalSlotIndex[pair.Value] = pair.Key;
+        }
+
+        // 4. Adım: Yumurta listesini rastgele karıştır (Fisher-Yates algoritması)
+        int n = eggsToShuffle.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = Random.Range(0, n + 1);
+            // Listedeki yumurtaların yerini değiştir
+            (eggsToShuffle[k], eggsToShuffle[n]) = (eggsToShuffle[n], eggsToShuffle[k]);
+        }
+
+        // 5. Adım: Animasyonları oluştur ve başlat
+        Sequence shuffleSequence = DOTween.Sequence();
+        float stepDuration = swapDuration / 3.0f;
+
+        // Geçici bir sözlük, hangi yumurtanın hangi slota gideceğini tutar.
+        Dictionary<int, GameObject> newEggSlotDic = new Dictionary<int, GameObject>();
+
+        int originalSlotIndexCounter = 0;
+        foreach (int originalSlotIndex in eggSlotDic.Keys.OrderBy(key => key)) // Slotları sıralı gezmek tutarlılık sağlar
+        {
+            GameObject eggToMove = eggsToShuffle[originalSlotIndexCounter];
+            Transform targetSlot = slotList[originalSlotIndex].transform;
+            Vector3 startPos = eggToMove.transform.position;
+            Vector3 targetPos = targetSlot.position;
+
+            // Bu yumurta artık bu slota ait olacak.
+            newEggSlotDic[originalSlotIndex] = eggToMove;
+
+            // Animasyonu 3 adımda yap (Geri Çek -> Yana Kay -> İleri Git)
+            Vector3 backPos = new Vector3(startPos.x, startPos.y, startPos.z + zOffsetOnSwap);
+            Vector3 swapTargetPos = new Vector3(targetPos.x, targetPos.y, backPos.z);
+
+            // Tüm animasyonların aynı anda başlaması için Insert kullanılır.
+            // Her animasyonun başlangıcına küçük bir gecikme ekleyerek kaotik ama sıralı bir görünüm elde edebiliriz.
+            float animStartTime = originalSlotIndexCounter * delayBetweenSwaps;
+
+            Tween moveBack = eggToMove.transform.DOMove(backPos, stepDuration).SetEase(shuffleEase);
+            Tween moveSideways = eggToMove.transform.DOMove(swapTargetPos, stepDuration).SetEase(shuffleEase);
+            Tween moveForward = eggToMove.transform.DOMove(targetPos, stepDuration).SetEase(shuffleEase);
+
+            shuffleSequence.Insert(animStartTime, moveBack);
+            shuffleSequence.Insert(animStartTime + stepDuration, moveSideways);
+            shuffleSequence.Insert(animStartTime + (stepDuration * 2), moveForward);
+
+            originalSlotIndexCounter++;
+        }
+
+        // 6. Adım: Animasyon bittiğinde mantıksal verileri güncelle
+        shuffleSequence.OnComplete(() => {
+            // Ana yumurta-slot sözlüğünü yeni, karıştırılmış olanla güncelle
+            eggSlotDic = newEggSlotDic;
+            isShuffling = false; // Bayrağı indir
+            PanelManager.Instance.ShowPanel(PanelID.BreakDragonEggPanel);
+            abilityData.action.Execute();
+        });
+
+        yield return shuffleSequence.WaitForCompletion();
+    }
     public void AssignMissingEggs()
     {
         // Zaten bir atama animasyonu çalışıyorsa, yenisini başlatma.
@@ -660,6 +758,55 @@ public class GameManager : MonoBehaviour
             j++;
         }
     }
+    public void BreakDragonEggProses(GameObject Egg)
+    {
+        int i = 0;
+        foreach (var item in GetLevelData().eggColors)
+        {
+            if (eggSlotDic.TryGetValue(i, out GameObject egg))
+            {
+
+                if (egg == Egg)
+                {
+                    
+                    if(egg.transform.childCount>1)
+                    {
+                        if (EggSpawner.instance.dragon != null)
+                        {
+                            EggSpawner.instance.dragon.transform.SetParent(null);
+                            EggSpawner.instance.dragon.SetActive(true);
+                            EggSpawner.instance.dragon.transform.DOMoveZ(-1f, 2f).SetEase(Ease.InOutSine).OnComplete(() =>
+                            {
+                                isSelectTrueDaragonEgg = true;
+                                PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel);
+                                Debug.LogWarning(" true egg for dragon");
+                            });
+                           
+                        }
+                        else
+                            Debug.LogWarning("dragon egg is null");
+                      
+                    }
+                    else
+                    {
+                        Debug.LogWarning(" wrong egg for dragon");
+
+                        EggSpawner.instance.dragon.transform.SetParent(null);
+                        EggSpawner.instance.dragon.SetActive(true);
+                        EggSpawner.instance.dragon.transform.DOMoveZ(-1f, 2f).SetEase(Ease.InOutSine).OnComplete(() =>
+                        {
+                           isSelectTrueDaragonEgg = false;
+                            PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel);
+                        });
+                    }
+                    eggSlotDic.Remove(i);
+                    break;
+                }
+            }
+            i++;
+        }
+        
+    }
     public void Check()
     {
         LevelData currentLevel = GetLevelData();
@@ -729,34 +876,39 @@ public class GameManager : MonoBehaviour
             trueEggCountChanged.Invoke(trueCount);
             if(trueCount>= ceckedEggCount)
             {
+                if (eggSlotDic.Count > 0)
+                {
+                    foreach (var item in eggSlotDic)
+                    {
+                        if (item.Value != null)
+                        {
+
+                            EggSpawner.instance.dragon.transform.SetParent(item.Value.transform);
+                            EggSpawner.instance.dragon.transform.localPosition =  new Vector3(0,0.2f,0);
+                            break;
+                        }
+                    }
+                }
+                EggSpawner.instance.DragonSetActive();
                 ChangeMaterial();
 
                 Debug.LogWarning("congs");
-                //if(eggSlotDic.Count > 0)
-                //{
-                //    foreach (var item in eggSlotDic)
-                //    {
-                //        if (item.Value != null)
-                //        {
-                //            EggSpawner.instance.dragon = item.Value.transform;
-                //        }
-                //    }
-                //}
-                //EggSpawner.instance.dragon.gameObject.SetActive(true);
                 
 
-                //ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
+
+                ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
                 //PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel, PanelShowBehavior.HIDE_PREVISE);
-                
+
             }
         }
         
     }
    private void ChangeMaterial()
     {
+       
         foreach (var item in eggSlotDic)
         {
-            Renderer objectRenderer = item.Value.GetComponent<Renderer>();
+            Renderer objectRenderer = item.Value.GetComponentInChildren<Renderer>();
             if (item.Value != null)
             {
                 // Bir animasyon zinciri (Sequence) oluşturuyoruz
@@ -783,6 +935,7 @@ public class GameManager : MonoBehaviour
                 mySequence.Append(objectRenderer.material.DOFade(1f, fadeDuration));
             }
         }
+        ShuffleRandomly();
     }
     
     private void RemoveSlotByIndex(int index)

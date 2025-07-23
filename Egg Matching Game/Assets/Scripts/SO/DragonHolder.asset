@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09686dd877a1bb94d80420b2ff3779cb, type: 3}
+  m_Name: DragonHolder
+  m_EditorClassIdentifier: 
+  dragonSOList:
+  - {fileID: 11400000, guid: 231ef5ae36c7b2a4a84230f14224be8c, type: 2}
+  - {fileID: 11400000, guid: 8ea56b2f7c79b50448f168f215eea8cd, type: 2}
+  - {fileID: 11400000, guid: f5a8a13b639b66545a6a929616dfcd09, type: 2}
+  - {fileID: 11400000, guid: 9889720bb67cfed4eb18fb3d179e4088, type: 2}
+  - {fileID: 11400000, guid: 0b6265932b20d7947aa0b48c5fea37bf, type: 2}
+  - {fileID: 11400000, guid: 85378578a1280bb41906db5d92bebe5b, type: 2}
+  - {fileID: 11400000, guid: ab7e05b37d843394cbc4450b5a2760ca, type: 2}
+  - {fileID: 11400000, guid: 6af9f52a71ee5c9429c8175a539742f8, type: 2}
+  - {fileID: 11400000, guid: d3921795c6e93874ba5d6301692cbd9e, type: 2}
+  - {fileID: 11400000, guid: 098cbc5bf9fa32e4ea33b08b51d47356, type: 2}

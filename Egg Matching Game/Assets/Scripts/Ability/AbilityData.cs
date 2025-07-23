@@ -6,7 +6,8 @@ public enum AbilityType
     FreezeTime,
     BreakSlot,
     BreakEgg,
-    Shuffle
+    Shuffle,
+    BreakDragonEgg,
 }
 
 // Bu satýr sayesinde Unity'de "Create > Game > Ability" menüsü ile yeni yetenek verileri oluþturabilirsiniz.

@@ -8,7 +8,7 @@ public class LevelUpPanel : MonoBehaviour
 {
     public TMP_Text levelText, gemCountText, coinCountText;
     public Button adsBtn, contunioBtn;
-
+    private int gemAmount;
 
     private void OnEnable()
     {
@@ -19,7 +19,11 @@ public class LevelUpPanel : MonoBehaviour
             return;
         }
         levelText.text = "" + (ResourceManager.Instance.GetResourceAmount(ResourceType.LevelIndex)) ;
-        gemCountText.text = "" + ResourceManager.Instance.gemsPerGame;
+        if (GameManager.instance.isSelectTrueDaragonEgg)
+            gemAmount = ResourceManager.Instance.gemsPerGame;
+        else
+            gemAmount = 0;
+        gemCountText.text = "" + gemAmount;
         coinCountText.text = "" + ResourceManager.Instance.coinsPerGame;
         adsBtn.onClick.AddListener(OnAdsButtonClicked);
         contunioBtn.onClick.AddListener(OnContinueButtonClicked);
@@ -28,10 +32,7 @@ public class LevelUpPanel : MonoBehaviour
     {
         yield return null;
     }
-    private void Start()
-    {
-       
-    }
+   
     private void OnDisable()
     {
         adsBtn.onClick.RemoveListener(OnAdsButtonClicked);
@@ -59,7 +60,7 @@ public class LevelUpPanel : MonoBehaviour
     private void OnContinueButtonClicked()
     {
         ResourceManager.Instance.AddResource(ResourceType.Coin, ResourceManager.Instance.coinsPerGame   );
-        ResourceManager.Instance.AddResource(ResourceType.Gem, ResourceManager.Instance.gemsPerGame);
+        ResourceManager.Instance.AddResource(ResourceType.Gem,gemAmount);
         
         SceeneManager.instance.LoadScene(0);
     }

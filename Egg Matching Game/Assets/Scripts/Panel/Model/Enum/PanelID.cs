@@ -16,6 +16,8 @@ public enum PanelID
     BuyAbilityPanel,
     InUpPanel,
     RateUs,
+    BreakDragonEggPanel,
+    ResultOfDragonEggPanel,
 
 
 }

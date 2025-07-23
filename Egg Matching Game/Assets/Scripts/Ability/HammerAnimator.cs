@@ -27,6 +27,10 @@ public class HammerAnimator : MonoBehaviour
     {
         StartCoroutine(OnThrowCorrotune());
     }
+    public void OnThrowBombAnimationComplated2() // break drago egg
+    {
+        StartCoroutine(OnThrowCorrotune2());
+    }
     IEnumerator OnSmashCorrotune()
     {
         Debug.LogWarning("OnSmashCorrotune called. targetToDestroy: " + (targetToDestroy != null ? targetToDestroy.name : "null"));
@@ -96,6 +100,37 @@ public class HammerAnimator : MonoBehaviour
 
        
         
+    }
+    IEnumerator OnThrowCorrotune2()
+    {
+
+        yield return new WaitForSeconds(0.2f); // Anlýk bir gecikme ekleyerek animasyonun tamamlanmasýný bekler
+        if (targetToDestroy != null)
+        {
+
+            transform.DOMove(targetToDestroy.transform.position + new Vector3(0, 0, -3), rotationDuration).SetEase(Ease.InOutQuad);
+            // 1. Hedef Rotasyonu Belirle
+            // X: -70, Y: 30, Z: 0 (veya mevcut Z deðeri)
+            Vector3 targetRotation = new Vector3(30, 0, 0);
+
+            // 2. Animasyonu Baþlat
+            // transform.DOLocalRotate(hedefRotasyon, süre, döndürmeModu);
+            transform.DOLocalRotate(targetRotation, rotationDuration)
+                     .SetEase(Ease.InOutQuad).OnComplete(() => {
+                         GameManager.instance.BreakDragonEggProses(targetToDestroy);
+
+                         targetToDestroy.SetActive(false);
+                         targetToDestroy = null;
+                         gameObject.SetActive(false);
+
+                     });
+
+
+
+        }
+
+
+
     }
     private void OnDisable()
     {

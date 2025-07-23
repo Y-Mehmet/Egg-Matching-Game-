@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8059344742039255322}
   - component: {fileID: 5204167048318509810}
+  - component: {fileID: 8223447651761191164}
+  - component: {fileID: 6391710118255744320}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -42,5 +44,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d094378907b638048a6cea7f0cb01514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8223447651761191164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894771853239753364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9259082962e771144ba76f1a7d5f2b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragonHolder: {fileID: 11400000, guid: e17332fa141488c4d9c2d5abdd8bf828, type: 2}
+  DragonIndex: 0
+--- !u!114 &6391710118255744320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8894771853239753364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 891cb8075c94ec248baae10677484196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

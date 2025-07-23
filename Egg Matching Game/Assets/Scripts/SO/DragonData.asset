@@ -13,4 +13,14 @@ MonoBehaviour:
   m_Name: DragonData
   m_EditorClassIdentifier: 
   dragonMaterial:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 1d2da216b8e474e4f88dd278f50125b1, type: 2}
+  - {fileID: 2100000, guid: e25154d28cdbb2f459c2c139b3dfae52, type: 2}
+  - {fileID: 2100000, guid: 6470a06bb5baa2a448a8909cfe7cd67a, type: 2}
+  - {fileID: 2100000, guid: aa8bda01106f5284a989e531cf75c14d, type: 2}
+  - {fileID: 2100000, guid: 6f8e895808ee8f445bf4301b97ab95ab, type: 2}
+  - {fileID: 2100000, guid: 84e2a6e6397e64043b0cbf06a25413fc, type: 2}
+  - {fileID: 2100000, guid: 35481afe5a69bac4e968eac043b74d02, type: 2}
+  - {fileID: 2100000, guid: be9209a07e9f2bf48b09f73ece5812b2, type: 2}
+  - {fileID: 2100000, guid: e470da75b232a324b82aa5ef5afc40a2, type: 2}
+  - {fileID: 2100000, guid: 23f007224d37780439e6c6d9ccfab6b8, type: 2}
+  - {fileID: 2100000, guid: 9cb7a7738a6c3bc48b70e6e08f5e85ff, type: 2}
