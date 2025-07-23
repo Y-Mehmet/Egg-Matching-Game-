@@ -32866,43 +32866,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: gemAmount
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: coinAmount
+      value: 40000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32922,6 +32930,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9148980508878853797}
     m_Modifications:
+    - target: {fileID: 250087251720978326, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 928516686caa643f5b6615dc945cff34, type: 3}
     - target: {fileID: 1825097174321494570, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_Name
       value: Item_Gold
@@ -33012,43 +33024,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: gemAmount
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: coinAmount
+      value: 20000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33068,6 +33088,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6532133279485593977}
     m_Modifications:
+    - target: {fileID: 250087251720978326, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 61725b696bb9b4c73bb7f577825b65b2, type: 3}
     - target: {fileID: 1825097174321494570, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_Name
       value: Item_Gold (1)
@@ -33158,43 +33182,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: gemAmount
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: coinAmount
+      value: 75000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33603,6 +33635,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2089674046237892230}
     m_Modifications:
+    - target: {fileID: 250087251720978326, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 82813c074e2854877b1382f0e987511b, type: 3}
     - target: {fileID: 1825097174321494570, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_Name
       value: Item_Gold
@@ -33693,43 +33729,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: gemAmount
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: coinAmount
+      value: 2000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33749,6 +33793,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2089674046237892230}
     m_Modifications:
+    - target: {fileID: 250087251720978326, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2340e003a4a6745a8929491f3b365cea, type: 3}
     - target: {fileID: 1825097174321494570, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_Name
       value: Item_Gold (1)
@@ -33839,43 +33887,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: gemAmount
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: coinAmount
+      value: 10000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

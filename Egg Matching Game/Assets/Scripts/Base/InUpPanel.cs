@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor.ShortcutManagement;
 using UnityEngine;
 
 public class InUpPanel : MonoBehaviour

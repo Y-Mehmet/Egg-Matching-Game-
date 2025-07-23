@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         gameData = SaveSystem.Load(); 
         if (gameData.isFirstLaunch)
         {
+          
             Debug.Log("Bu ilk oyun açılışı!");
             gameData.isFirstLaunch = false;
             Save();
@@ -920,7 +921,7 @@ public class GameManager : MonoBehaviour
 
                 // 2. ADIM: Fade out bittiğinde materyali değiştir ve yeni materyali anında görünmez yap
                 mySequence.AppendCallback(() => {
-                   Material newMaterial= DragonDataSO.dragonMaterial[DragonManager.Instance.DragonIndex];
+                   Material newMaterial= DragonDataSO.dragonMaterial[ResourceManager.Instance.DragonIndex];
                     Color newColor = newMaterial.color;
                     newColor.a = 0f;
 

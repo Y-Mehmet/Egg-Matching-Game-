@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 1670575954298122980}
   - component: {fileID: 8449011067489870660}
   - component: {fileID: 8848608855176751088}
-  - component: {fileID: 7586114904691450616}
+  - component: {fileID: 2044260744980635178}
   m_Layer: 5
   m_Name: Button_Maybe
   m_TagString: Untagged
@@ -340,8 +340,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7586114904691450616}
-        m_TargetAssemblyTypeName: HideLastPanelButton, Assembly-CSharp
+      - m_Target: {fileID: 2044260744980635178}
+        m_TargetAssemblyTypeName: HideAllPanelButton, Assembly-CSharp
         m_MethodName: DoHidePanel
         m_Mode: 1
         m_Arguments:
@@ -352,7 +352,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7586114904691450616
+--- !u!114 &2044260744980635178
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -361,7 +361,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2453678680822930153}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56cecaf833e4b144d8e6a214f27d6755, type: 3}
+  m_Script: {fileID: 11500000, guid: f4401e09d9b45e749a25865b4dea5b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2539038402315744673

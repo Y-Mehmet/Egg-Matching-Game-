@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,7 +46,7 @@ public class MissionList : MonoBehaviour
     {
         requireGemAmount = DragonManager.Instance.GetRequiredGemAmount();
         dragonNameText.text = DragonManager.Instance.GetCurrentDragonSO().DragonName.ToString();
-        desctriptionText.text = DragonManager.Instance.GetCurrentDragonSO().videoLink.ToString();
+        desctriptionText.text = "Paint the "+DragonManager.Instance.GetCurrentDragonSO().color.ToString().FirstCharacterToLower() +" parts";
         missionGemCountText.text = requireGemAmount.ToString();
         colorImage.color = ColorManager.instance.GetEggColor(DragonManager.Instance.GetCurrentDragonSO().color);
 

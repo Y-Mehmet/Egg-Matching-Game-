@@ -25,7 +25,7 @@ public class LoadNextSceen : MonoBehaviour
         if (levelText != null)
         {
             
-            levelText.text = (ResourceManager.Instance.GetResourceAmount(ResourceType.LevelIndex)+1).ToString();
+            levelText.text = "Level "+(ResourceManager.Instance.GetResourceAmount(ResourceType.LevelIndex)+1);
             Debug.Log("Level text set to: " + levelText.text);
         }
     }

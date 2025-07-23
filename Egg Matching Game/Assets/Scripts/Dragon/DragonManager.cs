@@ -8,7 +8,7 @@ public class DragonManager : MonoBehaviour
     public static DragonManager Instance { get; private set; }
     public DragonHolder dragonHolder;
 
-    public int DragonIndex = 0;
+    
 
     public Action<int> OnDragonIndexChange;
     public Action<int> OnDragonGemAmountChange;
@@ -25,6 +25,10 @@ public class DragonManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void Start()
+    {
+       
+    }
     private void OnEnable()
     {
         OnDragonIndexChange += SetDragonIndex;
@@ -40,38 +44,39 @@ public class DragonManager : MonoBehaviour
     private void SetDragonIndex(int index)
     {
 
-        DragonIndex += index;
+        ResourceManager.Instance.AddResource(ResourceType.DragonIndex, 1);
+        DragonManager.Instance.dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = 0;
         PanelManager.Instance.ShowPanel(PanelID.DragonInfo, PanelShowBehavior.HIDE_PREVISE);
 
     }
     public int GetDragonIndex()
     {
-        return DragonIndex;
+        return ResourceManager.Instance.GetResourceAmount(ResourceType.DragonIndex);
     }
     public int GetMissionGemAmount()
     {
-        return dragonHolder.dragonSOList[DragonIndex].dragonMissionGemValue;
+        return dragonHolder.dragonSOList[GetDragonIndex()].dragonMissionGemValue;
     }
     public void AddDragonGemAmount(int Amount)
     {
-       int tempAmount= dragonHolder.dragonSOList[DragonIndex].DragonGemAmount + Amount;
+       int tempAmount= dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount + Amount;
         if(tempAmount >= GetMissionGemAmount())
         {
-           
+            dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = GetMissionGemAmount();
             ResourceManager.Instance.SpendResource(ResourceType.Gem, GetRequiredGemAmount());
             OnDragonIndexChange?.Invoke(1);
 
         }
         else
         {
-            dragonHolder.dragonSOList[DragonIndex].DragonGemAmount = tempAmount;
+            dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = tempAmount;
             ResourceManager.Instance.SpendResource(ResourceType.Gem, Amount);
         }
        
     }
     public DragonSO GetCurrentDragonSO()
     {
-        return dragonHolder.dragonSOList[DragonIndex];
+        return dragonHolder.dragonSOList[GetDragonIndex()];
     }
     public int GetRequiredGemAmount()
     {

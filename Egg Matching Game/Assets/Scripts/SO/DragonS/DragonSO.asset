@@ -16,5 +16,6 @@ MonoBehaviour:
   dragonMissionGemValue: 3
   DragonGemAmount: 0
   DragonName: Aeryn
+  videoLink: 
+  color: 0
   DragonSprite: {fileID: 21300000, guid: a6385de2a00be364382c34b8a133d90f, type: 3}
-  videoLink: {fileID: 0}

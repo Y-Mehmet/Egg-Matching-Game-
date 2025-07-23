@@ -5,6 +5,7 @@ public class SaveGameData
 {
     // Mevcut veriler
     public int levelIndex = 0;
+    public int DragonIndex = 0;
     public bool isFirstLaunch = true;
 
     // --- YENİ EKLENEN ALANLAR ---

@@ -8,11 +8,14 @@ public class IAPManager : MonoBehaviour
    
     public void Purchased(Product product)
     {
-        switch(product.definition.id)
+        ResourceManager.Instance.onIAPchanged?.Invoke();
+        switch (product.definition.id)
         {
+             
             case "gem80":
                 ResourceManager.Instance.AddResource(ResourceType.Gem, 80);// 1.99
                 Debug.Log("Purchased 80 Gems for $1.99");
+
                 break;
             case "gem240":
                 ResourceManager.Instance.AddResource(ResourceType.Gem, 240);// 4.99
@@ -27,5 +30,6 @@ public class IAPManager : MonoBehaviour
                 ResourceManager.Instance.AddResource(ResourceType.Gem, 2100);// 29.99
                 break;
         }
+
     }
 }

@@ -8,6 +8,7 @@ public class ResourceManager : MonoBehaviour
     public static ResourceManager Instance { get; private set; }
     public Action<ResourceType, int> OnResourceChanged;
     public Action<RewardedType> currentRewardedTypeChanged;
+    public Action onIAPchanged;
     public RewardedType currentRewarded = RewardedType.Resource;
 
     private int coins;
@@ -17,6 +18,7 @@ public class ResourceManager : MonoBehaviour
     private int levelIndex ; // Oyun seviyesini tutan deðiþken
     public int coinsPerGame = 40; // Her oyun sonunda kazanýlan para miktarý
     public int gemsPerGame = 1; // Her oyun sonunda kazanýlan elmas miktarý
+    public int DragonIndex = 0;
 
 
     // Yüklenen tüm oyun verilerini tutan referansýmýz.
@@ -73,6 +75,7 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.Energy: return energy;
             case ResourceType.PlayCount: return playCount; // Oyun oynama sayýsýný döndürüyoruz
             case ResourceType.LevelIndex: return levelIndex; // Oyun seviyesini döndürüyoruz
+            case ResourceType.DragonIndex: return DragonIndex;
             default: return 0;
         }
     }
@@ -91,6 +94,7 @@ public class ResourceManager : MonoBehaviour
                 break;
             case ResourceType.PlayCount: playCount += amount; break; // Oyun oynama sayýsýný artýrýyoruz
             case ResourceType.LevelIndex: levelIndex += amount; break; // Oyun seviyesini artýrýyoruz
+            case ResourceType.DragonIndex: DragonIndex += amount; break; // Ejderha indeksini artýrýyoruz
         }
 
         OnResourceChanged?.Invoke(type, GetResourceAmount(type));
@@ -151,6 +155,7 @@ public class ResourceManager : MonoBehaviour
         gameData.energy = this.energy;
         gameData.playCount = this.playCount; // Oyun oynama sayýsýný da kaydediyoruz
         gameData.levelIndex = this.levelIndex; // Oyun seviyesini de kaydediyoruz
+        gameData.DragonIndex = this.DragonIndex;
 
         // YENÝ: Zaman bilgisini kaydet
         gameData.nextEnergyTimeString = this.nextEnergyTime.ToBinary().ToString();
@@ -167,6 +172,7 @@ public class ResourceManager : MonoBehaviour
         this.energy = gameData.energy;
         this.playCount = gameData.playCount;
         this.levelIndex = gameData.levelIndex;
+        this.DragonIndex = gameData.DragonIndex;
 
         // YENÝ: Zaman bilgisini yükle
         if (!string.IsNullOrEmpty(gameData.nextEnergyTimeString))
@@ -352,6 +358,15 @@ public class ResourceManager : MonoBehaviour
         return DateTime.UtcNow;
 
     }
+    public void Trade(int spendGemAmount, int addCoinAmount)
+    {
+
+
+        if (ResourceManager.Instance.SpendResource(ResourceType.Gem, spendGemAmount))
+            ResourceManager.Instance.AddResource(ResourceType.Coin, addCoinAmount);
+
+
+    }
 }
     public enum ResourceType
 {
@@ -360,4 +375,5 @@ public class ResourceManager : MonoBehaviour
     Energy,
     PlayCount,
     LevelIndex,
+    DragonIndex,
 }
