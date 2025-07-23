@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -8,8 +8,7 @@ using Sequence = DG.Tweening.Sequence;
 using System.Drawing;
 using Color = UnityEngine.Color;
 using System.Collections;
-using Mono.Cecil;
-using JetBrains.Annotations;
+
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
