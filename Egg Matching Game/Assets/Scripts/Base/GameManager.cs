@@ -10,6 +10,7 @@ using Color = UnityEngine.Color;
 using System.Collections;
 
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
     public Action pauseGame;
     public Action continueGame;
     public Action gameReStart;
+    public Action<int> addSec;
     public Action gameOver;
     public AbilityData abilityData;
 
@@ -125,6 +127,8 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
+        PanelManager.Instance.ShowPanel(PanelID.TryAgainPanel, PanelShowBehavior.HIDE_PREVISE);
+
     }
     public void ShowOutline(List<GameObject> list)
     {
@@ -174,7 +178,7 @@ public class GameManager : MonoBehaviour
         if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) <= 0)
         {
             Debug.LogWarning("Yeterli enerji yok, sahne yüklenemiyor.");
-            return;
+            SceeneManager.instance.LoadSceneAndEnergyPanel();
         }
         ResourceManager.Instance.AddResource(ResourceType.PlayCount, 1); // Oyun oynama sayısını artırıyoruz
         if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 3 == 2  )

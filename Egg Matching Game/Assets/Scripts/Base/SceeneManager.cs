@@ -23,4 +23,18 @@ public class SceeneManager : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.LoadScene(level);
        
     }
+    public void LoadSceneAndEnergyPanel()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        if(PanelManager.Instance!= null)
+        {
+            PanelManager.Instance.ShowPanel(PanelID.RefillEnergyPanel);
+        }
+        else
+        {
+            Debug.LogWarning("PanelManager instance is null. Cannot show RefillEnergyPanel.");
+        }
+
+
+    }
 }

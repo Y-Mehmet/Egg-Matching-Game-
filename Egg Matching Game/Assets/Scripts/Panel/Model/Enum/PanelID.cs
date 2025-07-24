@@ -18,6 +18,7 @@ public enum PanelID
     RateUs,
     BreakDragonEggPanel,
     ResultOfDragonEggPanel,
+    TryAgainPanel,
 
 
 }

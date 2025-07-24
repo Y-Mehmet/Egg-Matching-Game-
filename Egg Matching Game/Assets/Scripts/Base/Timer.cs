@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    private int startTime = 180;
+    private int startTime = 18;
     private int currentTime;
     private float timeSpeed;
     private Coroutine timeCoroutine;
@@ -14,6 +14,7 @@ public class Timer : MonoBehaviour
         GameManager.instance.pauseGame += StopTimer;
         GameManager.instance.continueGame += ContinueTimer;
         GameManager.instance.gameReStart += StopTimeCoroutine;
+        GameManager.instance.addSec += AddSecondAndContinue; // Zamaný artýrma eylemi için
         AbilityManager.Instance.frezzeTimeAction += StopTimerWhitSecond; // Zaman dondurma eylemi için
 
 
@@ -25,6 +26,7 @@ public class Timer : MonoBehaviour
         GameManager.instance.continueGame -= ContinueTimer;
         GameManager.instance.gameReStart -= StopTimeCoroutine;
         AbilityManager.Instance.frezzeTimeAction -= StopTimerWhitSecond; // Zaman dondurma eylemi için
+        GameManager.instance.addSec -= AddSecondAndContinue; // Zamaný artýrma eylemi için
     }
 
     void StartTimer()
@@ -86,6 +88,18 @@ public class Timer : MonoBehaviour
         }
 
         GameManager.instance.gameOver?.Invoke();
+
+    }
+    public void AddSecondAndContinue(int sec)
+    {
+        startTime = sec;
+        timeSpeed = GameManager.instance.TimeSpeed;
+        GameManager.instance.timeChanged?.Invoke(currentTime);
+        if (timeCoroutine != null)
+        {
+            StopCoroutine(timeCoroutine);
+        }
+        timeCoroutine = StartCoroutine(TimeRoutine());
 
     }
 }
