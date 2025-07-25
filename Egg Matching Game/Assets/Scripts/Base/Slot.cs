@@ -8,7 +8,7 @@ public class Slot : MonoBehaviour,ITrigger
 
     public void Triggered(GameObject triggerObject)
     {
-        GameManager.instance.AddEggListByIndex(slotIndex, triggerObject);
+        //GameManager.instance.AddEggListByIndex(slotIndex, triggerObject);
         
 
     }

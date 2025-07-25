@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    private int startTime = 18;
+    private int startTime = 180;
     private int currentTime;
     private float timeSpeed;
     private Coroutine timeCoroutine;

@@ -11,6 +11,7 @@ using System.Collections;
 
 using Random = UnityEngine.Random;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.Universal;
 
 public class GameManager : MonoBehaviour
 {
@@ -66,6 +67,18 @@ public class GameManager : MonoBehaviour
     private bool isAssigningEggs = false;
 
     private Vector3 targetPos;
+    // --- YENİ TIKLAMA MEKANİĞİ İÇİN EKLENEN DEĞİŞKENLER ---
+    // Yorum Satırı: Oyuncunun tıkladığı yumurtayı geçici olarak hafızada tutar.
+    public GameObject selectedEgg;
+
+    // Yorum Satırı: Seçilen yumurtayı görsel olarak vurgulamak için kullanılacak renk.
+    private Color selectedHighlightColor = new Color(0.8f, 0.9f, 1f, 0.7f);
+
+    // Yorum Satırı: Vurgulanan objenin orijinal rengini saklar ki seçimi kaldırınca geri yükleyebilelim.
+    private Color originalObjectColor;
+
+    // Yorum Satırı: Rengini değiştirdiğimiz son objenin renderer bileşenini tutar.
+    private Renderer lastSelectedRenderer;
     private void Awake()
     {
         if (instance == null)
@@ -123,8 +136,126 @@ public class GameManager : MonoBehaviour
         ReStart();
         
     }
-    
-    private void GameOver()
+    private void Update()
+    {
+        // Mobil ve Editor için dokunma/tıklama kontrolü
+        if (Input.GetMouseButtonDown(0))
+        {
+            HandleSelection();
+        }
+    }  // Yorum Satırı: Tıklanan objeyi analiz eder ve ilgili aksiyonu alır.
+    // Eskiden: Bu işlevsellik Egg ve Slot scriptlerindeki OnTriggerEnter ile dolaylı yoldan yapılıyordu.
+    // Şimdi: Tıklama olayını merkezi olarak yönetir. Raycast ile neyin vurulduğunu anlar (Yumurta mı, Slot mu?) 
+    // ve duruma göre yumurta seçer veya yerleştirme işlemini başlatır.
+    private void HandleSelection()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            
+            // Tıklanan obje bir yumurta mı?
+            if (hit.collider.TryGetComponent<Egg>(out Egg clickedEgg))
+            {
+                Debug.LogWarning("egg selected and eggslotdic vount " + eggSlotDic.Count);
+                if(selectedEgg== null)
+                {
+                    SelectObject(clickedEgg.gameObject); // İlk kez seçiliyorsa, seç ve vurgula.
+                }
+                // Zaten bu yumurta seçiliyse, seçimi iptal et.
+               else  if (selectedEgg == clickedEgg.gameObject)
+                {
+                    Debug.LogWarning("Deselecting egg: " + clickedEgg.gameObject.name);
+
+                    DeselectObject();
+                }
+                // Değilse, bu yumurtayı seç.
+                else if( !eggSlotDic.ContainsValue(clickedEgg.gameObject))
+                {
+
+                    // Mevcut yerleştirme/değiştirme mekaniğinizi çağırıyoruz.
+                    AddEggListByIndex(-1 , selectedEgg);
+                    DeselectObject(); // İşlem bitti, seçimi temizle.
+                }
+                else if( eggSlotDic.ContainsValue(clickedEgg.gameObject))
+                {
+                    AddEggListByIndex(eggSlotDic.FirstOrDefault(k => k.Value == clickedEgg.gameObject).Key, selectedEgg);
+                    DeselectObject();
+                }
+            }
+            // Tıklanan obje bir slot mu?
+            else if (hit.collider.TryGetComponent<Slot>(out Slot clickedSlot))
+            {
+                Debug.LogWarning("slot selected");
+                // Eğer bir yumurta seçiliyse, yerleştirme işlemini yap.
+                if (selectedEgg != null)
+                {
+                    // Mevcut yerleştirme/değiştirme mekaniğinizi çağırıyoruz.
+                    AddEggListByIndex(clickedSlot.slotIndex, selectedEgg);
+                    DeselectObject(); // İşlem bitti, seçimi temizle.
+                }
+            }
+            else if(selectedEgg!= null)
+            {
+                AddEggListByIndex(-1, selectedEgg);
+                DeselectObject();
+            }
+            else
+            {
+                Debug.LogWarning("bos alan tıklandı");
+                DeselectObject();
+            }
+        }
+        // Hiçbir şeye tıklanmadıysa yine seçimi iptal et.
+        else
+        {
+            DeselectObject();
+        }
+    }
+
+    // Yorum Satırı: Bir objeyi (yumurta) seçer ve görsel olarak vurgular.
+    // Eskiden: Böyle bir metod yoktu.
+    // Şimdi: Seçilen objenin renderer'ını bulur, orijinal rengini kaydeder ve onu bir vurgu rengiyle değiştirir.
+    private void SelectObject(GameObject obj)
+    {
+        // Önceki seçimi temizle
+        DeselectObject();
+
+        selectedEgg = obj;
+        lastSelectedRenderer = selectedEgg.GetComponentInChildren<Renderer>();
+        if (lastSelectedRenderer != null)
+        {
+            originalObjectColor = lastSelectedRenderer.material.color; // Orijinal rengi kaydet
+                                                                       // Mevcut rengin Kırmızı, Yeşil, Mavi değerlerini koruyarak,
+                                                                       // sadece alfası 0.5f olan yeni bir renk oluşturup atayın.
+            lastSelectedRenderer.material.color = new Color(
+                lastSelectedRenderer.material.color.r,
+                lastSelectedRenderer.material.color.g,
+                lastSelectedRenderer.material.color.b,
+                0.5f
+            );
+        }
+    }
+
+    // Yorum Satırı: Mevcut seçimi kaldırır ve objenin rengini eski haline getirir.
+    // Eskiden: Böyle bir metod yoktu.
+    // Şimdi: Seçili bir obje varsa, rengini kaydettiğimiz orijinal renge geri döndürür ve seçim değişkenlerini sıfırlar.
+    private void DeselectObject()
+    {
+        if (selectedEgg != null && lastSelectedRenderer != null)
+        {
+            // Orijinal rengi farklı bir yumurtaya veya materyale ait olabileceğinden,
+            // her seferinde materyalin mevcut rengine değil, saklanan orijinal renge dönmek önemlidir.
+            lastSelectedRenderer.material.color = originalObjectColor;
+        }
+        selectedEgg = null;
+        lastSelectedRenderer = null;
+    }
+
+
+    // ... (Diğer tüm metodlarınız AddEggListByIndex, Check, vs. aynen kalıyor) ...
+
+
+private void GameOver()
     {
         ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
         PanelManager.Instance.ShowPanel(PanelID.TryAgainPanel, PanelShowBehavior.HIDE_PREVISE);
@@ -241,6 +372,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Start");
        
         trueEggCountChanged.Invoke(0);
+        AssignMissingEggs();
     }
 
 
@@ -690,8 +822,8 @@ public class GameManager : MonoBehaviour
                 onSlotIndexChange?.Invoke(tempIndex, tempEgg);
             }else
             {
-
-                
+                 
+                eggSlotDic[tempIndex] = tempEgg;
                 onSlotIndexChange?.Invoke(-1, tempEgg);
             }
             eggSlotDic[slotIndex] = eggObj;
