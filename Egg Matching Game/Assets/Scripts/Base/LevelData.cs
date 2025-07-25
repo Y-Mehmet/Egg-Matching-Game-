@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewLevelData", menuName = "Level/LevelData")]
 public class LevelData : ScriptableObject
 {
-    
+    [Header("slot")]
     public List<EggColor> eggColors;// slot egg 
     public List<EggColor> topEggColors;
     public List<EggColor> tempTopEggColors;
     public int brokenEggCount = 0;
     public int brokenSlotCount = 0;
-
+    public int topEggPerCount = 1;
     public void RestartLevelData()
     {
         if(tempTopEggColors.Count > 0)
@@ -36,6 +36,10 @@ public class LevelData : ScriptableObject
     public int GetBrokenSlotCount()
     {
         return brokenSlotCount;
+    }
+    public int GetTopEggPerCount()
+    {
+        return topEggPerCount;
     }
     public List<EggColor> GetTempTopEggColorList()
     {

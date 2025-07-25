@@ -83,7 +83,9 @@ public class EggSpawner : MonoBehaviour
         topEggPos.Clear();
         slotHalfWeight = eggWeight / 2f;
         slotCount = GameManager.instance.GetLevelData().GetSlotCount();
-        topEggCount = GameManager.instance.GetLevelData().GetTopEggCount();
+        topEggCountPerColor = GameManager.instance.GetLevelData().GetTopEggPerCount();
+        topEggCount = GameManager.instance.GetLevelData().GetTopEggCount()/topEggCountPerColor;
+        
         GameManager.instance.slotCount = slotCount;
         CalculatePositions();
         GetMaterial();

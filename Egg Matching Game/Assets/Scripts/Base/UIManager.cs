@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     
     private void OnEnable()
     {
+        UpdateTime(180);
         GameManager.instance.timeChanged += UpdateTime;
         GameManager.instance.trueEggCountChanged += UpdateTrueEggCount;
         GameManager.instance.levelChanged += UpdateLevel;
@@ -25,7 +26,7 @@ public class UIManager : MonoBehaviour
     }
     private void UpdateTrueEggCount(int count)
     {
-        trueEggCountText.text = "X " + count;
+        trueEggCountText.text = "" + count;
     }
     private void UpdateLevel(int level)
     {

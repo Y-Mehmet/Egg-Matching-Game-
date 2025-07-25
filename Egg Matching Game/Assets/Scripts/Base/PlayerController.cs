@@ -40,45 +40,45 @@ public class PlayerController : MonoBehaviour
         GameManager.instance.onSlotedEggCountChange -= DropEgg;
     }
 
-    void Update()
-    {
-        if (GameManager.instance.gameStarted)
-        {
-#if UNITY_EDITOR
-            if (Input.GetMouseButtonDown(0))
-            {
-                TryPickEgg(Input.mousePosition);
-            }
-            else if (Input.GetMouseButton(0))
-            {
-                DragEgg(Input.mousePosition);
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                DropEgg();
-            }
-#else
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
+//    void Update()
+//    {
+//        if (GameManager.instance.gameStarted)
+//        {
+//#if UNITY_EDITOR
+//            if (Input.GetMouseButtonDown(0))
+//            {
+//                TryPickEgg(Input.mousePosition);
+//            }
+//            else if (Input.GetMouseButton(0))
+//            {
+//                DragEgg(Input.mousePosition);
+//            }
+//            else if (Input.GetMouseButtonUp(0))
+//            {
+//                DropEgg();
+//            }
+//#else
+//        if (Input.touchCount > 0)
+//        {
+//            Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
-            {
-                TryPickEgg(touch.position);
-            }
-            else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-            {
-                DragEgg(touch.position);
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                DropEgg();
-            }
-        }
-#endif
-        }
+//            if (touch.phase == TouchPhase.Began)
+//            {
+//                TryPickEgg(touch.position);
+//            }
+//            else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+//            {
+//                DragEgg(touch.position);
+//            }
+//            else if (touch.phase == TouchPhase.Ended)
+//            {
+//                DropEgg();
+//            }
+//        }
+//#endif
+//        }
 
-    }
+//    }
 
     public bool isDragging = false;
 

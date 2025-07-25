@@ -174,7 +174,16 @@ public class GameManager : MonoBehaviour
 
                     // Mevcut yerleştirme/değiştirme mekaniğinizi çağırıyoruz.
                     AddEggListByIndex(-1 , selectedEgg);
+                    if(eggSlotDic.ContainsValue(selectedEgg))
+                    {
+                        int index = eggSlotDic.FirstOrDefault(k => k.Value == selectedEgg).Key;
+                        AddEggListByIndex(index, clickedEgg.gameObject);
+
+
+                    }
+
                     DeselectObject(); // İşlem bitti, seçimi temizle.
+                    SelectObject(clickedEgg.gameObject);
                 }
                 else if( eggSlotDic.ContainsValue(clickedEgg.gameObject))
                 {
@@ -221,6 +230,28 @@ public class GameManager : MonoBehaviour
         DeselectObject();
 
         selectedEgg = obj;
+       
+        int eggStackIndex = obj.gameObject.GetComponent<Egg>().startTopStackIndex;
+        GameObject egg = EggSpawner.instance.eggStackList[eggStackIndex]
+                            .FirstOrDefault(e => e == obj);
+
+        if (egg != null)
+        {
+            EggSpawner.instance.eggStackList[eggStackIndex].Pop();
+            if (EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg))
+            {
+                nextEgg.SetActive(true);
+            }
+        }
+
+        //foreach (var item in EggSpawner.instance.eggStackList)
+        //{
+        //    if (item.Contains(obj.gameObject))
+        //    {
+        //        item.Pop();
+        //        item.Peek().SetActive(true);
+        //    }
+        //}
         lastSelectedRenderer = selectedEgg.GetComponentInChildren<Renderer>();
         if (lastSelectedRenderer != null)
         {
@@ -241,18 +272,23 @@ public class GameManager : MonoBehaviour
     // Şimdi: Seçili bir obje varsa, rengini kaydettiğimiz orijinal renge geri döndürür ve seçim değişkenlerini sıfırlar.
     private void DeselectObject()
     {
-        if (selectedEgg != null && lastSelectedRenderer != null)
+       if(selectedEgg!=null &&  selectedEgg.TryGetComponent<Egg>(out Egg egg))
         {
-            // Orijinal rengi farklı bir yumurtaya veya materyale ait olabileceğinden,
-            // her seferinde materyalin mevcut rengine değil, saklanan orijinal renge dönmek önemlidir.
-            lastSelectedRenderer.material.color = originalObjectColor;
+            
+            if (lastSelectedRenderer != null)
+            {
+                // Orijinal rengi farklı bir yumurtaya veya materyale ait olabileceğinden,
+                // her seferinde materyalin mevcut rengine değil, saklanan orijinal renge dönmek önemlidir.
+                lastSelectedRenderer.material.color = originalObjectColor;
+            }
+            selectedEgg = null;
+            lastSelectedRenderer = null;
         }
-        selectedEgg = null;
-        lastSelectedRenderer = null;
+        
     }
 
 
-    // ... (Diğer tüm metodlarınız AddEggListByIndex, Check, vs. aynen kalıyor) ...
+   
 
 
 private void GameOver()
@@ -372,7 +408,7 @@ private void GameOver()
         Debug.Log("Game Start");
        
         trueEggCountChanged.Invoke(0);
-        AssignMissingEggs();
+       // AssignMissingEggs();
     }
 
 
@@ -818,11 +854,32 @@ private void GameOver()
             
            if(tempIndex!=-1)
             {
+                Egg egg = eggObj.GetComponent<Egg>();
+                if (EggSpawner.instance.eggStackList[egg.startTopStackIndex].Contains(eggObj))
+                {
+
+                    EggSpawner.instance.eggStackList[egg.startTopStackIndex].Pop().SetActive(true); 
+                    if(EggSpawner.instance.eggStackList[egg.startTopStackIndex].TryPeek(out GameObject nextEgg))
+                    {
+                        nextEgg.SetActive(true);
+                    }
+                }
                 eggSlotDic[tempIndex] = tempEgg;
                 onSlotIndexChange?.Invoke(tempIndex, tempEgg);
             }else
             {
-                 
+                Egg egg= eggObj.GetComponent<Egg>();
+                if (!EggSpawner.instance.eggStackList[egg.startTopStackIndex].Contains(eggObj))
+                {
+
+                    if (EggSpawner.instance.eggStackList[egg.startTopStackIndex].TryPeek(out GameObject nextEgg))
+                    {
+                        nextEgg.SetActive(false);
+                    }
+                    EggSpawner.instance.eggStackList[egg.startTopStackIndex].Push(eggObj);
+                    eggObj.SetActive(true);
+
+                }
                 eggSlotDic[tempIndex] = tempEgg;
                 onSlotIndexChange?.Invoke(-1, tempEgg);
             }
