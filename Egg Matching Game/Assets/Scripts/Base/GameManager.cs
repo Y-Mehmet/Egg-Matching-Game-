@@ -192,6 +192,8 @@ public class GameManager : MonoBehaviour
                 else if( eggSlotDic.ContainsValue(clickedEgg.gameObject))
                 {
                     AddEggListByIndex(eggSlotDic.FirstOrDefault(k => k.Value == clickedEgg.gameObject).Key, selectedEgg);
+                    
+                    
                     DeselectObject();
                 }
             }
@@ -856,8 +858,8 @@ public class GameManager : MonoBehaviour
                     break;
                 }
             }
-            eggSlotDic[slotIndex] = eggObj;
-
+            
+            eggSlotDic[slotIndex]= eggObj;
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
         }
         else if (eggSlotDic.ContainsKey(slotIndex) && eggObj != eggSlotDic[slotIndex])
