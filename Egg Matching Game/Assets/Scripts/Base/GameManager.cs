@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour
             // Tıklanan obje bir yumurta mı?
             if (hit.collider.TryGetComponent<Egg>(out Egg clickedEgg))
             {
+               
                 Debug.LogWarning("egg selected and eggslotdic vount " + eggSlotDic.Count);
                 if(selectedEgg== null)
                 {
@@ -174,6 +175,9 @@ public class GameManager : MonoBehaviour
 
                     // Mevcut yerleştirme/değiştirme mekaniğinizi çağırıyoruz.
                     AddEggListByIndex(-1 , selectedEgg);
+                    PopStack(clickedEgg.gameObject);
+                    PushStack(selectedEgg);
+                    
                     if(eggSlotDic.ContainsValue(selectedEgg))
                     {
                         int index = eggSlotDic.FirstOrDefault(k => k.Value == selectedEgg).Key;
@@ -200,6 +204,7 @@ public class GameManager : MonoBehaviour
                 {
                     // Mevcut yerleştirme/değiştirme mekaniğinizi çağırıyoruz.
                     AddEggListByIndex(clickedSlot.slotIndex, selectedEgg);
+                    PopStack(selectedEgg); // Seçilen yumurtayı yığından çıkar
                     DeselectObject(); // İşlem bitti, seçimi temizle.
                 }
             }
@@ -231,27 +236,9 @@ public class GameManager : MonoBehaviour
 
         selectedEgg = obj;
        
-        int eggStackIndex = obj.gameObject.GetComponent<Egg>().startTopStackIndex;
-        GameObject egg = EggSpawner.instance.eggStackList[eggStackIndex]
-                            .FirstOrDefault(e => e == obj);
+    
 
-        if (egg != null)
-        {
-            EggSpawner.instance.eggStackList[eggStackIndex].Pop();
-            if (EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg))
-            {
-                nextEgg.SetActive(true);
-            }
-        }
-
-        //foreach (var item in EggSpawner.instance.eggStackList)
-        //{
-        //    if (item.Contains(obj.gameObject))
-        //    {
-        //        item.Pop();
-        //        item.Peek().SetActive(true);
-        //    }
-        //}
+      
         lastSelectedRenderer = selectedEgg.GetComponentInChildren<Renderer>();
         if (lastSelectedRenderer != null)
         {
@@ -288,10 +275,35 @@ public class GameManager : MonoBehaviour
     }
 
 
-   
+    private void PopStack(GameObject obj)
+    {
+        int eggStackIndex = obj.gameObject.GetComponent<Egg>().startTopStackIndex;
+        GameObject egg = EggSpawner.instance.eggStackList[eggStackIndex]
+                            .FirstOrDefault(e => e == obj);
+
+        if (egg != null)
+        {
+            EggSpawner.instance.eggStackList[eggStackIndex].Pop();
+            if (EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg))
+            {
+                nextEgg.SetActive(true);
+            }
+        }
+    }
+    private void PushStack(GameObject obj)
+    {
+        int eggStackIndex = obj.gameObject.GetComponent<Egg>().startTopStackIndex;
+        GameObject PreEgg = EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg) ? nextEgg : null;
+        if (PreEgg != null)
+        {
+            EggSpawner.instance.eggStackList[eggStackIndex].Push(obj);
+            PreEgg.SetActive(false);
+        }
+
+    }
 
 
-private void GameOver()
+    private void GameOver()
     {
         ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
         PanelManager.Instance.ShowPanel(PanelID.TryAgainPanel, PanelShowBehavior.HIDE_PREVISE);
