@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     public Action<int> addSec;
     public Action gameOver;
     public AbilityData abilityData;
+    
 
 
     private Color originalColor;
@@ -253,8 +254,10 @@ public class GameManager : MonoBehaviour
                     break;
                 }
             }
-            if(slotIndex!=-1)
-            eggSlotDic[slotIndex] = eggObj;
+            if (slotIndex != -1)
+                eggSlotDic[slotIndex] = eggObj;
+            //else
+            //    PushStack(eggObj);
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
         }
         else if (eggSlotDic.ContainsKey(slotIndex) && eggObj != eggSlotDic[slotIndex])
@@ -278,7 +281,17 @@ public class GameManager : MonoBehaviour
            
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
             Debug.LogWarning("go to slot pos ");
+            //if(tempIndex==-1)
+            //{
+            //    PushStack(tempEgg);
+            //}
         }
+        //if(slotIndex==-1)
+        //{
+        //    PushStack(eggObj);
+        //}
+        
+
 
     }
 
@@ -330,33 +343,48 @@ public class GameManager : MonoBehaviour
         
     }
 
-
+    public void UpdateQueueSetActive()
+    {
+        if (EggSpawner.instance.eggStackList.Count == 0) return;
+        foreach (var eggStack in EggSpawner.instance.eggStackList)
+        {
+            if (eggStack.Count > 0)
+            {
+                // İlk yumurtayı aktif yap
+                GameObject topEgg = eggStack.Peek();
+                topEgg.SetActive(true);
+                
+            }
+            else
+            {
+                // Eğer yığın boşsa, aktif yapacak bir şey yok
+                continue;
+            }
+        }
+    }
     public void PopStack(GameObject obj)
     {
+        if (EggSpawner.instance.eggStackList.Count == 0) return;
         int eggStackIndex = obj.gameObject.GetComponent<Egg>().startTopStackIndex;
         GameObject egg = EggSpawner.instance.eggStackList[eggStackIndex]
                             .FirstOrDefault(e => e == obj);
 
         if (egg != null)
         {
-            EggSpawner.instance.eggStackList[eggStackIndex].Pop();
-            if (EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg))
-            {
-                nextEgg.SetActive(true);
-            }
+            EggSpawner.instance.eggStackList[eggStackIndex].Dequeue();
+            
         }
+        UpdateQueueSetActive();
     }
     public void PushStack(GameObject obj)
     {
         int eggStackIndex = obj.gameObject.GetComponent<Egg>().startTopStackIndex;
-        GameObject PreEgg = EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg) ? nextEgg : null;
-        if (PreEgg != null)
-        {
-            EggSpawner.instance.eggStackList[eggStackIndex].Push(obj);
-            if(!eggSlotDic.ContainsValue(PreEgg))
-            PreEgg.SetActive(false);
-        }
-
+        
+        EggSpawner.instance.eggStackList[eggStackIndex].Enqueue(obj);
+        
+        obj.SetActive(false);
+        
+        UpdateQueueSetActive();
     }
 
 

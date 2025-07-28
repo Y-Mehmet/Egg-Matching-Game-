@@ -33,7 +33,7 @@ public class EmptyZone :MonoBehaviour, ITrigger
                                         {
                                             nextEgg.SetActive(false);
                                         }
-                                        EggSpawner.instance.eggStackList[egg.startTopStackIndex].Push(egg.gameObject);
+                                        EggSpawner.instance.eggStackList[egg.startTopStackIndex].Enqueue(egg.gameObject);
                                         egg.gameObject.SetActive(true);
                                         isTriggered = false;
                                     });

@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
                     if (egg != null)
                     {
-                        EggSpawner.instance.eggStackList[eggStackIndex].Pop();
+                        EggSpawner.instance.eggStackList[eggStackIndex].Dequeue();
                         if (EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg))
                         {
                             nextEgg.SetActive(true);
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
                     {
                         if (item.Contains(hit.collider.gameObject))
                         {
-                            item.Pop();
+                            item.Dequeue();
                             item.Peek().SetActive(true);
                         }
                     }

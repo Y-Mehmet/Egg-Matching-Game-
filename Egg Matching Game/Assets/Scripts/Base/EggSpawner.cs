@@ -24,7 +24,7 @@ public class EggSpawner : MonoBehaviour
     public List<EggColor> mixColorList = new List<EggColor>();
     public List<EggColor> topEggColor = new List<EggColor>();
     public List<GameObject> eggList = new List<GameObject>();
-    public List<Stack<GameObject>> eggStackList = new List<Stack<GameObject>>();
+    public List<Queue<GameObject>> eggStackList = new List<Queue<GameObject>>();
     public List<Vector3> slotPos = new List<Vector3>();
     public List<Vector3> topEggPos = new List<Vector3>();
 
@@ -200,7 +200,7 @@ public class EggSpawner : MonoBehaviour
         }
         for(int i=0; i < topEggCount; i++)
         {
-            Stack<GameObject> eggStack = new Stack<GameObject>();
+            Queue<GameObject> eggStack = new Queue<GameObject>();
             for (int j=0;j<topEggCountPerColor; j++)
             {
                 if (j == 0)
@@ -210,18 +210,24 @@ public class EggSpawner : MonoBehaviour
                 
                 GameObject egg = Instantiate(EggPrefab, eggPoss, Quaternion.identity, EggParent);
                 egg.GetComponent<Egg>().startTopStackIndex = i;
-              
-                eggStack.Push(egg);
-                if (j == topEggCountPerColor - 1)
-                {
+                
+
+
+                eggStack.Enqueue(egg);
+                if(j==0)
                     egg.SetActive(true);
+
+                else if (j == topEggCountPerColor - 1)
+                {
+                    egg.SetActive(false);
                     eggStackList.Add(eggStack);
                 }
-                else
+                else 
                     egg.SetActive(false);
                 eggList.Add(egg);
                
                 egg.GetComponent<Egg>().startPos = eggPoss;
+               
             }
         }
        
@@ -248,8 +254,8 @@ public class EggSpawner : MonoBehaviour
                 eggList[i].GetComponent<Egg>().eggColor = mixColorList[0];
                 eggList[i].GetComponentInChildren<Renderer>().material.color = ColorManager.instance.GetEggColor(mixColorList[0]);
                 mixColorList.Remove(mixColorList[0]);
-            
-           // Debug.LogWarning(eggcolor + " "+i);
+
+            eggList[i].name = eggList[i].GetComponent<Egg>().eggColor.ToString() + "Egg" ;
         }
         if (HiddenEggCount > 0)
         {
