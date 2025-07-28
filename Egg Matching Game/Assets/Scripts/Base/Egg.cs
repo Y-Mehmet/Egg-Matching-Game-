@@ -1,7 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
-using System.Linq;
 
 
 public class Egg : MonoBehaviour
@@ -32,8 +31,10 @@ public class Egg : MonoBehaviour
                 transform.position += new Vector3(0,0,-2);
                 transform.DOMove(startPos, 0.5f).SetEase(Ease.OutBack);
                 transform.position += new Vector3(0, 0, -2);
-                int index= GameManager.instance.eggSlotDic.FirstOrDefault(k => k.Value == egg).Key;
-                GameManager.instance.eggSlotDic.Remove(index);
+               //int index= GameManager.instance.eggSlotDic.FirstOrDefault(k => k.Value == egg).Key;
+               // GameManager.instance.eggSlotDic.Remove(index);
+                
+                Debug.LogWarning("Egg returned to start pose: " + egg.name);
 
 
             }
@@ -42,6 +43,7 @@ public class Egg : MonoBehaviour
                 transform.position += new Vector3(0, 0, -2);
                 transform.DOMove(GameManager.instance.SlotPositionList[slotIndex], 0.5f).SetEase(Ease.OutBack);
                 transform.position += new Vector3(0, 0, -2);
+                Debug.LogWarning("Egg  go to slot pose: " + egg.name+" slot index "+slotIndex);
             }
             
         }

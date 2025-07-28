@@ -152,50 +152,52 @@ public class GameManager : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            
+            if (eggSlotDic.Count > 0)
+            {
+                foreach (var item in eggSlotDic)
+                {
+                    Debug.LogWarning("index  " + item.Key + " name  " + item.Value);
+                }
+            }
+
             // Tıklanan obje bir yumurta mı?
             if (hit.collider.TryGetComponent<Egg>(out Egg clickedEgg))
             {
                
-                Debug.LogWarning("egg selected and eggslotdic vount " + eggSlotDic.Count);
-                if(selectedEgg== null)
+              
+                if (selectedEgg == null)
                 {
                     SelectObject(clickedEgg.gameObject); // İlk kez seçiliyorsa, seç ve vurgula.
                 }
                 // Zaten bu yumurta seçiliyse, seçimi iptal et.
-               else  if (selectedEgg == clickedEgg.gameObject)
+                else if (selectedEgg == clickedEgg.gameObject)
                 {
                     Debug.LogWarning("Deselecting egg: " + clickedEgg.gameObject.name);
 
                     DeselectObject();
                 }
-                // Değilse, bu yumurtayı seç.
-                else if( !eggSlotDic.ContainsValue(clickedEgg.gameObject))
+                else if (!eggSlotDic.ContainsValue(selectedEgg) && eggSlotDic.ContainsValue(clickedEgg.gameObject)) 
                 {
-
-                    // Mevcut yerleştirme/değiştirme mekaniğinizi çağırıyoruz.
-                    AddEggListByIndex(-1 , selectedEgg);
-                    PopStack(clickedEgg.gameObject);
-                    PushStack(selectedEgg);
-                    
-                    if(eggSlotDic.ContainsValue(selectedEgg))
-                    {
-                        int index = eggSlotDic.FirstOrDefault(k => k.Value == selectedEgg).Key;
-                        AddEggListByIndex(index, clickedEgg.gameObject);
-
-
-                    }
-
-                    DeselectObject(); // İşlem bitti, seçimi temizle.
-                    SelectObject(clickedEgg.gameObject);
-                }
-                else if( eggSlotDic.ContainsValue(clickedEgg.gameObject))
-                {
+                    Debug.LogWarning("selected out slot and clicked in slot: ");
                     AddEggListByIndex(eggSlotDic.FirstOrDefault(k => k.Value == clickedEgg.gameObject).Key, selectedEgg);
-                    
-                    
                     DeselectObject();
                 }
+                else if (eggSlotDic.ContainsValue(selectedEgg) && eggSlotDic.ContainsValue(clickedEgg.gameObject))
+                {
+                    AddEggListByIndex(eggSlotDic.FirstOrDefault(k => k.Value == clickedEgg.gameObject).Key, selectedEgg);
+                    DeselectObject();
+                }
+                else if (eggSlotDic.ContainsValue(selectedEgg) && !eggSlotDic.ContainsValue(clickedEgg.gameObject))
+                {
+                    AddEggListByIndex(-1, selectedEgg);
+                    DeselectObject();
+                }
+                else
+                {
+                    DeselectObject();
+                }
+               
+                
             }
             // Tıklanan obje bir slot mu?
             else if (hit.collider.TryGetComponent<Slot>(out Slot clickedSlot))
@@ -226,6 +228,58 @@ public class GameManager : MonoBehaviour
         {
             DeselectObject();
         }
+    }
+    public void AddEggListByIndex(int slotIndex, GameObject eggObj)
+    {
+
+        int tempIndex = -1;
+        foreach (KeyValuePair<int, GameObject> dic in eggSlotDic)
+        {
+            if (dic.Value == eggObj)
+            {
+                tempIndex = dic.Key;
+
+
+            }
+        }
+
+        if (eggSlotDic.Count == 0 || !eggSlotDic.ContainsKey(slotIndex))
+        {
+            foreach (KeyValuePair<int, GameObject> kvp in eggSlotDic)
+            {
+                if (kvp.Value == eggObj)
+                {
+                    RemoveEggListByIndex(kvp.Key, kvp.Value);
+                    break;
+                }
+            }
+            if(slotIndex!=-1)
+            eggSlotDic[slotIndex] = eggObj;
+            onSlotIndexChange?.Invoke(slotIndex, eggObj);
+        }
+        else if (eggSlotDic.ContainsKey(slotIndex) && eggObj != eggSlotDic[slotIndex])
+        {
+            GameObject tempEgg = eggSlotDic[slotIndex];
+
+            if (tempIndex != -1)
+            {
+
+                eggSlotDic[tempIndex] = tempEgg;
+                onSlotIndexChange?.Invoke(tempIndex, tempEgg);
+            }
+            else
+            {
+                Debug.LogWarning("go to start pos ");
+                //eggSlotDic[tempIndex] = tempEgg;
+                onSlotIndexChange?.Invoke(-1, tempEgg);
+            }
+            if(slotIndex!=-1)
+            eggSlotDic[slotIndex] = eggObj;
+           
+            onSlotIndexChange?.Invoke(slotIndex, eggObj);
+            Debug.LogWarning("go to slot pos ");
+        }
+
     }
 
     // Yorum Satırı: Bir objeyi (yumurta) seçer ve görsel olarak vurgular.
@@ -277,7 +331,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void PopStack(GameObject obj)
+    public void PopStack(GameObject obj)
     {
         int eggStackIndex = obj.gameObject.GetComponent<Egg>().startTopStackIndex;
         GameObject egg = EggSpawner.instance.eggStackList[eggStackIndex]
@@ -292,13 +346,14 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    private void PushStack(GameObject obj)
+    public void PushStack(GameObject obj)
     {
         int eggStackIndex = obj.gameObject.GetComponent<Egg>().startTopStackIndex;
         GameObject PreEgg = EggSpawner.instance.eggStackList[eggStackIndex].TryPeek(out GameObject nextEgg) ? nextEgg : null;
         if (PreEgg != null)
         {
             EggSpawner.instance.eggStackList[eggStackIndex].Push(obj);
+            if(!eggSlotDic.ContainsValue(PreEgg))
             PreEgg.SetActive(false);
         }
 
@@ -831,77 +886,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    public void AddEggListByIndex(int slotIndex , GameObject eggObj)
-    {
-        onSlotedEggCountChange?.Invoke();
-        int tempIndex=-1;
-        foreach (KeyValuePair<int, GameObject> dic in eggSlotDic)
-        {
-            if (dic.Value == eggObj)
-            {
-                tempIndex = dic.Key;
-               
-                
-            }
-        }
-        if(eggSlotDic.ContainsKey(slotIndex))
-        {
-            Debug.Log("egg slot index " + slotIndex + " already exist" );
-        }
-        if (eggSlotDic.Count==0 || !eggSlotDic.ContainsKey(slotIndex))
-        {
-            foreach (KeyValuePair<int,GameObject> kvp in eggSlotDic)
-            {
-                if(kvp.Value == eggObj)
-                {
-                    RemoveEggListByIndex(kvp.Key, kvp.Value);
-                    break;
-                }
-            }
-            
-            eggSlotDic[slotIndex]= eggObj;
-            onSlotIndexChange?.Invoke(slotIndex, eggObj);
-        }
-        else if (eggSlotDic.ContainsKey(slotIndex) && eggObj != eggSlotDic[slotIndex])
-        {
-            GameObject tempEgg = eggSlotDic[slotIndex];
-            
-           if(tempIndex!=-1)
-            {
-                Egg egg = eggObj.GetComponent<Egg>();
-                if (EggSpawner.instance.eggStackList[egg.startTopStackIndex].Contains(eggObj))
-                {
-
-                    EggSpawner.instance.eggStackList[egg.startTopStackIndex].Pop().SetActive(true); 
-                    if(EggSpawner.instance.eggStackList[egg.startTopStackIndex].TryPeek(out GameObject nextEgg))
-                    {
-                        nextEgg.SetActive(true);
-                    }
-                }
-                eggSlotDic[tempIndex] = tempEgg;
-                onSlotIndexChange?.Invoke(tempIndex, tempEgg);
-            }else
-            {
-                Egg egg= eggObj.GetComponent<Egg>();
-                if (!EggSpawner.instance.eggStackList[egg.startTopStackIndex].Contains(eggObj))
-                {
-
-                    if (EggSpawner.instance.eggStackList[egg.startTopStackIndex].TryPeek(out GameObject nextEgg))
-                    {
-                        nextEgg.SetActive(false);
-                    }
-                    EggSpawner.instance.eggStackList[egg.startTopStackIndex].Push(eggObj);
-                    eggObj.SetActive(true);
-
-                }
-                eggSlotDic[tempIndex] = tempEgg;
-                onSlotIndexChange?.Invoke(-1, tempEgg);
-            }
-            eggSlotDic[slotIndex] = eggObj;
-            onSlotIndexChange?.Invoke(slotIndex, eggObj);
-        }
-       
-    }
+   
     public void RemoveEggListByIndex(int slotIndex, GameObject eggObj)
     {
         foreach (KeyValuePair<int, GameObject> dic in eggSlotDic)
