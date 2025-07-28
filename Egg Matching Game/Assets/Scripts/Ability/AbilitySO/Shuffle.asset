@@ -21,7 +21,7 @@ MonoBehaviour:
   ParticlePerfabs: {fileID: 0}
   AbilityWorkerPrefab: {fileID: 0}
   ParticleStartTime: 0
-  cost: 750
+  cost: 300
   RequiresTarget: 0
   TargetTag: 
   action: {fileID: 11400000, guid: e9869bc338168b847846cdb9da1260aa, type: 2}

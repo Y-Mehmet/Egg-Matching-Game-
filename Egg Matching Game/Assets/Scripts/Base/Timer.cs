@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    private int startTime = 180;
+    private int startTime = 5;
     private int currentTime;
     private float timeSpeed;
     private Coroutine timeCoroutine;
+    
     private void OnEnable()
     {
         GameManager.instance.gameStart += StartTimer;
         GameManager.instance.pauseGame += StopTimer;
         GameManager.instance.continueGame += ContinueTimer;
+        GameManager.instance.stopTime+= StopGameTimeCoroutine; // Oyun durdurma eylemi için
         GameManager.instance.gameReStart += StopTimeCoroutine;
         GameManager.instance.addSec += AddSecondAndContinue; // Zamaný artýrma eylemi için
         AbilityManager.Instance.frezzeTimeAction += StopTimerWhitSecond; // Zaman dondurma eylemi için
@@ -27,6 +29,16 @@ public class Timer : MonoBehaviour
         GameManager.instance.gameReStart -= StopTimeCoroutine;
         AbilityManager.Instance.frezzeTimeAction -= StopTimerWhitSecond; // Zaman dondurma eylemi için
         GameManager.instance.addSec -= AddSecondAndContinue; // Zamaný artýrma eylemi için
+        GameManager.instance.stopTime -= StopGameTimeCoroutine; // Oyun durdurma eylemi için
+    }
+    void StopTimeCoroutine()
+    {
+        if (timeCoroutine != null)
+        {
+            StopCoroutine(timeCoroutine);
+        }
+        Time.timeScale = 1;
+        GameManager.instance.timeChanged?.Invoke(startTime);
     }
 
     void StartTimer()
@@ -41,7 +53,7 @@ public class Timer : MonoBehaviour
         }
         timeCoroutine = StartCoroutine(TimeRoutine());
     }
-    void StopTimeCoroutine()
+    void StopGameTimeCoroutine()
     {
         if (timeCoroutine != null)
         {
@@ -49,6 +61,13 @@ public class Timer : MonoBehaviour
         }
         Time.timeScale = 1;
         GameManager.instance.timeChanged?.Invoke(startTime);
+    }
+    void ContinueGameTimeCoroutine()
+    {
+        if(timeCoroutine== null && currentTime>0)
+        {
+            timeCoroutine = StartCoroutine(TimeRoutine());
+        }
     }
     void StopTimer()
     {
@@ -92,7 +111,7 @@ public class Timer : MonoBehaviour
     }
     public void AddSecondAndContinue(int sec)
     {
-        startTime = sec;
+        currentTime = sec;
         timeSpeed = GameManager.instance.TimeSpeed;
         GameManager.instance.timeChanged?.Invoke(currentTime);
         if (timeCoroutine != null)
@@ -100,6 +119,8 @@ public class Timer : MonoBehaviour
             StopCoroutine(timeCoroutine);
         }
         timeCoroutine = StartCoroutine(TimeRoutine());
+       
+
 
     }
 }

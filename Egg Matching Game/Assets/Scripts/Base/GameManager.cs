@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     public Action gameReStart;
     public Action<int> addSec;
     public Action gameOver;
+    public Action stopTime;
     public AbilityData abilityData;
     
 
@@ -300,8 +301,10 @@ public class GameManager : MonoBehaviour
     // Şimdi: Seçilen objenin renderer'ını bulur, orijinal rengini kaydeder ve onu bir vurgu rengiyle değiştirir.
     private void SelectObject(GameObject obj)
     {
-        // Önceki seçimi temizle
-        DeselectObject();
+        if (!gameStarted)
+            return;
+            // Önceki seçimi temizle
+            DeselectObject();
 
         selectedEgg = obj;
        
@@ -456,6 +459,7 @@ public class GameManager : MonoBehaviour
         {
             eggSlotDic.Clear();
         }
+        
     }
     public void EndLevel()
     {
@@ -1096,6 +1100,7 @@ public class GameManager : MonoBehaviour
             trueEggCountChanged.Invoke(trueCount);
             if(trueCount>= ceckedEggCount)
             {
+                stopTime?.Invoke();
                 if (eggSlotDic.Count > 0)
                 {
                     foreach (var item in eggSlotDic)
@@ -1109,6 +1114,7 @@ public class GameManager : MonoBehaviour
                         }
                     }
                 }
+               // gameReStart?.Invoke();
                 EggSpawner.instance.DragonSetActive();
                 ChangeMaterial();
 

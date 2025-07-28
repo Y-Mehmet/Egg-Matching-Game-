@@ -21,7 +21,7 @@ MonoBehaviour:
   ParticlePerfabs: {fileID: 6173185505503982800, guid: a8adfef168a19664fb9682bad0b3ad7a, type: 3}
   AbilityWorkerPrefab: {fileID: 6124923020510234005, guid: bb8a750b11eb61446b59bb8cf73e5060, type: 3}
   ParticleStartTime: 0
-  cost: 500
+  cost: 250
   RequiresTarget: 1
   TargetTag: Slot
   action: {fileID: 11400000, guid: 3441fe92a86bdbf45b0d2dbe52848f57, type: 2}

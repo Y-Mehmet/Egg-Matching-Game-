@@ -4993,6 +4993,8 @@ MonoBehaviour:
   tryAgainButton: {fileID: 3667777899215774004}
   add20secButton: {fileID: 598343766438478515}
   backToHomeButton: {fileID: 2333160446363308491}
+  coinCost: 2000
+  tryAgainBtnValueText: {fileID: 8996762180907505719}
 --- !u!1 &792200347418170246
 GameObject:
   m_ObjectHideFlags: 0

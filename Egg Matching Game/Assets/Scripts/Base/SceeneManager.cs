@@ -19,13 +19,13 @@ public class SceeneManager : MonoBehaviour
     }
     public void LoadScene(int level=1)
     {
-        
+        level++;
             UnityEngine.SceneManagement.SceneManager.LoadScene(level);
        
     }
     public void LoadSceneAndEnergyPanel()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
         if(PanelManager.Instance!= null)
         {
             PanelManager.Instance.ShowPanel(PanelID.RefillEnergyPanel);

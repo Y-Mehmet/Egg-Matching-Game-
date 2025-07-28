@@ -29,6 +29,10 @@ public class CountdownController : MonoBehaviour
     {
        GameManager.instance.gameReStart += StartCountdown; // Oyun yeniden baþlatýldýðýnda geri sayýmý baþlat
     }
+    private void OnDisable()
+    {
+        GameManager.instance.gameReStart -= StartCountdown;
+    }
 
     private void Start()
     {
