@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DragonIndex: 0
   dragonMissionGemValue: 3
-  DragonGemAmount: 0
+  DragonGemAmount: 3
   DragonName: Aeryn
   videoLink: 
   color: 0

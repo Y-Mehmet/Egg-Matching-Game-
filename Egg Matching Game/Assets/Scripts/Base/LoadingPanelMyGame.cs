@@ -36,7 +36,7 @@ public class LoadingPanelMyGame : MonoBehaviour
                 // Burada isterseniz, belirli bir süre bekleyebilir
                 // veya kullanýcý bir tuþa basana/ekrana dokunana kadar bekleyebilirsiniz.
                 // Örneðin, 2 saniye bekleyip sahneyi aktifleþtirelim:
-                 yield return new WaitForSeconds(2f);
+                 yield return new WaitForSeconds(4f);
 
                 // Sahnenin aktivasyonuna izin ver
                 operation.allowSceneActivation = true;

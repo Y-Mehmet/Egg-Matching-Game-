@@ -62,24 +62,29 @@ public class DragonManager : MonoBehaviour
        int tempAmount= dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount + Amount;
         if(tempAmount >= GetMissionGemAmount())
         {
-            dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = GetMissionGemAmount();
             ResourceManager.Instance.SpendResource(ResourceType.Gem, GetRequiredGemAmount());
+            dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = GetMissionGemAmount();
+           
             OnDragonIndexChange?.Invoke(1);
 
         }
         else
         {
-            dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = tempAmount;
             ResourceManager.Instance.SpendResource(ResourceType.Gem, Amount);
+            dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = tempAmount;
+          
         }
        
     }
     public DragonSO GetCurrentDragonSO()
     {
+       
         return dragonHolder.dragonSOList[GetDragonIndex()];
+        
     }
     public int GetRequiredGemAmount()
     {
+       
         return GetCurrentDragonSO().dragonMissionGemValue- GetCurrentDragonSO().DragonGemAmount;
     }
 }

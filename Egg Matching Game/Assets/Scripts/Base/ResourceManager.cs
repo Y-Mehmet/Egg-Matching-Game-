@@ -19,6 +19,7 @@ public class ResourceManager : MonoBehaviour
     public int coinsPerGame = 40; // Her oyun sonunda kazanýlan para miktarý
     public int gemsPerGame = 1; // Her oyun sonunda kazanýlan elmas miktarý
     public int DragonIndex = 0;
+    public int macDragobIndex = 9;
 
 
     // Yüklenen tüm oyun verilerini tutan referansýmýz.
@@ -94,7 +95,7 @@ public class ResourceManager : MonoBehaviour
                 break;
             case ResourceType.PlayCount: playCount += amount; break; // Oyun oynama sayýsýný artýrýyoruz
             case ResourceType.LevelIndex: levelIndex += amount; break; // Oyun seviyesini artýrýyoruz
-            case ResourceType.DragonIndex: DragonIndex += amount; break; // Ejderha indeksini artýrýyoruz
+            case ResourceType.DragonIndex: DragonIndex += amount; if (DragonIndex > macDragobIndex) DragonIndex = macDragobIndex; break; // Ejderha indeksini artýrýyoruz
         }
 
         OnResourceChanged?.Invoke(type, GetResourceAmount(type));
@@ -103,6 +104,7 @@ public class ResourceManager : MonoBehaviour
 
     public bool SpendResource(ResourceType type, int amount)
     {
+        Debug.LogWarning("type: " + type + ", amount: " + amount + ", current amount: " + GetResourceAmount(type));
         if (amount <= 0) return true;
 
         if (HasEnoughResource(type, amount))

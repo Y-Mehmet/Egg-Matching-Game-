@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DragonIndex: 2
   dragonMissionGemValue: 5
-  DragonGemAmount: 0
+  DragonGemAmount: 5
   DragonName: Drako
   videoLink: 
   color: 1

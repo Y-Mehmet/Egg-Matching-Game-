@@ -33,6 +33,7 @@ public class TopResourceBarPanel : MonoBehaviour
                 energyText.text = amount+"/"+ResourceManager.Instance.maxEnergy;
                 break;
             default:
+                gemText.text = ResourceManager.Instance.GetResourceAmount(ResourceType.Gem).ToString();
                 Debug.LogWarning("Unknown resource type: " + type);
                 break;
         }
