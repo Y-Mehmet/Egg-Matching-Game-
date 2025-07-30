@@ -18,6 +18,7 @@ public class LevelUpPanel : MonoBehaviour
             Debug.LogError("LevelUpPanel: UI elemanlarý eksik! Lütfen tüm referanslarý atayýn.");
             return;
         }
+        SoundManager.instance.PlaySfx(SoundType.LevelUp);
         levelText.text = "" + (ResourceManager.Instance.GetResourceAmount(ResourceType.LevelIndex)) ;
         if (GameManager.instance.isSelectTrueDaragonEgg)
             gemAmount = ResourceManager.Instance.gemsPerGame;

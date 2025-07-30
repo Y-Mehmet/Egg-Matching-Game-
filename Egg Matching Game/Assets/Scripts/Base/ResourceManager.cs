@@ -20,6 +20,10 @@ public class ResourceManager : MonoBehaviour
     public int gemsPerGame = 1; // Her oyun sonunda kazanýlan elmas miktarý
     public int DragonIndex = 0;
     public int macDragobIndex = 9;
+    public bool isPushAlarmEnabled = false;
+    public float soundFxVolume = 0.8f;
+    public float musicVolume = 0.8f;
+    public bool isVibrationEnabled = false;
 
 
     // Yüklenen tüm oyun verilerini tutan referansýmýz.
@@ -56,6 +60,14 @@ public class ResourceManager : MonoBehaviour
     {
         // Enerji yenileme döngüsünü baþlat
         StartCoroutine(RechargeEnergyCoroutine());
+    }
+    public void SetSoundResoruce(bool isPushAlarmEnabled, float soundFxVolume, float musicVolume, bool isVibrationEnabled)
+    {
+        this.isPushAlarmEnabled = isPushAlarmEnabled;
+        this.soundFxVolume = soundFxVolume;
+        this.musicVolume = musicVolume;
+        this.isVibrationEnabled = isVibrationEnabled;
+        SaveResources();
     }
     private void CurrentRewaredTypeChange(RewardedType type)
     {
@@ -141,7 +153,7 @@ public class ResourceManager : MonoBehaviour
         return GetResourceAmount(type) >= amount;
     }
 
-    // --- Yeni Kayýt ve Yükleme Metotlarý ---
+   
 
     private void SaveResources()
     {
@@ -158,6 +170,10 @@ public class ResourceManager : MonoBehaviour
         gameData.playCount = this.playCount; // Oyun oynama sayýsýný da kaydediyoruz
         gameData.levelIndex = this.levelIndex; // Oyun seviyesini de kaydediyoruz
         gameData.DragonIndex = this.DragonIndex;
+        gameData.isVibrationEnabled= this.isVibrationEnabled;
+        gameData.musicVolume = this.musicVolume;
+        gameData.soundFxVolume = this.soundFxVolume;
+        gameData.isPushAlarmEnabled = this.isPushAlarmEnabled;
 
         // YENÝ: Zaman bilgisini kaydet
         gameData.nextEnergyTimeString = this.nextEnergyTime.ToBinary().ToString();
@@ -175,6 +191,11 @@ public class ResourceManager : MonoBehaviour
         this.playCount = gameData.playCount;
         this.levelIndex = gameData.levelIndex;
         this.DragonIndex = gameData.DragonIndex;
+        this.isPushAlarmEnabled = gameData.isPushAlarmEnabled;
+        this.soundFxVolume = gameData.soundFxVolume;
+        this.musicVolume = gameData.musicVolume;
+        this.isVibrationEnabled = gameData.isVibrationEnabled;
+
 
         // YENÝ: Zaman bilgisini yükle
         if (!string.IsNullOrEmpty(gameData.nextEnergyTimeString))

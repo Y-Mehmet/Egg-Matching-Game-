@@ -47,7 +47,7 @@ public class SoundManager : MonoBehaviour
                 Debug.LogWarning("SoundManager: '" + sound.soundType + "' için zaten bir ses klibi mevcut!");
             }
         }
-        PlayBgm(SoundType.BG); // Varsayýlan olarak arka plan müziðini baþlatýyoruz
+       
 
     }
 
