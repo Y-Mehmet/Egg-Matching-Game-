@@ -16,6 +16,6 @@ MonoBehaviour:
   dragonMissionGemValue: 4
   DragonGemAmount: 4
   DragonName: Jaxx
-  videoLink: 
   color: 7
   DragonSprite: {fileID: 21300000, guid: 0d6707554cf8fa74293b501e7dfae686, type: 3}
+  videoClip: {fileID: 32900000, guid: 2c6808dae5ff23146b704f28589ae5a2, type: 3}

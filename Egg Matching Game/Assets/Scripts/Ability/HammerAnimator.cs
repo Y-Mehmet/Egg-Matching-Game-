@@ -48,7 +48,7 @@ public class HammerAnimator : MonoBehaviour
                     Vector3 targetRotation = new Vector3(30, 0, 0);
                     transform.DOLocalRotate(targetRotation, rotationDuration / 4).SetEase(Ease.InOutQuad).OnComplete(() =>
                     {
-
+                        SoundManager.instance.PlaySfx(SoundType.BrokenEgg);
                         int slotIndex = targetToDestroy.transform.GetSiblingIndex();
                         GameManager.instance.BreakSlotProses(slotIndex);
                         GameObject brokenSlot = OneObjectPool.Instance.GetObjectWhitName(ObjectName.BrokenSlot);
@@ -86,6 +86,7 @@ public class HammerAnimator : MonoBehaviour
             // transform.DOLocalRotate(hedefRotasyon, süre, döndürmeModu);
             transform.DOLocalRotate(targetRotation, rotationDuration)
                      .SetEase(Ease.InOutQuad).OnComplete(() => {
+                         SoundManager.instance.PlaySfx(SoundType.BrokenEgg);
                          GameManager.instance.BreakEggProses(targetToDestroy);
                          
                          targetToDestroy.SetActive(false);
@@ -117,6 +118,7 @@ public class HammerAnimator : MonoBehaviour
             // transform.DOLocalRotate(hedefRotasyon, süre, döndürmeModu);
             transform.DOLocalRotate(targetRotation, rotationDuration)
                      .SetEase(Ease.InOutQuad).OnComplete(() => {
+                         SoundManager.instance.PlaySfx(SoundType.BrokenEgg);
                          GameManager.instance.BreakDragonEggProses(targetToDestroy);
 
                          targetToDestroy.SetActive(false);

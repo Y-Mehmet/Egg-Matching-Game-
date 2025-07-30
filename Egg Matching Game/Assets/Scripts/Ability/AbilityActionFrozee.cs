@@ -15,11 +15,14 @@ public class AbilityActionFrozee : AbilityAction
             AbilityManager.Instance.curentAbilityTypeChanged?.Invoke(AbilityType.FreezeTime);
             AbilityManager.Instance.frezzeTimeAction?.Invoke(10);
             ResourceManager.Instance.SpendResource(ResourceType.Coin, cost);
+            SoundManager.instance.PlaySfx(SoundType.Coin);
+            SoundManager.instance.PlaySfx(SoundType.FreezeTime);
         }
             else
         {
             AbilityManager.Instance.currentAbilityType= AbilityType.FreezeTime;
             PanelManager.Instance.ShowPanel(PanelID.BuyAbilityPanel);
+            SoundManager.instance.PlaySfx(SoundType.EmptyCoin);
 
         }
       

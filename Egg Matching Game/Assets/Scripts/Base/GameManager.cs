@@ -544,6 +544,7 @@ public class GameManager : MonoBehaviour
     egg.transform.DOScale(1.25f, 3 * stepDuration).SetEase(Ease.OutSine)
     // İlk animasyon BİTİNCE
     .OnComplete(() => {
+        SoundManager.instance.PlaySfx(SoundType.GoToStart);
         // İkinci animasyonu BAŞLAT
         egg.transform.DOScale(0.75f, 2 * stepDuration).SetEase(Ease.OutSine)
         // İkinci animasyon BİTİNCE
@@ -681,7 +682,7 @@ public class GameManager : MonoBehaviour
 
         for (int n = canShuffleEggList.Count - 1; n > 0; n--)
         {
-            int k = UnityEngine.Random.Range(0, n );
+            int k = UnityEngine.Random.Range(0, n);
 
             GameObject eggA = canShuffleEggList[n];
             GameObject eggB = canShuffleEggList[k];
@@ -689,34 +690,45 @@ public class GameManager : MonoBehaviour
             Vector3 posA = initialPositions[n];
             Vector3 posB = initialPositions[k];
 
+            // --- Lambda ifadelerinde doğru değerleri kullanmak için yerel kopyalar oluştur ---
+            GameObject currentEggA = eggA;
+            GameObject currentEggB = eggB;
+            int currentStep = (canShuffleEggList.Count - 1) - n + 1;
+
+
             // --- 1. Adım: Yumurtaları Z ekseninde geriye çek ---
             Vector3 backPosA = new Vector3(posA.x, posA.y, posA.z + zOffsetOnSwap);
             Vector3 backPosB = new Vector3(posB.x, posB.y, posB.z + zOffsetOnSwap);
 
             // Append ile ilk yumurtanın geri gitme animasyonunu başlat
-            shuffleSequence.Append(eggA.transform.DOMove(backPosA, stepDuration).SetEase(shuffleEase));
+            shuffleSequence.Append(eggA.transform.DOMove(backPosA, stepDuration).SetEase(shuffleEase)
+                // Bu Append işlemi başladığında log yazdır
+                .OnStart(() => {
+                    SoundManager.instance.PlaySfx(SoundType.GoToSlot);
+                   
+                }));
+
             // Join ile ikinci yumurtanın da aynı anda geri gitmesini sağla
             shuffleSequence.Join(eggB.transform.DOMove(backPosB, stepDuration).SetEase(shuffleEase));
 
 
             // --- 2. Adım: Geri pozisyondayken X/Y pozisyonlarını değiştir ---
-            // eggA, eggB'nin X/Y'sine ama hala geri Z pozisyonunda gidecek
             Vector3 swapTargetForA = new Vector3(posB.x, posB.y, backPosA.z);
-            // eggB, eggA'nın X/Y'sine ama hala geri Z pozisyonunda gidecek
             Vector3 swapTargetForB = new Vector3(posA.x, posA.y, backPosB.z);
 
             shuffleSequence.Append(eggA.transform.DOMove(swapTargetForA, stepDuration).SetEase(shuffleEase));
+
             shuffleSequence.Join(eggB.transform.DOMove(swapTargetForB, stepDuration).SetEase(shuffleEase));
 
 
             // --- 3. Adım: Yeni yerlerinde Z ekseninde ileri giderek orijinal Z'ye dön ---
-            // eggA'nın son hedefi posB'dir
-            // eggB'nin son hedefi posA'dır
             shuffleSequence.Append(eggA.transform.DOMove(posB, stepDuration).SetEase(shuffleEase));
+
+
             shuffleSequence.Join(eggB.transform.DOMove(posA, stepDuration).SetEase(shuffleEase));
 
 
-            // İki yumurtanın tam takas animasyonu bittikten sonra bekleme ekle
+            // --- İki yumurtanın takası sonrası bekleme ---
             if (delayBetweenSwaps > 0)
             {
                 shuffleSequence.AppendInterval(delayBetweenSwaps);
@@ -725,10 +737,11 @@ public class GameManager : MonoBehaviour
             // Mantıksal pozisyonları bir sonraki döngü için güncelle
             (initialPositions[n], initialPositions[k]) = (initialPositions[k], initialPositions[n]);
         }
-        // --- DEĞİŞEN KISIM BURADA BİTİYOR ----
+       
 
         // 4. Adım: Tüm animasyonlar bittiğinde yapılacaklar
         shuffleSequence.OnComplete(() => {
+            
             Debug.Log("Shuffling complete!");
             PanelManager.Instance.HideLastPanel();
             isShuffling = false; // Bayrağı indir, böylece tekrar karıştırılabilir

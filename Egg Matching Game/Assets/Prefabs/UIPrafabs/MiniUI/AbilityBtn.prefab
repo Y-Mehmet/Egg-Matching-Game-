@@ -435,6 +435,7 @@ GameObject:
   - component: {fileID: 4179210394144888208}
   - component: {fileID: 7101645779070967777}
   - component: {fileID: 7524608295840226863}
+  - component: {fileID: 6039610563910111370}
   m_Layer: 5
   m_Name: AbilityBtn
   m_TagString: Untagged
@@ -563,6 +564,19 @@ MonoBehaviour:
   lockObject: {fileID: 6367122481304944305}
   levelText: {fileID: 6718316062354498815}
   chilImage: {fileID: 7507427665730492443}
+--- !u!114 &6039610563910111370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573518910750079523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 12
 --- !u!1 &5190649403156496246
 GameObject:
   m_ObjectHideFlags: 0

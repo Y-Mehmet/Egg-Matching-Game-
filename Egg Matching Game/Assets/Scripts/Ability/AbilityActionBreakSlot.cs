@@ -13,11 +13,13 @@ public class AbilityActionBreakSlot : AbilityAction
             AbilityManager.Instance.curentAbilityTypeChanged?.Invoke(AbilityType.BreakSlot);
             AbilityManager.Instance.breakSlotAction?.Invoke(tag);
             ResourceManager.Instance.SpendResource(ResourceType.Coin, cost);
+            SoundManager.instance.PlaySfx(SoundType.Coin);
         }
         else
         {
             AbilityManager.Instance.currentAbilityType = AbilityType.BreakSlot;
             PanelManager.Instance.ShowPanel(PanelID.BuyAbilityPanel);
+            SoundManager.instance.PlaySfx(SoundType.EmptyCoin);
 
         }
     }

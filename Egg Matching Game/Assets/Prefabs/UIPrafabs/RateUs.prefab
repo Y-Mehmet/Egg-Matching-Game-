@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 8449011067489870660}
   - component: {fileID: 8848608855176751088}
   - component: {fileID: 2044260744980635178}
+  - component: {fileID: 6670318926217520418}
   m_Layer: 5
   m_Name: Button_Maybe
   m_TagString: Untagged
@@ -364,6 +365,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4401e09d9b45e749a25865b4dea5b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6670318926217520418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2453678680822930153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 7
 --- !u!1 &2539038402315744673
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,6 +826,7 @@ GameObject:
   - component: {fileID: 5516684773275830420}
   - component: {fileID: 1902923509884472362}
   - component: {fileID: 1495731877417873171}
+  - component: {fileID: 414480403101358868}
   m_Layer: 5
   m_Name: Button_Rate
   m_TagString: Untagged
@@ -921,6 +936,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &414480403101358868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5231491682711808007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 7
 --- !u!1 &5240829470176053668
 GameObject:
   m_ObjectHideFlags: 0

@@ -32866,43 +32866,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 111.06
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 145.73
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -33024,43 +33024,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 111.06
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 145.73
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -33182,43 +33182,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 111.06
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 145.73
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -33729,43 +33729,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 111.06
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 145.73
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -33887,43 +33887,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 111.06
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 145.73
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -43.711357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount

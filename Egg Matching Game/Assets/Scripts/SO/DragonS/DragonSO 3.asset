@@ -16,6 +16,6 @@ MonoBehaviour:
   dragonMissionGemValue: 6
   DragonGemAmount: 0
   DragonName: Kaxen
-  videoLink: 
   color: 5
   DragonSprite: {fileID: 21300000, guid: ade20f5980f94d142911536d416b449a, type: 3}
+  videoClip: {fileID: 32900000, guid: c488302db9ef4174f8af8302d762dbde, type: 3}

@@ -13,11 +13,13 @@ public class AbilityActionBreakEgg : AbilityAction
             AbilityManager.Instance.breakEggAction?.Invoke(tag);
 
             ResourceManager.Instance.SpendResource(ResourceType.Coin, cost);
+            SoundManager.instance.PlaySfx(SoundType.Coin);
         }
         else
         {
             AbilityManager.Instance.currentAbilityType = AbilityType.BreakEgg;
             PanelManager.Instance.ShowPanel(PanelID.BuyAbilityPanel);
+            SoundManager.instance.PlaySfx(SoundType.EmptyCoin);
 
         }
     }

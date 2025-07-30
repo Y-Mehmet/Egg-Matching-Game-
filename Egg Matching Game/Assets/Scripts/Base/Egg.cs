@@ -36,8 +36,8 @@ public class Egg : MonoBehaviour
                //int index= GameManager.instance.eggSlotDic.FirstOrDefault(k => k.Value == egg).Key;
                // GameManager.instance.eggSlotDic.Remove(index);
                 
-                Debug.LogWarning("Egg returned to start pose: " + egg.name);
-
+                //Debug.LogWarning("Egg returned to start pose: " + egg.name);
+                SoundManager.instance.PlaySfx(SoundType.GoToStart);
 
             }
             else
@@ -46,6 +46,7 @@ public class Egg : MonoBehaviour
                 transform.DOMove(GameManager.instance.SlotPositionList[slotIndex], 0.5f).SetEase(Ease.OutBack).OnComplete(() => { GameManager.instance.PopStack(gameObject); });
                 transform.position += new Vector3(0, 0, -2);
                 Debug.LogWarning("Egg  go to slot pose: " + egg.name+" slot index "+slotIndex);
+                SoundManager.instance.PlaySfx(SoundType.GoToSlot);
             }
             
         }

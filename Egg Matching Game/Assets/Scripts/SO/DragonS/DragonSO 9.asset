@@ -16,6 +16,6 @@ MonoBehaviour:
   dragonMissionGemValue: 12
   DragonGemAmount: 0
   DragonName: Aethel
-  videoLink: 
   color: 9
   DragonSprite: {fileID: 21300000, guid: 0a37fdbf43d7bec478defc6eb64fb027, type: 3}
+  videoClip: {fileID: 32900000, guid: 411fd02d55d3d4b4ba3158425943ee75, type: 3}

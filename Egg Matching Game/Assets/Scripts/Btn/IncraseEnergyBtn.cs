@@ -24,6 +24,7 @@ public class IncraseEnergyBtn : MonoBehaviour
     {
         if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) < ResourceManager.Instance.maxEnergy)
         {
+            SoundManager.instance.PlaySfx(SoundType.btnClick);
             PanelManager.Instance.ShowPanel(PanelID.RefillEnergyPanel);
         }
         else

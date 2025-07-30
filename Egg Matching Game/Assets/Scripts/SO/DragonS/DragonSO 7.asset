@@ -16,6 +16,6 @@ MonoBehaviour:
   dragonMissionGemValue: 10
   DragonGemAmount: 0
   DragonName: Ignis
-  videoLink: 
   color: 4
   DragonSprite: {fileID: 21300000, guid: 37881308eaebe344ab620842c4c7a4f5, type: 3}
+  videoClip: {fileID: 32900000, guid: 8bfacc9459d3a7b46b4bba125b39bdbb, type: 3}

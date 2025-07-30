@@ -15,7 +15,10 @@ public class SaveGameData
     public int energy = 5;
     public int playCount = 0;
     public string nextEnergyTimeString=string.Empty;
+    public bool isPushAlarmEnabled = true;
+    public float soundFxVolume = 0.8f;
+    public float musicVolume = 0.8f;
+    public bool isVibrationEnabled = true;
 
-    
-    
+
 }

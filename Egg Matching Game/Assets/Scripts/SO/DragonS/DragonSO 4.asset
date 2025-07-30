@@ -16,6 +16,6 @@ MonoBehaviour:
   dragonMissionGemValue: 7
   DragonGemAmount: 0
   DragonName: Silas
-  videoLink: 
   color: 2
   DragonSprite: {fileID: 21300000, guid: 7a233b7260e6b86458ffc7c4d59c796b, type: 3}
+  videoClip: {fileID: 32900000, guid: b31a7e7f486e94e468f865a0c72912a3, type: 3}

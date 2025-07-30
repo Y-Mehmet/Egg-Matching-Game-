@@ -786,6 +786,7 @@ GameObject:
   - component: {fileID: 5714144370383914283}
   - component: {fileID: 7715896328327797559}
   - component: {fileID: 6277481351760277138}
+  - component: {fileID: 880146811808227733}
   m_Layer: 5
   m_Name: Toggle
   m_TagString: Untagged
@@ -895,6 +896,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &880146811808227733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695655061942263754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 7
 --- !u!1 &857346781237484589
 GameObject:
   m_ObjectHideFlags: 0
@@ -1733,6 +1747,7 @@ GameObject:
   - component: {fileID: 5603909942289908629}
   - component: {fileID: 5165614000404495396}
   - component: {fileID: 4269265473129692067}
+  - component: {fileID: 374720050081879374}
   m_Layer: 5
   m_Name: Button_Close
   m_TagString: Untagged
@@ -1854,6 +1869,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e8837a65d6a76549981079694e82723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &374720050081879374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755128666435780773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 7
 --- !u!1 &1929742999550245887
 GameObject:
   m_ObjectHideFlags: 0
@@ -5614,6 +5642,7 @@ GameObject:
   - component: {fileID: 146756403054492173}
   - component: {fileID: 6771203789058840182}
   - component: {fileID: 5580141302305406082}
+  - component: {fileID: 9053836972949861049}
   m_Layer: 5
   m_Name: Toggle
   m_TagString: Untagged
@@ -5723,6 +5752,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9053836972949861049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6176027228499075199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 7
 --- !u!1 &6193411903506477699
 GameObject:
   m_ObjectHideFlags: 0

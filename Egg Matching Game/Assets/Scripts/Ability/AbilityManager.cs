@@ -239,9 +239,11 @@ public class AbilityManager : MonoBehaviour
         if(tag==Tag.Slot)
         {
             hammerInstance = OneObjectPool.Instance.GetObjectWhitName(ObjectName.Hammer);
+            SoundManager.instance.PlaySfx(SoundType.BreakSlot);
         }else if(tag == Tag.Egg)
         {
             hammerInstance = OneObjectPool.Instance.GetObjectWhitName(ObjectName.Missile);
+            SoundManager.instance.PlaySfx(SoundType.BreakEgg);
         }
        
         HammerAnimator hammerAnimator = hammerInstance.GetComponent<HammerAnimator>();

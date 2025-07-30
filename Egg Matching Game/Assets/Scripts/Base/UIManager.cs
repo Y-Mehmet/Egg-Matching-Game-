@@ -1,10 +1,12 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public TMP_Text timeText,trueEggCountText,levelText;
+    public Button settingsBtn;
     
     private void OnEnable()
     {
@@ -12,6 +14,10 @@ public class UIManager : MonoBehaviour
         GameManager.instance.timeChanged += UpdateTime;
         GameManager.instance.trueEggCountChanged += UpdateTrueEggCount;
         GameManager.instance.levelChanged += UpdateLevel;
+        settingsBtn.onClick.AddListener(() =>
+        {
+            PanelManager.Instance.ShowPanel(PanelID.PlayPause);
+        });
 
     }
     private void OnDisable()
@@ -19,6 +25,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.timeChanged -= UpdateTime;
         GameManager.instance.trueEggCountChanged -= UpdateTrueEggCount;
         GameManager.instance.levelChanged -= UpdateLevel;
+        settingsBtn.onClick.RemoveAllListeners();
     }
     private void UpdateTime(int time)
     {

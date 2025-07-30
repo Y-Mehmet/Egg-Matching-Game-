@@ -12,12 +12,14 @@ public class AbilityActionShuffle : AbilityAction
         {
             AbilityManager.Instance.curentAbilityTypeChanged?.Invoke(AbilityType.Shuffle);
             GameManager.instance.Shufle();
+            SoundManager.instance.PlaySfx(SoundType.Coin);
             ResourceManager.Instance.SpendResource(ResourceType.Coin, cost);
         }
         else
         {
             AbilityManager.Instance.currentAbilityType = AbilityType.Shuffle;
             PanelManager.Instance.ShowPanel(PanelID.BuyAbilityPanel);
+            SoundManager.instance.PlaySfx(SoundType.EmptyCoin);
 
         }
 

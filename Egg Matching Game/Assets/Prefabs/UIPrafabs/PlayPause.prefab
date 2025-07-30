@@ -78,6 +78,7 @@ GameObject:
   - component: {fileID: 51370456552691312}
   - component: {fileID: 2627868337607961440}
   - component: {fileID: 8259324524837364016}
+  - component: {fileID: 7733925637585427443}
   m_Layer: 5
   m_Name: Button_Continue
   m_TagString: Untagged
@@ -200,6 +201,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c30874a15ebc4a46a086302df8c7c07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7733925637585427443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604006134828692166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 7
 --- !u!1 &948603422107270646
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +363,7 @@ GameObject:
   - component: {fileID: 60307822469264028}
   - component: {fileID: 3806023867926436394}
   - component: {fileID: 5708329159403201558}
+  - component: {fileID: 6957638917463840524}
   m_Layer: 5
   m_Name: Button_GiveUp
   m_TagString: Untagged
@@ -471,6 +486,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48784a3d1f6dea84ebf06bb80d0f5d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6957638917463840524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696530177795686372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 7
 --- !u!1 &1710558469814057868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1293,6 +1321,7 @@ GameObject:
   - component: {fileID: 2400175219675528204}
   - component: {fileID: 7858485729782520687}
   - component: {fileID: 3148998008871496776}
+  - component: {fileID: 458007783526602835}
   m_Layer: 5
   m_Name: Button_ReStart
   m_TagString: Untagged
@@ -1415,6 +1444,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cee53f609da5ae4da3704b4cfd8eb3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &458007783526602835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647104719858071306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee518a3574f5842409151d6cb024668b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundType: 7
 --- !u!1 &6665456277844876789
 GameObject:
   m_ObjectHideFlags: 0

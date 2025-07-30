@@ -38,7 +38,8 @@ public class LoadNextSceen : MonoBehaviour
     }
     private void LoadNextScene()
     {
-       
+        SoundManager.instance.StopBG();
+        SoundManager.instance.PlaySfx(SoundType.btnClick);
         SceeneManager.instance.LoadScene(1);
     }
     

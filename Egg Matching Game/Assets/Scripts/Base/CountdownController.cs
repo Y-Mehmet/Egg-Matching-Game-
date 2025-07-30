@@ -45,6 +45,7 @@ public class CountdownController : MonoBehaviour
     public void StartCountdown()
     {
         PanelManager.Instance.HideLastPanel();
+        SoundManager.instance.PlaySfx(SoundType.Temp);
         StartCoroutine(CountdownCoroutine());
     }
 
