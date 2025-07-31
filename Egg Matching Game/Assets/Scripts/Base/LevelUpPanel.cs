@@ -38,8 +38,8 @@ public class LevelUpPanel : MonoBehaviour
     {
         adsBtn.onClick.RemoveListener(OnAdsButtonClicked);
         contunioBtn.onClick.RemoveListener(OnContinueButtonClicked);
-        PanelManager.Instance.HideAllPanel();
-        
+        PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.LevelUpPanel);
+
     }
     private void OnAdsButtonClicked()
     {

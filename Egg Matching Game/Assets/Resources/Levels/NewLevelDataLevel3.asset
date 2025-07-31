@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eggColors: 0000000001000000020000000300000004000000
   topEggColors: 0100000002000000000000000300000004000000
-  levelDuration: 60
-  enemyCount: 5
-  spawnRate: 1.5
+  tempTopEggColors: 
+  brokenEggCount: 0
+  brokenSlotCount: 0
+  topEggPerCount: 1
+  startTime: 30

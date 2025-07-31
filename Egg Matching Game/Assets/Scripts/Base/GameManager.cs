@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Ease shuffleEase = Ease.InOutSine; // InOutSine gibi yumuşak geçişler bu animasyonda iyi durur
     [SerializeField] private float zOffsetOnSwap = -2.0f; // Geri çekilme mesafesi
     [Header("Assign Egg Animation")]
-   [SerializeField] private float assignAnimationDuration = 0.6f; // Animasyonun toplam süresi
+   [SerializeField] private float assignAnimationDuration = 0.3f; // Animasyonun toplam süresi
     [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
     [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
     [Header("Yeni Sıralı Karıştırma Ayarları")]
@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     public Action gameStart;
     public Action pauseGame;
     public Action continueGame;
+    public Action continueTime;
     public Action gameReStart;
     public Action<int> addSec;
     public Action gameOver;
@@ -308,7 +309,7 @@ public class GameManager : MonoBehaviour
     // Şimdi: Seçilen objenin renderer'ını bulur, orijinal rengini kaydeder ve onu bir vurgu rengiyle değiştirir.
     private void SelectObject(GameObject obj)
     {
-        if (!gameStarted)
+        if (!gameStarted || isShuffling)
             return;
             // Önceki seçimi temizle
             DeselectObject();
@@ -503,8 +504,13 @@ public class GameManager : MonoBehaviour
             Debug.LogError("LevelDataHolder boş veya atanmamış.");
             return null;
         }
-
-        int index = gameData.levelIndex % levelDataHolder.levels.Count; 
+        int halfLevel = (int)(levelDataHolder.levels.Count/2);
+        
+        int index = gameData.levelIndex % levelDataHolder.levels.Count;
+        if (index < halfLevel)
+        {
+            index += halfLevel;
+        }
         return levelDataHolder.levels[index];
     }
 
@@ -599,15 +605,18 @@ public class GameManager : MonoBehaviour
             isShuffling = false;
             yield break;
         }
+        stopTime?.Invoke();
         List<Transform> emtyOrWrongColorSlotTransformList = new List<Transform>();
         foreach( GameObject slot in slotList)
         {
             if(slot.TryGetComponent<Slot>(out Slot slotScript) && !eggSlotDic.ContainsKey(slotScript.slotIndex) )
             {
                 emtyOrWrongColorSlotTransformList.Add(slot.transform);
+                Debug.LogWarning("slot is null " + slotScript.slotIndex );
             }
             else if( !currentLevel.GetTempTopEggColorList().Contains(eggSlotDic[slotScript.slotIndex].GetComponent<Egg>().eggColor))
             {
+                Debug.LogWarning("slot is wrong color  " + slotScript.slotIndex+" color "+ eggSlotDic[slotScript.slotIndex].name);
                 emtyOrWrongColorSlotTransformList.Add(slot.transform);
                 onSlotIndexChange?.Invoke(-1, eggSlotDic[slotScript.slotIndex]);
                 yield return new WaitForSeconds(.5f);
@@ -618,7 +627,7 @@ public class GameManager : MonoBehaviour
             foreach (Transform egg in EggSpawner.instance.EggParent)
             {
                 
-                if (!eggSlotDic.ContainsValue(egg.gameObject) && GetLevelData().GetTempTopEggColorList().Contains(egg.GetComponent<Egg>().eggColor))
+                if (egg.gameObject.activeInHierarchy && !eggSlotDic.ContainsValue(egg.gameObject) && GetLevelData().GetTempTopEggColorList().Contains(egg.GetComponent<Egg>().eggColor))
                 {
 
                     
@@ -627,7 +636,8 @@ public class GameManager : MonoBehaviour
                     
                     yield return eggAnimation.WaitForCompletion();
                     eggSlotDic[emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex] = egg.gameObject;
-                    Debug.LogWarning("dlot index " + emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex + " egg name " + egg.name);
+                    PopStack(egg.gameObject);
+                  //  Debug.LogWarning("slot index " + emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex + " egg name " + egg.name);
                     emtyOrWrongColorSlotTransformList.RemoveAt(0);
                     if (emtyOrWrongColorSlotTransformList.Count == 0)
                         break;
@@ -674,6 +684,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Not enough eggs to shuffle.");
             isShuffling = false; // <-- BU SATIRI EKLE
+            PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
+            continueTime?.Invoke(); // Eğer zaman devam ediyorsa, devam et
             yield break; // yield return null yerine yield break kullanmak daha temiz.
         }
 
@@ -761,7 +773,8 @@ public class GameManager : MonoBehaviour
         shuffleSequence.OnComplete(() => {
             
             Debug.Log("Shuffling complete!");
-            PanelManager.Instance.HideLastPanel();
+            PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
+            continueTime?.Invoke();
             isShuffling = false; // Bayrağı indir, böylece tekrar karıştırılabilir
             
         });
@@ -935,6 +948,7 @@ public class GameManager : MonoBehaviour
                     singleEggAnimation.OnComplete(() => {
                         Debug.Log($"Egg has been assigned to slot {capturedSlot.slotIndex}. Dictionary updated.");
                         eggSlotDic[capturedSlot.slotIndex] = capturedEgg;
+                       // PopStack(capturedEgg);
                         onSlotedEggCountChange?.Invoke();
                     });
 

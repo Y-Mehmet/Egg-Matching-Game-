@@ -22,18 +22,20 @@ public class TryAgainPanel : MonoBehaviour
     }
     private void OnTryAgainButtonClicked()
     {
-        PanelManager.Instance.HideAllPanel();
+       
         GameManager.instance.gameReStart?.Invoke();
         GameManager.instance.ReStart();
-        
+        PanelManager.Instance.HidePanelWithPanelID(panelID:PanelID.TryAgainPanel);
+
 
     }
     private void OnAdd20SecButtonClicked()
     {
         if(ResourceManager.Instance.SpendResource(ResourceType.Coin,coinCost))
         {
-            PanelManager.Instance.HideAllPanel();
+           
             GameManager.instance.addSec?.Invoke(20);
+            PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.TryAgainPanel);
         }
         
     }

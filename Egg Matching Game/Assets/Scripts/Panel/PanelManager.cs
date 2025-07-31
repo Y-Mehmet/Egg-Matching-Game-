@@ -28,7 +28,7 @@ public class PanelManager : Singleton<PanelManager>
     // Function to show a panel (updated to use enum)
     public void ShowPanel(PanelID panelID, PanelShowBehavior behavior = PanelShowBehavior.SHOW_PREVISE)
     {
-      
+       // Debug.LogWarning("panelýd " + panelID.ToString());
 
       bool isActive = false;
         if (_objectPool == null)
@@ -81,6 +81,38 @@ public class PanelManager : Singleton<PanelManager>
             }
         }
     }
+    public void HidePanelWithPanelID(PanelID panelID, PanelShowBehavior panelShowBehavior=PanelShowBehavior.HIDE_PREVISE)
+    {
+        //Debug.LogWarning("panelýd hide last panel whit id  " + panelID.ToString());
+        // Gizlenecek paneli listede bul. FirstOrDefault, bulamazsa null döner.
+        PanelInstanceModel panelToHide = _listInstance.FirstOrDefault(p => p.PanelID == panelID);
+
+        // Panel listede bulunamadýysa uyarý ver ve iþlemi sonlandýr.
+        if (panelToHide == null)
+        {
+            // Debug.LogWarning($"Gizlenmeye çalýþýlan panel aktif listede bulunamadý: {panelID}");
+            return;
+        }
+
+        // Gizlenecek panelin, listenin en sonundaki panel olup olmadýðýný kontrol et.
+        bool wasLastPanel = GetLastPanel() == panelToHide;
+
+        // PaneliGameObject'ini ObjectPool'a geri gönder.
+        _objectPool.PoolObject(panelToHide.PanelInstance);
+        // Paneli aktif panel listesinden kaldýr.
+        _listInstance.Remove(panelToHide);
+
+        // Eðer gizlenen panel son panel idiyse ve hala listede baþka paneller varsa,
+        // yeni son paneli (bir öncekini) aktif et.
+        if (wasLastPanel && AnyPanelIsShowing()&& panelShowBehavior==PanelShowBehavior.SHOW_PREVISE)
+        {
+            var newLastPanel = GetLastPanel();
+            if (newLastPanel != null && !newLastPanel.PanelInstance.activeInHierarchy)
+            {
+                newLastPanel.PanelInstance.SetActive(true);
+            }
+        }
+    }
 
     // Function to hide the last panel
     public void HideLastPanel()
@@ -88,7 +120,7 @@ public class PanelManager : Singleton<PanelManager>
         if (AnyPanelIsShowing())
         {
             var lastPanel = GetLastPanel();
-
+           // Debug.LogWarning("panelýd hide last panel " + lastPanel.ToString());
             _listInstance.Remove(lastPanel);
             _objectPool.PoolObject(lastPanel.PanelInstance);
 
@@ -110,6 +142,7 @@ public class PanelManager : Singleton<PanelManager>
     // Function to hide all panels
     public void HideAllPanel()
     {
+      //  Debug.LogWarning("hide all panel");
         // Keep hiding panels until none are left
         while (AnyPanelIsShowing())
         {

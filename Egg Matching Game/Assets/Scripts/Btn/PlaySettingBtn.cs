@@ -28,6 +28,6 @@ public class PlaySettingBtn : MonoBehaviour
     }
     private void PanelSetActiveFalse()
     {
-       PanelManager.Instance.HideAllPanel();
+        PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.PlayPause);
     }
 }

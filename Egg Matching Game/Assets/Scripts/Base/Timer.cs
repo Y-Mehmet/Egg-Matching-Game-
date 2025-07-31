@@ -18,6 +18,7 @@ public class Timer : MonoBehaviour
         GameManager.instance.gameReStart += StopTimeCoroutine;
         GameManager.instance.addSec += AddSecondAndContinue; // Zamaný artýrma eylemi için
         AbilityManager.Instance.frezzeTimeAction += StopTimerWhitSecond; // Zaman dondurma eylemi için
+        GameManager.instance.continueTime += ContinueGameTimeCoroutine; // Oyun devam etme eylemi için
 
 
     }
@@ -30,6 +31,7 @@ public class Timer : MonoBehaviour
         AbilityManager.Instance.frezzeTimeAction -= StopTimerWhitSecond; // Zaman dondurma eylemi için
         GameManager.instance.addSec -= AddSecondAndContinue; // Zamaný artýrma eylemi için
         GameManager.instance.stopTime -= StopGameTimeCoroutine; // Oyun durdurma eylemi için
+        GameManager.instance.continueTime -= ContinueGameTimeCoroutine; // Oyun devam etme eylemi için
     }
     void StopTimeCoroutine()
     {
@@ -38,14 +40,14 @@ public class Timer : MonoBehaviour
             StopCoroutine(timeCoroutine);
         }
         Time.timeScale = 1;
-        GameManager.instance.timeChanged?.Invoke(startTime);
+        GameManager.instance.timeChanged?.Invoke(GameManager.instance.GetLevelData().startTime);
     }
 
     void StartTimer()
     {
         
         timeSpeed = GameManager.instance.TimeSpeed;
-        currentTime= startTime;
+        currentTime= GameManager.instance.GetLevelData().startTime;
         GameManager.instance.timeChanged?.Invoke(currentTime);
         if(timeCoroutine != null)
         {
@@ -60,14 +62,17 @@ public class Timer : MonoBehaviour
             StopCoroutine(timeCoroutine);
         }
         Time.timeScale = 1;
-        GameManager.instance.timeChanged?.Invoke(startTime);
+        
     }
+  
     void ContinueGameTimeCoroutine()
     {
-        if(timeCoroutine== null && currentTime>0)
+        
+        if (timeCoroutine != null)
         {
-            timeCoroutine = StartCoroutine(TimeRoutine());
+            StopCoroutine(timeCoroutine);
         }
+        timeCoroutine = StartCoroutine(TimeRoutine());
     }
     void StopTimer()
     {
@@ -83,9 +88,9 @@ public class Timer : MonoBehaviour
     }
     IEnumerator StopTimerWhitSecondCorrotune(int delay)
     {
-       
+        PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
         yield return new WaitForSeconds(delay);
-        PanelManager.Instance.HideLastPanel();
+       
         timeCoroutine = StartCoroutine(TimeRoutine());
     }
     void ContinueTimer()
@@ -103,7 +108,7 @@ public class Timer : MonoBehaviour
             yield return new WaitForSeconds(timeSpeed); 
 
             currentTime--;
-            if (currentTime == 30)
+            if (currentTime == 10)
                 SoundManager.instance.PlaySfx(SoundType.Tiktak);
             GameManager.instance.timeChanged?.Invoke(currentTime);
         }

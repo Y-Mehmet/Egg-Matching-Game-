@@ -124,7 +124,7 @@ public class AbilityManager : MonoBehaviour
                             }
                             // Hedefi yok et (veya bir animasyon oynat)
                             AnimateAndDestroy2(hit.transform.gameObject, tag);
-                            PanelManager.Instance.HideLastPanel();
+                            PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.BreakDragonEggPanel);
                             break;
                         }
                     }
@@ -208,7 +208,7 @@ public class AbilityManager : MonoBehaviour
                             }
                             // Hedefi yok et (veya bir animasyon oynat)
                             AnimateAndDestroy(hit.transform.gameObject, tag);
-                            PanelManager.Instance.HideLastPanel();
+                            PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
                             break;
                         }
                     }

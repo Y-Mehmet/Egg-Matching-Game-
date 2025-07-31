@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.Networking;
 
 public class NetworkManager : MonoBehaviour
 {
     public static NetworkManager intance;
+    private Coroutine checkConnectionCoroutine;
     private void Awake()
     {
         if(intance == null)
@@ -38,17 +40,24 @@ public class NetworkManager : MonoBehaviour
 
     public void CheckInternetConnection()
     {
-        if (Application.internetReachability == NetworkReachability.NotReachable)
+        if(checkConnectionCoroutine!= null)
+        {
+            StopCoroutine(checkConnectionCoroutine); // Önceki kontrolü durdur
+        }
+        checkConnectionCoroutine = StartCoroutine(CheckInternet());
+    }
+    private IEnumerator CheckInternet()
+    {
+        UnityWebRequest request = new UnityWebRequest("https://www.google.com");
+        yield return request.SendWebRequest();
+        if (request.error != null)
         {
             PanelManager.Instance.ShowPanel(PanelID.ErrorNetwork, PanelShowBehavior.HIDE_PREVISE);
-           
-        }
-        else
-        {
-            PanelManager.Instance.HideAllPanel();
-        }
-    }
 
+        }else
+            PanelManager.Instance.HidePanelWithPanelID(PanelID.ErrorNetwork);
+
+    }
     public void OnOkButtonClicked()
     {
         // Wi-Fi ayarlarýna yönlendir (Android özel)
@@ -57,7 +66,7 @@ public class NetworkManager : MonoBehaviour
 #endif
 
         // Paneli kapat
-        PanelManager.Instance.HideAllPanel();
+        PanelManager.Instance.HidePanelWithPanelID(PanelID.ErrorNetwork);
     }
 
     private void OpenWifiSettingsAndroid()

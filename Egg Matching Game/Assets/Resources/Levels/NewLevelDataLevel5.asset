@@ -16,3 +16,6 @@ MonoBehaviour:
   topEggColors: 01000000020000000000000003000000060000000500000004000000
   tempTopEggColors: 
   brokenEggCount: 0
+  brokenSlotCount: 0
+  topEggPerCount: 1
+  startTime: 45

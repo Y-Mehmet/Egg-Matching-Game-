@@ -12,6 +12,7 @@ public class LevelData : ScriptableObject
     public int brokenEggCount = 0;
     public int brokenSlotCount = 0;
     public int topEggPerCount = 1;
+    public int startTime = 180;
     public void RestartLevelData()
     {
         if(tempTopEggColors.Count > 0)

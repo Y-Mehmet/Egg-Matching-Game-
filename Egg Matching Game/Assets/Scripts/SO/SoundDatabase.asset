@@ -31,7 +31,7 @@ MonoBehaviour:
     loop: 0
   - soundType: 4
     audioClip: {fileID: 8300000, guid: 0fff4ffd16a28ab4d948efc6546d6aba, type: 3}
-    volume: 0.3
+    volume: 1
     loop: 0
   - soundType: 5
     audioClip: {fileID: 8300000, guid: e04796618597e9a43b8b84d37ba46455, type: 3}
