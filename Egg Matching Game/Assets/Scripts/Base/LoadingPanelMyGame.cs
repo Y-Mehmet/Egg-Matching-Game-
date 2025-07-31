@@ -32,6 +32,7 @@ public class LoadingPanelMyGame : MonoBehaviour
         // Bu, yükleme %90'a geldiðinde bile sahnenin hemen geçiþ yapmamasýný saðlar.
         // Biz izin verene kadar bekler.
         operation.allowSceneActivation = false;
+        yield return new WaitForSeconds(10f);
 
         // Yükleme tamamlanana kadar döngüyü sürdür
         while (!operation.isDone)
@@ -56,7 +57,7 @@ public class LoadingPanelMyGame : MonoBehaviour
                 // Burada isterseniz, belirli bir süre bekleyebilir
                 // veya kullanýcý bir tuþa basana/ekrana dokunana kadar bekleyebilirsiniz.
                 // Örneðin, 4 saniye bekleyip sahneyi aktifleþtirelim:
-                yield return new WaitForSeconds(4f); // BURADA 4 SANÝYE BEKLEME SAÐLANACAK
+               // BURADA 4 SANÝYE BEKLEME SAÐLANACAK
 
                 // Sahnenin aktivasyonuna izin ver
                 operation.allowSceneActivation = true;

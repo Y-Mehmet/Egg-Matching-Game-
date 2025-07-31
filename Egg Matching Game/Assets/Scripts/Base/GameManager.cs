@@ -507,7 +507,7 @@ public class GameManager : MonoBehaviour
         int halfLevel = (int)(levelDataHolder.levels.Count/2);
         
         int index = gameData.levelIndex % levelDataHolder.levels.Count;
-        if (index < halfLevel)
+        if (index < halfLevel && gameData.levelIndex>levelDataHolder.levels.Count)
         {
             index += halfLevel;
         }
@@ -787,9 +787,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ShuffleRandomlyCoroutine()
     {
-        // --- BU KISIMLAR DEĞİŞMEDİ ---
-        // Adım 1, 2, 3 ve 4 (kontroller, liste oluşturma, karıştırma) aynı kalıyor.
-        // ...
+      
 
         if (isShuffling)
         {
@@ -819,14 +817,13 @@ public class GameManager : MonoBehaviour
         {
             n--;
             int k = Random.Range(0, n + 1);
-            (eggsToShuffle[k], eggsToShuffle[n]) = (eggsToShuffle[n], eggsToShuffle[k]);
+            if(slotList.FirstOrDefault(slot=> slot.GetComponent<Slot>().slotIndex == k ) != null && slotList.FirstOrDefault(slot => slot.GetComponent<Slot>().slotIndex == n) != null)
+            {
+                (eggsToShuffle[k], eggsToShuffle[n]) = (eggsToShuffle[n], eggsToShuffle[k]);
+            }
+           
         }
-        // --- BURAYA KADAR AYNI ---
-
-
-        // =========================================================================
-        // --- 5. ADIM: TAMAMEN YENİLENMİŞ ANİMASYON OLUŞTURMA MANTIĞI ---
-        // =========================================================================
+      
 
         Sequence shuffleSequence = DOTween.Sequence();
 
@@ -839,14 +836,22 @@ public class GameManager : MonoBehaviour
         int originalSlotIndexCounter = 0;
         // Slotları sıralı gezerek her bir slota karıştırılmış listeden bir yumurta atıyoruz.
         foreach (int originalSlotIndex in eggSlotDic.Keys.OrderBy(key => key))
-        {if (originalSlotIndex >= slotList.Count)
+        {
+            // 1. Önce bu mantıksal indekse sahip olan slot GameObject'ini bulalım.
+            GameObject targetSlotObject = slotList.FirstOrDefault(slot => slot.GetComponent<Slot>() != null && slot.GetComponent<Slot>().slotIndex == originalSlotIndex);
+
+            // 2. Eğer bu slota karşılık gelen bir obje listede yoksa, bu adımı atla.
+            if (targetSlotObject == null)
+            {
+                Debug.LogWarning($"Slot listesinde mantıksal indeksi {originalSlotIndex} olan bir slot bulunamadı. Atlanıyor.");
                 continue;
-            
+            }
+
+            // 3. Artık güvenli bir şekilde objenin transform'unu alabiliriz.
             GameObject eggToMove = eggsToShuffle[originalSlotIndexCounter];
-            Transform targetSlot = slotList[originalSlotIndex].transform;
+            Transform targetSlot = targetSlotObject.transform; // Hata veren satırın düzeltilmiş hali
             Vector3 startPos = eggToMove.transform.position;
             Vector3 targetPos = targetSlot.position;
-
             // Bu yumurtanın yeni slotunu mantıksal olarak kaydediyoruz.
             newEggSlotDic[originalSlotIndex] = eggToMove;
 

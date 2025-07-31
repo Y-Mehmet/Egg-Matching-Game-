@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 629.7, y: 384}
+  m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1762120193129404354
 CanvasRenderer:
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a6385de2a00be364382c34b8a133d90f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b4af23895e9034205bc09926bba82769, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Where is the Dragon?
+  m_text: Where is the gem?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ecbe1defc55a463ba1172f67f84844b, type: 2}
   m_sharedMaterial: {fileID: 5568139486216784236, guid: 6ecbe1defc55a463ba1172f67f84844b, type: 2}
@@ -815,6 +815,18 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7599557401231760781, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.81568635
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599557401231760781, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.53333336
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599557401231760781, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.81568635
+      objectReference: {fileID: 0}
     - target: {fileID: 7599557402129107470, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -822,6 +834,18 @@ PrefabInstance:
     - target: {fileID: 7599557402129107470, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599557402129107471, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.81568635
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599557402129107471, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.5294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599557402129107471, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.81568635
       objectReference: {fileID: 0}
     - target: {fileID: 7599557402129107506, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
       propertyPath: m_Name
@@ -897,11 +921,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7599557402129107507, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 381.88
+      value: 214
       objectReference: {fileID: 0}
     - target: {fileID: 7599557402129107507, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -317
+      value: -343
       objectReference: {fileID: 0}
     - target: {fileID: 7599557402129107507, guid: 0dd1048b678f141ebbbff014ab7f72af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
