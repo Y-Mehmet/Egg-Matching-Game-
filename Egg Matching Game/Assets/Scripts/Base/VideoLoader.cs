@@ -23,9 +23,9 @@ public class VideoLoader : MonoBehaviour
 
     void LoadVideo()
     {
-        if (DragonManager.Instance == null || DragonManager.Instance.GetCurrentDragonSO() == null || DragonManager.Instance.GetCurrentDragonSO().DragonIndex == 0)
+        if (DragonManager.Instance == null || DragonManager.Instance.GetCurrentDragonSO() == null || ResourceManager.Instance.SelectedDragonIndex==-1)
             return;
-        VideoClip clip = DragonManager.Instance.GetCurrentDragonSO().videoClip;
+        VideoClip clip = DragonManager.Instance.dragonHolder.dragonSOList[ResourceManager.Instance.SelectedDragonIndex].videoClip;
 
         if (clip != null)
         {

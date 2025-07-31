@@ -7,9 +7,10 @@ public class DragonSlot : MonoBehaviour
     [SerializeField] TMP_Text dragonNameText, dragonIndexText;
     [SerializeField] Button wiewBtn;
     [SerializeField] Image dragonImage;
+    int slotIndex;
     private void OnEnable()
     {
-        int slotIndex = transform.parent.GetSiblingIndex();
+        slotIndex = transform.parent.GetSiblingIndex();
         dragonIndexText.text = "Dragon " + (slotIndex + 1).ToString();
         dragonNameText.text = DragonManager.Instance.dragonHolder.dragonSOList[slotIndex].DragonName.ToString();
         dragonImage.sprite = DragonManager.Instance.dragonHolder.dragonSOList[slotIndex].DragonSprite;
@@ -21,7 +22,8 @@ public class DragonSlot : MonoBehaviour
     }
     private void OnViewBtnClick()
     {
-        //DragonManager.Instance.ShowDragonInfoPanel();
+        ResourceManager.Instance.SelectedDragonIndex = slotIndex;
+        SoundManager.instance.PlaySfx(SoundType.btnClick);
     }
 
 }

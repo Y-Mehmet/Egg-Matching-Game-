@@ -19,6 +19,7 @@ public class SaveGameData
     public float soundFxVolume = 0.8f;
     public float musicVolume = 0.8f;
     public bool isVibrationEnabled = true;
+    public int SelectedDragonIndex = -1;
 
 
 }

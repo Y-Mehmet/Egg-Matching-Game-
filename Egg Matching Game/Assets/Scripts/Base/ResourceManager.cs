@@ -24,6 +24,7 @@ public class ResourceManager : MonoBehaviour
     public float soundFxVolume = 0.8f;
     public float musicVolume = 0.8f;
     public bool isVibrationEnabled = false;
+    public int SelectedDragonIndex = -1;
 
 
     // Yüklenen tüm oyun verilerini tutan referansýmýz.
@@ -174,6 +175,7 @@ public class ResourceManager : MonoBehaviour
         gameData.musicVolume = this.musicVolume;
         gameData.soundFxVolume = this.soundFxVolume;
         gameData.isPushAlarmEnabled = this.isPushAlarmEnabled;
+        gameData.SelectedDragonIndex=this.SelectedDragonIndex;
 
         // YENÝ: Zaman bilgisini kaydet
         gameData.nextEnergyTimeString = this.nextEnergyTime.ToBinary().ToString();
@@ -195,6 +197,7 @@ public class ResourceManager : MonoBehaviour
         this.soundFxVolume = gameData.soundFxVolume;
         this.musicVolume = gameData.musicVolume;
         this.isVibrationEnabled = gameData.isVibrationEnabled;
+        this.SelectedDragonIndex = gameData.SelectedDragonIndex;
 
 
         // YENÝ: Zaman bilgisini yükle

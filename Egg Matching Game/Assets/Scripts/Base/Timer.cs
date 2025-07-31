@@ -103,6 +103,8 @@ public class Timer : MonoBehaviour
             yield return new WaitForSeconds(timeSpeed); 
 
             currentTime--;
+            if (currentTime == 30)
+                SoundManager.instance.PlaySfx(SoundType.Tiktak);
             GameManager.instance.timeChanged?.Invoke(currentTime);
         }
 

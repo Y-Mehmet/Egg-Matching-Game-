@@ -19,6 +19,7 @@ public enum PanelID
     BreakDragonEggPanel,
     ResultOfDragonEggPanel,
     TryAgainPanel,
+    ErrorNetwork,
 
 
 }
