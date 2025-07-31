@@ -790,6 +790,10 @@ PrefabInstance:
       propertyPath: DragonDataSO
       value: 
       objectReference: {fileID: 11400000, guid: d7b62e0e05b81b245802f2778a8febfa, type: 2}
+    - target: {fileID: 1867825408027244295, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
+      propertyPath: minSwapDuration
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2106593732089294801, guid: 43046f70bc3a05b45a2ebba8b4e52114, type: 3}
       propertyPath: m_Sprite
       value: 

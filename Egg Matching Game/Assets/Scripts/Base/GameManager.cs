@@ -18,23 +18,20 @@ public class GameManager : MonoBehaviour
     public GameObject AbilityBarPanel;
     public bool isSelectTrueDaragonEgg;
     [Header("Shuffle Animation Settings")]
-    [SerializeField] private float swapDuration = 0.3f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
-    [SerializeField] private float delayBetweenSwaps = 0.1f;
-    [SerializeField] private Ease shuffleEase = Ease.InOutSine; // InOutSine gibi yumuşak geçişler bu animasyonda iyi durur
-    [SerializeField] private float zOffsetOnSwap = -2.0f; // Geri çekilme mesafesi
-    [Header("Assign Egg Animation")]
-   [SerializeField] private float assignAnimationDuration = 0.3f; // Animasyonun toplam süresi
-    [SerializeField] private float zOffsetOnAssign = -2.0f;     // Geri çekilme mesafesi
-    [SerializeField] private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
-    [Header("Yeni Sıralı Karıştırma Ayarları")]
-    [Tooltip("İlk yumurta takasının toplam süresi.")]
-    [SerializeField] private float initialSwapDuration = .5f;
+    private float swapDuration = 0.3f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
+    private float delayBetweenSwaps = 0.1f;
+    private Ease shuffleEase = Ease.InOutSine; // InOutSine gibi yumuşak geçişler bu animasyonda iyi durur
+    private float zOffsetOnSwap = 0.20f; // Geri çekilme mesafesi -.2
+  
+    private float assignAnimationDuration = 0.3f; // Animasyonun toplam süresi
+     private float zOffsetOnAssign = -1.0f;     // Geri çekilme mesafesi
+     private Ease assignEase = Ease.InOutSine; // Animasyon yumuşaklığı
+    
+    private float initialSwapDuration = 1.0f;
 
-    [Tooltip("Her takastan sonra sürenin ne kadar azalacağı.")]
-    [SerializeField] private float durationReductionPerSwap = 0.1f;
+    private float durationReductionPerSwap = 0.1f;
 
-    [Tooltip("Bir takasın sahip olabileceği minimum süre.")]
-    [SerializeField] private float minSwapDuration = 0.2f;
+  private float minSwapDuration = 0.25f;
 
     private float fadeDuration=3f; // Materyal geçiş süresi
 
@@ -526,11 +523,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Belirtilen yumurta için bir animasyon sekansı OLUŞTURUR ve DÖNDÜRÜR.
-    /// Not: Bu metod animasyonu kendisi BAŞLATMAZ.
-    /// </summary>
-    /// <returns>Oluşturulan DOTween Sekansı</returns>
+
     private Sequence AnimateEggToSlot(GameObject egg, Transform targetTransform)
     {
         // Yumurtayı başlangıç için hazırla
@@ -727,8 +720,8 @@ public class GameManager : MonoBehaviour
 
 
             // --- 1. Adım: Yumurtaları Z ekseninde geriye çek ---
-            Vector3 backPosA = new Vector3(posA.x, posA.y, posA.z + zOffsetOnSwap);
-            Vector3 backPosB = new Vector3(posB.x, posB.y, posB.z + zOffsetOnSwap);
+            Vector3 backPosA = new Vector3(posA.x, posA.y+ zOffsetOnSwap, posA.z );
+            Vector3 backPosB = new Vector3(posB.x, posB.y- zOffsetOnSwap, posB.z );
 
             // Append ile ilk yumurtanın geri gitme animasyonunu başlat
             shuffleSequence.Append(eggA.transform.DOMove(backPosA, stepDuration).SetEase(shuffleEase)
@@ -859,7 +852,7 @@ public class GameManager : MonoBehaviour
             float stepDuration = currentSwapDuration / 3.0f;
 
             // Animasyon adımlarını tanımlıyoruz (Geri Çek -> Yana Kay -> İleri Git)
-            Vector3 backPos = new Vector3(startPos.x, startPos.y, startPos.z + zOffsetOnSwap);
+            Vector3 backPos = new Vector3(startPos.x, startPos.y + zOffsetOnSwap, startPos.z);
             Vector3 swapTargetPos = new Vector3(targetPos.x, targetPos.y, backPos.z);
 
             // --- ANA DEĞİŞİKLİK: 'Insert' yerine 'Append' kullanıyoruz. ---
@@ -874,15 +867,13 @@ public class GameManager : MonoBehaviour
             currentSwapDuration = Mathf.Max(minSwapDuration, currentSwapDuration - durationReductionPerSwap);
 
             originalSlotIndexCounter++;
+            if (delayBetweenSwaps > 0)
+            {
+                shuffleSequence.AppendInterval(delayBetweenSwaps);
+            }
         }
 
-        // =========================================================================
-        // --- YENİLENMİŞ KISMIN SONU ---
-        // =========================================================================
-
-
-        // --- BU KISIMLAR DEĞİŞMEDİ ---
-        // 6. Adım: Animasyon bittiğinde mantıksal verileri güncelle. Bu kısım aynı.
+        
         shuffleSequence.OnComplete(() => {
             eggSlotDic = newEggSlotDic;
             isShuffling = false;
