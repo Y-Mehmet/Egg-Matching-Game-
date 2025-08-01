@@ -32,7 +32,12 @@ public class SoundManager : MonoBehaviour
         // Veritabanýndaki sesleri sözlüðe yükle
         InitializeSounds();
     }
+    private void Start()
+    {
 
+        bgmSource.volume = ResourceManager.Instance.musicVolume;
+        sfxSource.volume = ResourceManager.Instance.soundFxVolume;
+    }
     private void InitializeSounds()
     {
         soundDictionary = new Dictionary<SoundType, AudioClip>();
@@ -67,11 +72,23 @@ public class SoundManager : MonoBehaviour
     }
 
     // Ses efektlerini çalmak için
-    public void PlaySfx(SoundType soundType=SoundType.btnClick)
+    public void PlaySfx(SoundType soundType, float startTime = 0f, bool PlayOneShot=true, float playbackSpeed = 1.0f)
     {
         if (soundDictionary.TryGetValue(soundType, out AudioClip clip))
         {
-            sfxSource.PlayOneShot(clip);
+            sfxSource.pitch= Mathf.Max(0.1f, playbackSpeed);
+            if (startTime <= 0f || PlayOneShot)
+            {
+                sfxSource.PlayOneShot(clip);
+            }
+            // Eðer belirli bir saniyeden baþlamasý isteniyorsa:
+            else
+            {
+                // DÝKKAT: Bu yöntem sfxSource'da çalan mevcut sesi durdurur!
+                sfxSource.clip = clip;      // 1. Klibi ata
+                sfxSource.time = startTime; // 2. Baþlangýç saniyesini ayarla
+                sfxSource.Play();           // 3. Oynat
+            }
         }
         else
         {
@@ -93,16 +110,29 @@ public class SoundManager : MonoBehaviour
     {
         bgmSource.Stop();
     }
+    public void StopClip(SoundType soundType)
+    {
+        if (soundDictionary.TryGetValue(soundType, out AudioClip clip))
+        {
+            if (sfxSource.clip == clip)
+                sfxSource.Stop();
+        }
+    }
 
     // Ses ayarlarý için fonksiyonlar (opsiyonel, önceki örnekteki gibi eklenebilir)
     public void SetBgmVolume(float volume)
     {
         bgmSource.volume = volume;
+        ResourceManager.Instance.musicVolume = volume;
+        ResourceManager.Instance.SaveResources();
     }
 
     public void SetSfxVolume(float volume)
     {
         sfxSource.volume = volume;
+        ResourceManager.Instance.soundFxVolume = volume;
+        ResourceManager.Instance.SaveResources();
+        
     }
     
 }

@@ -9,6 +9,7 @@ public class LevelUpPanel : MonoBehaviour
     public TMP_Text levelText, gemCountText, coinCountText;
     public Button adsBtn, contunioBtn;
     private int gemAmount;
+    private bool isFirst = true;
 
     private void OnEnable()
     {
@@ -18,7 +19,15 @@ public class LevelUpPanel : MonoBehaviour
             Debug.LogError("LevelUpPanel: UI elemanlarý eksik! Lütfen tüm referanslarý atayýn.");
             return;
         }
+        if(isFirst)
+        {
+            isFirst = false;
+            return;
+        }
+        SoundManager.instance.StopClip(SoundType.Tiktak);
+
         SoundManager.instance.PlaySfx(SoundType.LevelUp);
+
         levelText.text = "" + (ResourceManager.Instance.GetResourceAmount(ResourceType.LevelIndex)) ;
         if (GameManager.instance.isSelectTrueDaragonEgg)
             gemAmount = ResourceManager.Instance.gemsPerGame;

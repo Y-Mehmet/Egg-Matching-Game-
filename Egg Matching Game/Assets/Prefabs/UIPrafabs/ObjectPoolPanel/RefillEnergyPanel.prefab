@@ -1507,6 +1507,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleText: {fileID: 7156118282320281038}
   infoText: {fileID: 8474716817984339935}
+  CoinValueText: {fileID: 4305281527033962844}
   spendCoinBtn: {fileID: 6156769699974212689}
   addBtn: {fileID: 5097387569038298806}
   closeBtn: {fileID: 7590124672701408422}

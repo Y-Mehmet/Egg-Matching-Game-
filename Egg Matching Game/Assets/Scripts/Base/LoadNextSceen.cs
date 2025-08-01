@@ -38,7 +38,8 @@ public class LoadNextSceen : MonoBehaviour
     }
     private void LoadNextScene()
     {
-        
+        if (NetworkManager.instance == null || !NetworkManager.instance.isNetworkOpen)
+            return;
         SoundManager.instance.PlaySfx(SoundType.btnClick);
         SceeneManager.instance.LoadScene(1);
     }

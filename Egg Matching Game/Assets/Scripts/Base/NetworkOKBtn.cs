@@ -15,6 +15,6 @@ public class NetworkOKBtn : MonoBehaviour
 
     public void OnOkButtonClicked()
     {
-        NetworkManager.intance.OnOkButtonClicked();
+        NetworkManager.instance.OnOkButtonClicked();
     }
 }

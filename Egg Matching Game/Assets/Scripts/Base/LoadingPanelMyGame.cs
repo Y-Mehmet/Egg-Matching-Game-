@@ -1,25 +1,54 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.UI;
 
 public class LoadingPanelMyGame : MonoBehaviour
 {
-    // Yükleme ilerlemesini göstermek için bir UI Text veya Slider referansý eklenebilir
-    // public Text progressText;
-    // public Slider progressBar;
+    [SerializeField] Image myGameLogo;
 
     private void Awake()
     {
-        // Bu GameObject'in sahne geçiþlerinde yok edilmemesini saðla
-        // Bu, Coroutine'in yeni sahne yüklendiðinde durmamasýný saðlar.
-        DontDestroyOnLoad(gameObject);
+   
     }
 
     private void OnEnable()
     {
         // Panel aktif hale geldiðinde yükleme iþlemini baþlat
         gameObject.SetActive(true);
+        
+    }
+    void Start()
+    {
+        // Alfa deðerini deðiþtirme iþlemini baþlatýyoruz.
+        StartCoroutine(ChangeAlfa());
+    }
+
+    private IEnumerator ChangeAlfa()
+    {
+        // Baþlangýçta belirlediðimiz süre kadar bekle.
+        // Bu süre, videonun yüklenmeye baþlamasý için zaman tanýr.
+        yield return new WaitForSeconds(5);
+
+        float gecenZaman = 0f;
+        Color baslangicRengi = myGameLogo.color;
+
+        // Alfa deðeri 0 olana kadar bu döngü çalýþacak.
+        while (gecenZaman < 1)
+        {
+            // Geçen süreyi her frame'de artýr.
+            gecenZaman += Time.deltaTime;
+
+            // Rengin alfa deðerini zamanla 1'den 0'a doðru düþür.
+            float yeniAlfa = Mathf.Lerp(1f, 0f, gecenZaman / 1);
+            myGameLogo.color = new Color(baslangicRengi.r, baslangicRengi.g, baslangicRengi.b, yeniAlfa);
+
+            // Bir sonraki frame'e kadar bekle.
+            yield return null;
+        }
+
         StartCoroutine(LoadSceneAsyncAndDeactivatePanel());
+
     }
 
     IEnumerator LoadSceneAsyncAndDeactivatePanel()
@@ -32,7 +61,7 @@ public class LoadingPanelMyGame : MonoBehaviour
         // Bu, yükleme %90'a geldiðinde bile sahnenin hemen geçiþ yapmamasýný saðlar.
         // Biz izin verene kadar bekler.
         operation.allowSceneActivation = false;
-        yield return new WaitForSeconds(10f);
+        
 
         // Yükleme tamamlanana kadar döngüyü sürdür
         while (!operation.isDone)
@@ -41,25 +70,12 @@ public class LoadingPanelMyGame : MonoBehaviour
             // Unity, sahne tamamen hazýr olmadan önce progress deðerini 0.9'da durdurur.
             float progress = Mathf.Clamp01(operation.progress / 0.9f); // 0.9'a bölerek %0-100 aralýðýna getir
 
-            // Ýlerleme çubuðu veya metin güncellemeleri burada yapýlabilir
-            // if (progressBar != null)
-            // {
-            //     progressBar.value = progress;
-            // }
-            // if (progressText != null)
-            // {
-            //     progressText.text = "Loading: " + (progress * 100f).ToString("F0") + "%";
-            // }
+        
 
             // Eðer yükleme %90'ýn üzerine çýktýysa (yani sahne yüklendi ama henüz aktif deðil)
             if (operation.progress >= 0.9f) // %90'a ulaþtýðýnda
             {
-                // Burada isterseniz, belirli bir süre bekleyebilir
-                // veya kullanýcý bir tuþa basana/ekrana dokunana kadar bekleyebilirsiniz.
-                // Örneðin, 4 saniye bekleyip sahneyi aktifleþtirelim:
-               // BURADA 4 SANÝYE BEKLEME SAÐLANACAK
-
-                // Sahnenin aktivasyonuna izin ver
+             
                 operation.allowSceneActivation = true;
             }
 

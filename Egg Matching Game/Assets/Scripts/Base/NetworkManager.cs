@@ -1,85 +1,28 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
 
 public class NetworkManager : MonoBehaviour
 {
-    public static NetworkManager intance;
-    private Coroutine checkConnectionCoroutine;
+    public static NetworkManager instance; // "intance" yerine "instance" yazmak daha yaygýndýr
+    public bool isNetworkOpen=false;
     private void Awake()
     {
-        if(intance == null)
+        if (instance == null)
         {
-            intance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
-            StartCoroutine(CheckConnectionRoutine()); // Baðlantý kontrolünü baþlat
         }
         else
         {
-            Destroy(gameObject); // Singleton prensibine göre, zaten var olan bir örneði yok et
+            Destroy(gameObject);
         }
     }
-
 
     void Start()
     {
-        // Uygulama baþlar baþlamaz baðlantýyý kontrol et
-        CheckInternetConnection();
-    }
-
-    // Belirli aralýklarla baðlantýyý kontrol etmek için bir metot (isteðe baðlý)
-    IEnumerator CheckConnectionRoutine()
-    {
-        while (true)
-        {
-            CheckInternetConnection();
-            yield return new WaitForSeconds(5f); // Her 5 saniyede bir kontrol et
-        }
-    }
-
-    public void CheckInternetConnection()
-    {
-        if(checkConnectionCoroutine!= null)
-        {
-            StopCoroutine(checkConnectionCoroutine); // Önceki kontrolü durdur
-        }
-        checkConnectionCoroutine = StartCoroutine(CheckInternet());
-    }
-    private IEnumerator CheckInternet()
-    {
-        UnityWebRequest request = new UnityWebRequest("https://www.google.com");
-        yield return request.SendWebRequest();
-        if (request.error != null)
-        {
-            PanelManager.Instance.ShowPanel(PanelID.ErrorNetwork, PanelShowBehavior.HIDE_PREVISE);
-
-        }else
-            PanelManager.Instance.HidePanelWithPanelID(PanelID.ErrorNetwork);
-
-    }
-    public void OnOkButtonClicked()
-    {
-        // Wi-Fi ayarlarýna yönlendir (Android özel)
-#if UNITY_ANDROID
-        OpenWifiSettingsAndroid();
-#endif
-
-        // Paneli kapat
-        PanelManager.Instance.HidePanelWithPanelID(PanelID.ErrorNetwork);
-    }
-
-    private void OpenWifiSettingsAndroid()
-    {
-        using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            using (AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
-            {
-                // Wi-Fi ayarlarýna gitmek için intent oluþtur
-                AndroidJavaObject intent = new AndroidJavaObject("android.content.Intent", "android.settings.WIFI_SETTINGS");
-                activity.Call("startActivity", intent);
-            }
-        }
+        // Uygulama baþlar baþlamaz periyodik kontrole baþla
+        StartCoroutine(CheckConnectionRoutine());
     }
 
     // Uygulama tekrar odaklandýðýnda baðlantýyý kontrol et
@@ -87,7 +30,65 @@ public class NetworkManager : MonoBehaviour
     {
         if (hasFocus)
         {
-            CheckInternetConnection();
+            // Anýnda bir kontrol yap
+            StartCoroutine(CheckInternet());
+        }
+    }
+
+    // Belirli aralýklarla baðlantýyý kontrol eden ana döngü
+    private IEnumerator CheckConnectionRoutine()
+    {
+        while (true)
+        {
+            yield return StartCoroutine(CheckInternet()); // Kontrolün bitmesini bekle
+            yield return new WaitForSeconds(5f); // Kontrol sýklýðýný biraz artýrabiliriz (ör: 10 saniye)
+        }
+    }
+
+    // Asýl internet kontrolünü yapan coroutine
+    private IEnumerator CheckInternet()
+    {
+        UnityWebRequest request = UnityWebRequest.Get("https://www.google.com");
+        request.timeout = 5;
+
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            isNetworkOpen = false;
+            PanelManager.Instance.ShowPanel(PanelID.ErrorNetwork, PanelShowBehavior.HIDE_PREVISE);
+        }
+        else
+        {
+            isNetworkOpen = true;
+            PanelManager.Instance.HidePanelWithPanelID(PanelID.ErrorNetwork);
+        }
+
+        request.Dispose();
+    }
+
+    // OK Butonuna basýldýðýnda
+    public void OnOkButtonClicked()
+    {
+        // Wi-Fi ayarlarýna yönlendir
+#if UNITY_ANDROID && !UNITY_EDITOR
+            OpenWifiSettingsAndroid();
+#endif
+
+        // Paneli tekrar kontrol etmeden önce hemen gizle
+        PanelManager.Instance.HidePanelWithPanelID(PanelID.ErrorNetwork);
+
+        // Kullanýcý "Tamam" dediðinde hemen tekrar bir kontrol yapabiliriz
+        StartCoroutine(CheckInternet());
+    }
+
+    private void OpenWifiSettingsAndroid()
+    {
+        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        using (var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
+        {
+            var intent = new AndroidJavaObject("android.content.Intent", "android.settings.WIFI_SETTINGS");
+            activity.Call("startActivity", intent);
         }
     }
 }

@@ -12,9 +12,9 @@ public class CountdownController : MonoBehaviour
 
     [Header("Animasyon Ayarlarý")]
     public float moveDistance = 1000f;    // Metnin ne kadar yukarýdan/aþaðýya gideceði
-    public float moveInDuration = 0.4f;  // Ekrana giriþ animasyon süresi
-    public float pauseDuration = 0.5f;   // Metnin ekranda kalma süresi
-    public float moveOutDuration = 0.3f; // Ekrandan çýkýþ animasyon süresi
+    public float moveInDuration = 0.3f;  // Ekrana giriþ animasyon süresi
+    public float pauseDuration = .5f;   // Metnin ekranda kalma süresi
+    public float moveOutDuration = 0.2f; // Ekrandan çýkýþ animasyon süresi
 
     
     public static CountdownController Instance { get; private set; }
@@ -45,7 +45,7 @@ public class CountdownController : MonoBehaviour
     public void StartCountdown()
     {
         PanelManager.Instance.HideLastPanel();
-        SoundManager.instance.PlaySfx(SoundType.Temp);
+        SoundManager.instance.PlaySfx(SoundType.Temp,0,false,1f);
         StartCoroutine(CountdownCoroutine());
     }
 

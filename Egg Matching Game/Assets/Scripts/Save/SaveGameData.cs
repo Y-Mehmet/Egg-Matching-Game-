@@ -16,8 +16,8 @@ public class SaveGameData
     public int playCount = 0;
     public string nextEnergyTimeString=string.Empty;
     public bool isPushAlarmEnabled = true;
-    public float soundFxVolume = 0.8f;
-    public float musicVolume = 0.8f;
+    public float soundFxVolume = 0.5f;
+    public float musicVolume = 0.5f;
     public bool isVibrationEnabled = true;
     public int SelectedDragonIndex = -1;
 

@@ -16,7 +16,7 @@ public class AbilityActionFrozee : AbilityAction
             AbilityManager.Instance.frezzeTimeAction?.Invoke(10);
             ResourceManager.Instance.SpendResource(ResourceType.Coin, cost);
             SoundManager.instance.PlaySfx(SoundType.Coin);
-            SoundManager.instance.PlaySfx(SoundType.FreezeTime);
+            SoundManager.instance.PlaySfx(SoundType.FreezeTime,0,false);
         }
             else
         {

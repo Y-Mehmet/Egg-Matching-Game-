@@ -156,7 +156,7 @@ public class ResourceManager : MonoBehaviour
 
    
 
-    private void SaveResources()
+    public  void SaveResources()
     {
         if (gameData == null)
         {

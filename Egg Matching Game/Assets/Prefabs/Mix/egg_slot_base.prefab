@@ -252,7 +252,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: a7a2a94a077695d408812844d490ddfa, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ba11b0dffb7dbbd47b8936c2d4f7a933, type: 2}
+      objectReference: {fileID: 2100000, guid: ce2f060f937f4084592be7e205fccf00, type: 2}
     - target: {fileID: 919132149155446097, guid: a7a2a94a077695d408812844d490ddfa, type: 3}
       propertyPath: m_Name
       value: Egg

@@ -5,7 +5,7 @@ using System.Collections; // Coroutine kullanmak için bu satýr gerekli!
 
 public class AddPanel : MonoBehaviour
 {
-    [SerializeField] TMP_Text titleText, infoText;
+    [SerializeField] TMP_Text titleText, infoText, CoinValueText;
     [SerializeField] Button spendCoinBtn, addBtn, closeBtn;
 
     private int energyCost = 900;
@@ -51,11 +51,11 @@ public class AddPanel : MonoBehaviour
         // Coin ile satýn alma butonunun görünürlüðünü kontrol et
         if (!ResourceManager.Instance.HasEnoughResource(ResourceType.Coin, energyCost))
         {
-            spendCoinBtn.gameObject.SetActive(false);
+            CoinValueText.text= $"<color=red>{energyCost}</color>";
         }
         else
         {
-            spendCoinBtn.gameObject.SetActive(true);
+            CoinValueText.text = $"<color=white>{energyCost}</color>";
         }
     }
 

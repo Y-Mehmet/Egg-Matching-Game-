@@ -594,6 +594,7 @@ public class GameManager : MonoBehaviour
             isShuffling = false;
             yield break;
         }
+        SoundManager.instance.StopClip(SoundType.Tiktak);
         stopTime?.Invoke();
         List<Transform> emtyOrWrongColorSlotTransformList = new List<Transform>();
         foreach( GameObject slot in slotList)
@@ -1157,6 +1158,7 @@ public class GameManager : MonoBehaviour
             trueEggCountChanged.Invoke(trueCount);
             if(trueCount>= ceckedEggCount)
             {
+                SoundManager.instance.StopClip(SoundType.Tiktak);
                 stopTime?.Invoke();
                 if (eggSlotDic.Count > 0)
                 {
@@ -1182,7 +1184,7 @@ public class GameManager : MonoBehaviour
 
 
                 ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
-                //PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel, PanelShowBehavior.HIDE_PREVISE);
+               
 
             }
         }
@@ -1211,7 +1213,7 @@ public class GameManager : MonoBehaviour
 
                 // 2. ADIM: Fade out bittiğinde materyali değiştir ve yeni materyali anında görünmez yap
                 mySequence.AppendCallback(() => {
-                   Material newMaterial= DragonDataSO.dragonMaterial[ResourceManager.Instance.DragonIndex];
+                   Material newMaterial= DragonDataSO.dragonMaterial[0];
                     Color newColor = newMaterial.color;
                     newColor.a = 0f;
 
