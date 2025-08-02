@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eggColors: 000000000100000002000000030000000400000005000000
   topEggColors: 010000000200000000000000030000000400000005000000
-  tempTopEggColors: 02000000000000000400000005000000
+  tempTopEggColors: 
   brokenEggCount: 0
   brokenSlotCount: 0
   topEggPerCount: 1
-  startTime: 30
+  startTime: 40
+  mixColor: 0

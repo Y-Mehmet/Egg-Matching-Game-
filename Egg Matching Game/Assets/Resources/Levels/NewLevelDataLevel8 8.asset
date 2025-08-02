@@ -18,4 +18,5 @@ MonoBehaviour:
   brokenEggCount: 0
   brokenSlotCount: 0
   topEggPerCount: 2
-  startTime: 90
+  startTime: 120
+  mixColor: 0

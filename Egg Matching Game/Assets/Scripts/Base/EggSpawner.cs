@@ -88,7 +88,7 @@ public class EggSpawner : MonoBehaviour
         
         GameManager.instance.slotCount = slotCount;
         CalculatePositions();
-        GetMaterial();
+    
         GetColor();
         Spawner();
         SetColor();
@@ -238,12 +238,13 @@ public class EggSpawner : MonoBehaviour
         {
             mixColorList.Add(color);
         }
-        mixColorList = mixColorList.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
-        //foreach (var color in GameManager.instance.TopEggColorList)
-        //{
-        //    topEggColor.Add(color);
-        //}
-        //topEggColor = topEggColor.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
+        if(GameManager.instance.GetLevelData().mixColor == true)
+        {
+            mixColorList = mixColorList.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
+        }
+        
+       
+        
     }
     private void SetColor()
     {

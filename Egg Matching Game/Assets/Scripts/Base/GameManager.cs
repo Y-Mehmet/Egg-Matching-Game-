@@ -1098,8 +1098,8 @@ public class GameManager : MonoBehaviour
         int ceckedEggCount = currentEggCount>currentSlotCount? currentSlotCount:currentEggCount;
         foreach(Transform eggTransform in EggSpawner.instance.EggParent)
         {
-            if (eggSlotDic.ContainsValue(eggTransform.gameObject) && eggTransform.gameObject.activeInHierarchy)
-            {
+            if (  eggTransform.gameObject.activeInHierarchy)
+            {//eggSlotDic.ContainsValue(eggTransform.gameObject) &&
                 valueableEggCount++;
             }
         }
