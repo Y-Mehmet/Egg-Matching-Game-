@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject AbilityBarPanel;
     public bool isSelectTrueDaragonEgg;
     [Header("Shuffle Animation Settings")]
-    private float swapDuration = 0.6f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
+    private float swapDuration = 1.2f; // Süreyi biraz artırmak daha iyi görünebilir (örn: 0.6s)
     private float delayBetweenSwaps = 0.1f;
     private Ease shuffleEase = Ease.InOutSine; // InOutSine gibi yumuşak geçişler bu animasyonda iyi durur
     private float zOffsetOnSwap = 0.20f; // Geri çekilme mesafesi -.2
@@ -791,13 +791,16 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Karıştırılacak yeterli yumurta yok.");
             isShuffling = false;
+            PanelManager.Instance.ShowPanel(PanelID.BreakDragonEggPanel);
+            abilityData.action.Execute();
             yield break;
         }
         yield return new WaitForSeconds(fadeDuration);
         // Ana animasyon sekansımızı oluşturuyoruz
         Sequence mainShuffleSequence = DOTween.Sequence();
         float stepDuration = swapDuration / 3.0f; // swapDuration'ı public bir değişken olarak tanımladığınızı varsayıyorum.
-
+        float minDuration= swapDuration / 6.0f;
+        float decraseDuration = .05f;
         // Karıştırma algoritması (Fisher-Yates) için listenin bir kopyasını kullanalım
         // Bu, her yumurtanın en az bir kez hareket etmesini sağlamaya yardımcı olur.
         List<GameObject> shuffleLogicList = new List<GameObject>(eggsToShuffle);
@@ -808,7 +811,8 @@ public class GameManager : MonoBehaviour
         for (int n = shuffleLogicList.Count - 1; n > 0; n--)
         {
             int k = Random.Range(0, n + 1); // n dahil rastgele bir indeks seç
-
+            if (n == k)
+                continue;
             // Takas edilecek yumurtaları belirliyoruz
             GameObject eggA = shuffleLogicList[n];
             GameObject eggB = shuffleLogicList[k];
@@ -861,6 +865,10 @@ public class GameManager : MonoBehaviour
             if (delayBetweenSwaps > 0)
             {
                 mainShuffleSequence.AppendInterval(delayBetweenSwaps);
+            }
+            if(stepDuration>=minDuration)
+            {
+                stepDuration -= decraseDuration;
             }
         }
 

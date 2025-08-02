@@ -77,7 +77,7 @@ public class SoundManager : MonoBehaviour
         if (soundDictionary.TryGetValue(soundType, out AudioClip clip))
         {
             sfxSource.pitch= Mathf.Max(0.1f, playbackSpeed);
-            if (startTime <= 0f || PlayOneShot)
+            if (startTime <= 0f && PlayOneShot)
             {
                 sfxSource.PlayOneShot(clip);
             }

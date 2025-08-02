@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -20,8 +21,13 @@ public class LevelData : ScriptableObject
         {
             tempTopEggColors.Clear();
         }
+        if(topEggColors.Count > 0)
+        {
+            topEggColors.Clear();
+        }
         brokenEggCount = 0;
         brokenSlotCount = 0;
+        GetTopEggColorList();
     }
     public int GetSlotCount()
     {
@@ -54,7 +60,22 @@ public class LevelData : ScriptableObject
         }
         return tempTopEggColors;
     }
-
+    public List<EggColor> GetTopEggColorList()
+    {
+        List<EggColor> tempEggColorList = eggColors;
+        tempEggColorList = tempEggColorList.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
+        int perCount = GameManager.instance.GetLevelData().topEggPerCount;
+        
+        foreach (var color in tempEggColorList)
+        {
+            for (int i = 0; i < perCount; i++)
+            {
+                topEggColors.Add(color);
+            }
+        }
+       
+        return tempTopEggColors;
+    }
 
 
 

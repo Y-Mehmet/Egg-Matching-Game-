@@ -55,6 +55,7 @@ public class HammerAnimator : MonoBehaviour
                         brokenSlot.transform.position = targetToDestroy.transform.position;
                         targetToDestroy.SetActive(false);
                         targetToDestroy = null;
+                        GameManager.instance.AbilityBarPanel.SetActive(true);
                         gameObject.SetActive(false);
 
 
@@ -91,6 +92,7 @@ public class HammerAnimator : MonoBehaviour
                          
                          targetToDestroy.SetActive(false);
                          targetToDestroy = null;
+                         GameManager.instance.AbilityBarPanel.SetActive(true);
                          gameObject.SetActive(false);
                          
                      });

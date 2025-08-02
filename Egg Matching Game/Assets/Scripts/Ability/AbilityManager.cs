@@ -67,7 +67,7 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
-        //PanelManager.Instance.ShowPanel(PanelID.AbilityPurchasePanel, PanelShowBehavior.SHOW_PREVISE);
+        GameManager.instance.AbilityBarPanel.SetActive(false);
         GameManager.instance.ShowOutline(EggSpawner.instance.eggList);
         StartCoroutine(BreakSlotCoroutine(tag));
     }
@@ -159,6 +159,7 @@ public class AbilityManager : MonoBehaviour
             Debug.LogWarning("Zaten bir hedefleme iþlemi devam ediyor.");
             return;
         }
+        GameManager.instance.AbilityBarPanel.SetActive(false);
         GameManager.instance.ShowOutline(GameManager.instance.slotList);
         // Hedefleme coroutine'ini baþlat.
         StartCoroutine(BreakSlotCoroutine(tag));

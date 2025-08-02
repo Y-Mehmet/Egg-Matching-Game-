@@ -241,11 +241,9 @@ public class EggSpawner : MonoBehaviour
         if(GameManager.instance.GetLevelData().mixColor == true)
         {
             mixColorList = mixColorList.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
-        }
-        
-       
-        
+        }  
     }
+   
     private void SetColor()
     {
         for(int i= 0;i < eggList.Count;i ++)

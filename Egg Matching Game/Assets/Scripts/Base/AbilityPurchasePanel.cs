@@ -38,7 +38,7 @@ public class AbilityPurchasePanel : MonoBehaviour
             mainAbilityBarPanel = GameManager.instance.AbilityBarPanel;
         }
    
-        mainAbilityBarPanel.SetActive(false);
+       
         if (AbilityManager.Instance!= null && AbilityManager.Instance.abilityDataHolder != null)
         {
           
@@ -69,7 +69,7 @@ public class AbilityPurchasePanel : MonoBehaviour
     }
     private void OnDisable()
     {
-        mainAbilityBarPanel.SetActive(true);
+       
       
     }
 
