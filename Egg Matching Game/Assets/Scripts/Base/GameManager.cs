@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public bool isTutorialLevel = false;
     private int tutorialIndex = 0;
+    private bool canCheck = true;
     
     public GameObject AbilityBarPanel;
     public bool isSelectTrueDaragonEgg;
@@ -525,10 +526,7 @@ public class GameManager : MonoBehaviour
             SceeneManager.instance.LoadSceneAndEnergyPanel();
         }
         ResourceManager.Instance.AddResource(ResourceType.PlayCount, 1); // Oyun oynama sayısını artırıyoruz
-        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 3 == 2  )
-        {
-            EndLevel();
-        }
+        
         GetLevelData().RestartLevelData();
         trueEggCountChanged?.Invoke(0);
         levelChanged?.Invoke(gameData.levelIndex);
@@ -538,31 +536,6 @@ public class GameManager : MonoBehaviour
         }
         
     }
-    public void EndLevel()
-    {
-        Debug.Log("Seviye Tamamlandı!");
-
-        // Geçiş reklamını göstermeden önce hazır olup olmadığını kontrol edin (isteğe bağlı ama iyi bir pratik)
-        // Eğer reklam hazırsa göster
-        if (AdsManager.Instance != null && AdsManager.Instance.interstitialAds != null)
-        {
-            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
-            Debug.Log("Geçiş Reklamı Çağrıldı!");
-        }
-        else
-        {
-            Debug.LogWarning("Geçiş Reklamı hazır değil veya AdsManager bulunamadı.");
-        }
-
-
-
-    }
-
-
-
-
-
-
 
     public LevelData GetLevelData()
     {
@@ -1160,7 +1133,9 @@ public class GameManager : MonoBehaviour
     }
     public void Check()
     {
-       
+
+        if (!canCheck)
+            return;
         LevelData currentLevel = GetLevelData();
         // Önce level verisinin var olup olmadığını kontrol et
         if (currentLevel == null)
@@ -1169,17 +1144,17 @@ public class GameManager : MonoBehaviour
             return; // Metodu güvenli bir şekilde sonlandır
         }
         int sltCount = GetSlotCount();
-        int brokenEggCount= GetLevelData().GetBrokenEggCount();
-        
-        int startSlotCount= GetLevelData().eggColors.Count;
+        int brokenEggCount = GetLevelData().GetBrokenEggCount();
+
+        int startSlotCount = GetLevelData().eggColors.Count;
         int currentEggCount = startSlotCount - brokenEggCount;
         int currentSlotCount = startSlotCount - GetLevelData().GetBrokenSlotCount();
         int valueableEggCount = 0;
 
-        int ceckedEggCount = currentEggCount>currentSlotCount? currentSlotCount:currentEggCount;
-        foreach(Transform eggTransform in EggSpawner.instance.EggParent)
+        int ceckedEggCount = currentEggCount > currentSlotCount ? currentSlotCount : currentEggCount;
+        foreach (Transform eggTransform in EggSpawner.instance.EggParent)
         {
-            if (  eggTransform.gameObject.activeInHierarchy)
+            if (eggTransform.gameObject.activeInHierarchy)
             {//eggSlotDic.ContainsValue(eggTransform.gameObject) &&
                 valueableEggCount++;
             }
@@ -1191,7 +1166,8 @@ public class GameManager : MonoBehaviour
 
         if (eggSlotDic.Count < ceckedEggCount)
         {
-            Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount+ " slot count "+sltCount);
+            canCheck = false; 
+            Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
             for (int i = 0; i < sltCount; i++)
             {
                 if (!eggSlotDic.ContainsKey(i))
@@ -1208,6 +1184,7 @@ public class GameManager : MonoBehaviour
                         randomness: 45f
                     ).OnComplete(() =>
                     {
+                        canCheck = true;
                         slotList[fixedIndex].GetComponentInChildren<Renderer>().material.color = originalColor;
                     });
                 }
@@ -1218,12 +1195,14 @@ public class GameManager : MonoBehaviour
             }
 
             trueEggCountChanged.Invoke(0);
-        }else
+        }
+        else
         {
+            canCheck = true;
             int trueCount = GetTrueEggCount();
 
             trueEggCountChanged.Invoke(trueCount);
-            if(trueCount>= ceckedEggCount)
+            if (trueCount >= ceckedEggCount)
             {
                 SoundManager.instance.StopClip(SoundType.Tiktak);
                 stopTime?.Invoke();
@@ -1235,7 +1214,7 @@ public class GameManager : MonoBehaviour
                         {
 
                             EggSpawner.instance.dragon.transform.SetParent(item.Value.transform);
-                            EggSpawner.instance.dragon.transform.localPosition =  new Vector3(0,0.2f,0);
+                            EggSpawner.instance.dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
                             break;
                         }
                     }
@@ -1246,19 +1225,20 @@ public class GameManager : MonoBehaviour
                 EggSpawner.instance.DragonSetActive();
                 ChangeMaterial();
 
-                Debug.LogWarning("congs");
-                
+                SoundManager.instance.PlaySfx(SoundType.Check);
+
 
 
                 ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
-               
 
-            }else if(gameData.isTutorial)
+
+            }
+            else if (gameData.isTutorial)
             {
                 tutorialIndex = 1;
             }
         }
-        
+
     }
     private int GetTrueEggCount()
     {
@@ -1374,4 +1354,5 @@ public enum RewardedType
 {
     Energy,
     Resource,
+    OneResource,
 }

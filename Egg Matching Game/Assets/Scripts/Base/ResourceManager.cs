@@ -306,6 +306,13 @@ public class ResourceManager : MonoBehaviour
             OnResourceChanged?.Invoke(ResourceType.Coin, coins);
             OnResourceChanged?.Invoke(ResourceType.Gem, gems);
 
+        }else if(currentRewarded==RewardedType.OneResource)
+        {
+            AddResource(ResourceType.Coin, coinsPerGame );
+            AddResource(ResourceType.Gem, gemsPerGame );
+            OnResourceChanged?.Invoke(ResourceType.Coin, coins);
+            OnResourceChanged?.Invoke(ResourceType.Gem, gems);
+
         }
         else if (ResourceManager.Instance.currentRewarded == RewardedType.Energy)
         {

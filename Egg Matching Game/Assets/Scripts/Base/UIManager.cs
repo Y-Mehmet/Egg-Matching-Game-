@@ -10,13 +10,15 @@ public class UIManager : MonoBehaviour
     
     private void OnEnable()
     {
-        UpdateTime(180);
+        UpdateTime(ResourceManager.Instance.time);
+
         GameManager.instance.timeChanged += UpdateTime;
         GameManager.instance.trueEggCountChanged += UpdateTrueEggCount;
         GameManager.instance.levelChanged += UpdateLevel;
         settingsBtn.onClick.AddListener(() =>
         {
             PanelManager.Instance.ShowPanel(PanelID.PlayPause);
+            GameManager.instance.pauseGame?.Invoke();
         });
         timeText.text = FormatTime(ResourceManager.Instance.time);
 

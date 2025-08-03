@@ -50,7 +50,17 @@ public class InterstitialAds : MonoBehaviour , IUnityAdsLoadListener ,IUnityAdsS
 
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-        Debug.Log("Interstitial Ad Completed");
+        if (GameManager.instance != null && ResourceManager.Instance != null)
+        {
+            ResourceManager.Instance.GetReweard();
+            //if (GameManager.instance.currentRewarded == RewardedType.Resource)
+            //    GameManager.instance.ReStart();
+        }
+        else
+        {
+            Debug.LogWarning("GameManager veya gameData bulunamadý.");
+        }
+        SceeneManager.instance.LoadScene(0);
     }
     #endregion
 }

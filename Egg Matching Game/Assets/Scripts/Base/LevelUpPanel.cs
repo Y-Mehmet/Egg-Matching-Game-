@@ -69,9 +69,30 @@ public class LevelUpPanel : MonoBehaviour
     }
     private void OnContinueButtonClicked()
     {
-        ResourceManager.Instance.AddResource(ResourceType.Coin, ResourceManager.Instance.coinsPerGame   );
-        ResourceManager.Instance.AddResource(ResourceType.Gem,gemAmount);
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 2 == 0)
+        {
+            // Geçiþ reklamýný göstermeden önce hazýr olup olmadýðýný kontrol edin (isteðe baðlý ama iyi bir pratik)
+            // Eðer reklam hazýrsa göster
+            if (AdsManager.Instance != null && AdsManager.Instance.interstitialAds != null)
+            {
+                ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.OneResource);
+                AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+                Debug.Log("Geçiþ Reklamý Çaðrýldý!");
+
+            }
+            else
+            {
+                Debug.LogWarning("Geçiþ Reklamý hazýr deðil veya AdsManager bulunamadý.");
+            }
+        }
+        else
+        {
+            ResourceManager.Instance.AddResource(ResourceType.Coin, ResourceManager.Instance.coinsPerGame);
+            ResourceManager.Instance.AddResource(ResourceType.Gem, gemAmount);
+            SceeneManager.instance.LoadScene(0);
+        }
         
-        SceeneManager.instance.LoadScene(0);
+        
+       
     }
 }

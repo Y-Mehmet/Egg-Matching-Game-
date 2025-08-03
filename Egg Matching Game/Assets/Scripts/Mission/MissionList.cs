@@ -29,6 +29,7 @@ public class MissionList : MonoBehaviour
         int tempGem = ResourceManager.Instance.GetResourceAmount(ResourceType.Gem);
         if(tempGem==0)
         {
+            SoundManager.instance.PlaySfx(SoundType.btnClick);
             PanelManager.Instance.ShowPanel(PanelID.InUpPanel);
         }
         else if (DragonManager.Instance.GetRequiredGemAmount()<= tempGem)
