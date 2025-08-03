@@ -33,6 +33,10 @@ public class VideoLoader : MonoBehaviour
             videoPlayer.Play();      // Videoyu oynat
             videoPlayer.isLooping = true;
            
+        }else
+        {
+            videoPlayer.clip = null;
+
         }
        
     }

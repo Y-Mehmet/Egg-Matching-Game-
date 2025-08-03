@@ -67,7 +67,7 @@ public class DragonManager : MonoBehaviour
            
             OnDragonIndexChange?.Invoke(1);
             if(GetDragonIndex()>0)
-            ResourceManager.Instance.AddResource(ResourceType.Time, dragonHolder.dragonSOList[GetDragonIndex()].addTime);
+            ResourceManager.Instance.AddResource(ResourceType.Time, dragonHolder.dragonSOList[GetDragonIndex()-1].addTime);
 
         }
         else

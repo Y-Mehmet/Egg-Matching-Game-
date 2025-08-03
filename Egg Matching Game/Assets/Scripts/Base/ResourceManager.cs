@@ -184,6 +184,7 @@ public class ResourceManager : MonoBehaviour
 
         // YENÝ: Zaman bilgisini kaydet
         gameData.nextEnergyTimeString = this.nextEnergyTime.ToBinary().ToString();
+        gameData.time = this.time;
 
         SaveSystem.Save(gameData);
     }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DragonIndex: 0
   dragonMissionGemValue: 3
-  DragonGemAmount: 3
+  DragonGemAmount: 0
   DragonName: Aeryn
   color: 0
   DragonSprite: {fileID: 21300000, guid: a6385de2a00be364382c34b8a133d90f, type: 3}
