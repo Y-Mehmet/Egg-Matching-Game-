@@ -17,7 +17,7 @@ public class ResourceManager : MonoBehaviour
     private int energy;
     private int playCount; // Oyun oynama sayýsý, SaveGameData'da da var
     private int levelIndex ; // Oyun seviyesini tutan deðiþken
-    public int coinsPerGame = 40; // Her oyun sonunda kazanýlan para miktarý
+    public int coinsPerGame = 50; // Her oyun sonunda kazanýlan para miktarý
     public int gemsPerGame = 1; // Her oyun sonunda kazanýlan elmas miktarý
     public int DragonIndex = 0;
     public int macDragobIndex = 9;

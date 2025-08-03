@@ -27,9 +27,14 @@ public class MissionList : MonoBehaviour
     private void OnButtonClick()
     {
         int tempGem = ResourceManager.Instance.GetResourceAmount(ResourceType.Gem);
-        if (DragonManager.Instance.GetRequiredGemAmount()<= tempGem)
+        if(tempGem==0)
+        {
+            PanelManager.Instance.ShowPanel(PanelID.InUpPanel);
+        }
+        else if (DragonManager.Instance.GetRequiredGemAmount()<= tempGem)
         {
             DragonManager.Instance.OnDragonGemAmountChange?.Invoke(DragonManager.Instance.GetRequiredGemAmount());
+            SoundManager.instance.PlaySfx(SoundType.Gem);
             
             UpdateMissionDetails();
         }
@@ -37,7 +42,7 @@ public class MissionList : MonoBehaviour
         {
            
             DragonManager.Instance.OnDragonGemAmountChange?.Invoke(tempGem);
-           
+            SoundManager.instance.PlaySfx(SoundType.Gem);
             UpdateMissionDetails();
         }
        
@@ -48,6 +53,10 @@ public class MissionList : MonoBehaviour
         dragonNameText.text = DragonManager.Instance.GetCurrentDragonSO().DragonName.ToString();
         desctriptionText.text = "Paint the "+DragonManager.Instance.GetCurrentDragonSO().color.ToString().FirstCharacterToLower() +" parts";
         missionGemCountText.text = requireGemAmount.ToString();
+        if(ResourceManager.Instance.GetResourceAmount(ResourceType.Gem)<=0)
+            missionGemCountText.color = Color.red;
+        else
+            missionGemCountText.color= Color.white; 
         colorImage.color = ColorManager.instance.GetEggColor(DragonManager.Instance.GetCurrentDragonSO().color);
 
     }
