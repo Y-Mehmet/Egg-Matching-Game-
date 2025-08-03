@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,13 +16,16 @@ public class LevelData : ScriptableObject
     public int topEggPerCount = 1;
     public int startTime = 180;
     public bool mixColor = false;
+    public bool dualColor = false;
     public void RestartLevelData()
     {
         if(tempTopEggColors.Count > 0)
         {
             tempTopEggColors.Clear();
         }
-        if(topEggColors.Count > 0)
+        SaveGameData gameData = SaveSystem.Load();
+
+        if (topEggColors.Count > 0 &&  !gameData.isTutorial)
         {
             topEggColors.Clear();
         }
@@ -62,19 +66,88 @@ public class LevelData : ScriptableObject
     }
     public List<EggColor> GetTopEggColorList()
     {
+        if(GameManager.instance.gameData.isTutorial)
+        {
+            return topEggColors;
+        }
         List<EggColor> tempEggColorList = eggColors;
         tempEggColorList = tempEggColorList.OrderBy(x => Random.value).ToList(); // Listeyi rastgele sýralayarak karýþtýr
         int perCount = GameManager.instance.GetLevelData().topEggPerCount;
+        // Renklerin birbirinden farklý olup olmadýðýný kontrol et
+        bool allColorsDistinct = eggColors.Distinct().Count() == eggColors.Count;
         
-        foreach (var color in tempEggColorList)
+        if (!allColorsDistinct && !dualColor)
         {
-            for (int i = 0; i < perCount; i++)
+            // Renkler birbirinden farklý deðilse ve dualColor false ise
+            // Hangi renkten kaç tane olduðunu bul
+            var colorCounts = eggColors
+                .GroupBy(color => color)
+                .Select(group => new { Color = group.Key, Count = group.Count() })
+                .ToList();
+
+            Debug.Log("eggColors'taki renklerin sayýsý:");
+            foreach (var colorCount in colorCounts)
             {
-                topEggColors.Add(color);
+                foreach (var color in tempEggColorList)
+                {
+                    if(colorCount.Color == color )
+                    {
+                        if(colorCount.Count > 1 && colorCount.Count <= perCount)
+                        {
+                            if (topEggColors.Contains(color))
+                            {
+                                EggColor randomEgg = ColorManager.instance.GetRandomColor();
+                                for (int i = 0; i < perCount; i++)
+                                {
+                                   
+                                    topEggColors.Add(randomEgg);
+
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < perCount; i++)
+                                {
+
+                                    topEggColors.Add(color);
+
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < perCount; i++)
+                            {
+
+                                topEggColors.Add(color);
+
+                            }
+                        }
+
+                    }
+
+                   
+                }
             }
+            
+        }else
+        {
+            foreach (var color in tempEggColorList)
+            {
+                for (int i = 0; i < perCount; i++)
+                {
+
+                    topEggColors.Add(color);
+
+                }
+            }
+               
         }
+
+           
        
-        return tempTopEggColors;
+        return topEggColors;
     }
 
 

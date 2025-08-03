@@ -1,19 +1,22 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Timeline.Actions.MenuPriority;
 
 public class OnProgresDragonSlot : MonoBehaviour
 {
-    [SerializeField] TMP_Text dragonNameText, dragonIndexText, sliderValueText;
+    [SerializeField] TMP_Text dragonNameText, dragonIndexText, sliderValueText,addTime;
     [SerializeField] Slider slider;
     [SerializeField] Image dragonImage;
     [SerializeField] Button wiewBtn;
     int slotIndex;
     private void OnEnable()
     {
+       
         slider.maxValue = DragonManager.Instance.GetMissionGemAmount();
         slider.interactable = false;
          slotIndex = transform.parent.GetSiblingIndex();
+        addTime.text = "Add " + DragonManager.Instance.dragonHolder.dragonSOList[slotIndex ].addTime.ToString() + " Time";
         dragonIndexText.text = (slotIndex + 1).ToString();
         dragonNameText.text = DragonManager.Instance.dragonHolder.dragonSOList[slotIndex].DragonName.ToString();
         dragonImage.sprite = DragonManager.Instance.dragonHolder.dragonSOList[slotIndex].DragonSprite;

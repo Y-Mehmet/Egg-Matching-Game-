@@ -7,11 +7,12 @@ public class SaveGameData
     public int levelIndex = 0;
     public int DragonIndex = 0;
     public bool isFirstLaunch = true;
+    public bool isTutorial = true;
 
     // --- YENİ EKLENEN ALANLAR ---
     // ResourceManager'daki başlangıç değerleriyle aynı yapalım.
     public int coins = 100;
-    public int gems = 0;
+    public int gems = 3;
     public int energy = 5;
     public int playCount = 0;
     public string nextEnergyTimeString=string.Empty;
@@ -20,6 +21,7 @@ public class SaveGameData
     public float musicVolume = 0.5f;
     public bool isVibrationEnabled = true;
     public int SelectedDragonIndex = -1;
+    public int time=45;
 
 
 }

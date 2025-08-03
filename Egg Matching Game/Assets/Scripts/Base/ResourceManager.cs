@@ -6,6 +6,7 @@ public class ResourceManager : MonoBehaviour
 {
     // --- Singleton Pattern ---
     public static ResourceManager Instance { get; private set; }
+    public Action onSelectedDragonIndexChanged;
     public Action<ResourceType, int> OnResourceChanged;
     public Action<RewardedType> currentRewardedTypeChanged;
     public Action onIAPchanged;
@@ -25,6 +26,8 @@ public class ResourceManager : MonoBehaviour
     public float musicVolume = 0.8f;
     public bool isVibrationEnabled = false;
     public int SelectedDragonIndex = -1;
+    public bool isTutorial = true;
+    public int time = 45;
 
 
     // Yüklenen tüm oyun verilerini tutan referansýmýz.
@@ -109,6 +112,7 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.PlayCount: playCount += amount; break; // Oyun oynama sayýsýný artýrýyoruz
             case ResourceType.LevelIndex: levelIndex += amount; break; // Oyun seviyesini artýrýyoruz
             case ResourceType.DragonIndex: DragonIndex += amount; if (DragonIndex > macDragobIndex) DragonIndex = macDragobIndex; break; // Ejderha indeksini artýrýyoruz
+            case ResourceType.Time:time += amount;break;       
         }
 
         OnResourceChanged?.Invoke(type, GetResourceAmount(type));
@@ -176,6 +180,7 @@ public class ResourceManager : MonoBehaviour
         gameData.soundFxVolume = this.soundFxVolume;
         gameData.isPushAlarmEnabled = this.isPushAlarmEnabled;
         gameData.SelectedDragonIndex=this.SelectedDragonIndex;
+        gameData.isTutorial=this.isTutorial;
 
         // YENÝ: Zaman bilgisini kaydet
         gameData.nextEnergyTimeString = this.nextEnergyTime.ToBinary().ToString();
@@ -198,7 +203,8 @@ public class ResourceManager : MonoBehaviour
         this.musicVolume = gameData.musicVolume;
         this.isVibrationEnabled = gameData.isVibrationEnabled;
         this.SelectedDragonIndex = gameData.SelectedDragonIndex;
-
+        this.isTutorial = gameData.isTutorial;
+        this.time = gameData.time;
 
         // YENÝ: Zaman bilgisini yükle
         if (!string.IsNullOrEmpty(gameData.nextEnergyTimeString))
@@ -402,4 +408,5 @@ public class ResourceManager : MonoBehaviour
     PlayCount,
     LevelIndex,
     DragonIndex,
+    Time,
 }

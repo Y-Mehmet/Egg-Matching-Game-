@@ -23,6 +23,7 @@ public class BuyAbilityPanel : MonoBehaviour
     }
     private void OnClick()
     {
+        SoundManager.instance.PlayBtnClick();
         PanelManager.Instance.ShowPanel(PanelID.InUpPanel);
     }
 }

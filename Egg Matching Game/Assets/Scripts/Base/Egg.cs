@@ -53,14 +53,7 @@ public class Egg : MonoBehaviour
     }
    
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    ITrigger iTrigger = other.GetComponent<ITrigger>();
-    //    if (iTrigger != null)
-    //    {
-    //        iTrigger.Triggered(gameObject);
-    //    }
-    //}
+
   
    
     public bool IsCorrect(EggColor expectedColor)

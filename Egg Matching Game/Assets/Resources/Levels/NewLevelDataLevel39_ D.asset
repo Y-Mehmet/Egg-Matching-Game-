@@ -20,3 +20,4 @@ MonoBehaviour:
   topEggPerCount: 3
   startTime: 300
   mixColor: 0
+  dualColor: 1

@@ -66,6 +66,8 @@ public class DragonManager : MonoBehaviour
             dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = GetMissionGemAmount();
            
             OnDragonIndexChange?.Invoke(1);
+            if(GetDragonIndex()>0)
+            ResourceManager.Instance.AddResource(ResourceType.Time, dragonHolder.dragonSOList[GetDragonIndex()].addTime);
 
         }
         else

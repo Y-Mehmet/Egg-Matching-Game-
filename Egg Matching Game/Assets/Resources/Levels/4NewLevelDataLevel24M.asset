@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: 4NewLevelDataLevel24M
   m_EditorClassIdentifier: 
   eggColors: 06000000070000000300000009000000
-  topEggColors: 
-  tempTopEggColors: 
+  topEggColors: 0900000009000000030000000300000007000000070000000600000006000000
+  tempTopEggColors: 0900000009000000030000000300000007000000070000000600000006000000
   brokenEggCount: 0
   brokenSlotCount: 0
   topEggPerCount: 2
-  startTime: 150
+  startTime: 120
   mixColor: 1
+  dualColor: 0

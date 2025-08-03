@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92cd3b07c240bc46a933d79a5b97f73, type: 3}
   m_Name: 2NewLevelDataLevel24
   m_EditorClassIdentifier: 
-  eggColors: 06000000070000000300000009000000
-  topEggColors: 
+  eggColors: 01000000030000000300000002000000
+  topEggColors: 0100000001000000030000000300000008000000070000000200000002000000
   tempTopEggColors: 
   brokenEggCount: 0
   brokenSlotCount: 0
   topEggPerCount: 2
-  startTime: 90
+  startTime: 60
   mixColor: 0
+  dualColor: 0

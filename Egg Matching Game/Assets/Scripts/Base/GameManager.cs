@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
+    public bool isTutorialLevel = false;
+    private int tutorialIndex = 0;
+    
     public GameObject AbilityBarPanel;
     public bool isSelectTrueDaragonEgg;
     [Header("Shuffle Animation Settings")]
@@ -36,7 +39,7 @@ public class GameManager : MonoBehaviour
     public DragonData DragonDataSO;
     
     public List<Vector3> SlotPositionList = new List<Vector3>();
-    public List<Vector3> TopEggPosList = new List<Vector3>();
+    
     private bool isShuffling = false;
 
     public List<GameObject> slotList= new List<GameObject>();
@@ -82,6 +85,7 @@ public class GameManager : MonoBehaviour
 
     // Yorum Satırı: Rengini değiştirdiğimiz son objenin renderer bileşenini tutar.
     private Renderer lastSelectedRenderer;
+    private Camera mainCamera;
     private void Awake()
     {
         if (instance == null)
@@ -99,14 +103,20 @@ public class GameManager : MonoBehaviour
           
             Debug.Log("Bu ilk oyun açılışı!");
             gameData.isFirstLaunch = false;
+            
+            
+
+           
             Save();
         }
+        mainCamera = Camera.main;
         
 
     }
     private void OnEnable()
     {
         gameStart += GameStart;
+        gameStart += StartTutorial; // Oyun başladığında tutorial'ı başlat
         gameOver += GameOver;
         
 
@@ -122,6 +132,7 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         gameStart -= GameStart;
+        gameStart -= StartTutorial; // Oyun başladığında tutorial'ı başlatmayı durdur
         gameOver -= GameOver;
        
         // Menü kapandığında banner reklamı gizle (isteğe bağlı, oyununuzun tasarımına göre değişir)
@@ -137,7 +148,73 @@ public class GameManager : MonoBehaviour
 
 
         ReStart();
-        
+      
+
+    }
+    private  void StartTutorial()
+    {
+        if (gameData.isTutorial && TutorialManager.Instance != null)
+        {
+            StartCoroutine(Tutorial());
+
+        }
+        else
+        {
+            Debug.LogWarning("is tootrial manager  null");
+        }
+    }
+    IEnumerator Tutorial()
+    {
+       
+
+        Vector3 screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(0).position);
+        Vector3 offset = new Vector3(-150, 150, 0);
+
+        TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
+        yield return new WaitForSeconds(2f);
+
+        screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.SlotParent.GetChild(0).position);
+        TutorialManager.Instance.HandMovment(screenPoint+ offset, new Vector3(0, -10, 0));
+            yield return new WaitUntil(() => eggSlotDic.ContainsKey(0));
+
+
+        screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(1).position);
+        TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
+        yield return new WaitForSeconds(2f);
+        screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.SlotParent.GetChild(1).position);
+        TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
+        yield return new WaitUntil(() => eggSlotDic.ContainsKey(1));
+
+        screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(2).position);
+        TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
+        yield return new WaitForSeconds(1f);
+        screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.SlotParent.GetChild(2).position);
+        TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
+        yield return new WaitUntil(() => eggSlotDic.ContainsKey(2));
+
+         AbilityBarPanel.transform.GetChild(4).TryGetComponent<CheckBtn>(out CheckBtn checkBtn);
+        Vector3 checkBtnPos= checkBtn.transform.position;
+        TutorialManager.Instance.HandMovment(checkBtnPos+offset*2, new Vector3(0, -10, 0));
+        yield return new WaitUntil(() => tutorialIndex == 1);
+        screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(0).position);
+        TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
+        yield return new WaitForSeconds(3f);
+        screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(1).position);
+        TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
+        yield return new WaitUntil(()=> GetTrueEggCount()>=3);
+        TutorialManager.Instance.HandMovment(checkBtnPos + offset*2, new Vector3(0, -10, 0));
+        yield return new WaitForSeconds(3f);
+        TutorialManager.Instance.handPointer.SetActive(false);
+
+        yield return new WaitUntil(() => isShuffling == false);
+        screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.dragon.transform.position);
+        TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
+        yield return new WaitUntil(()=>isSelectTrueDaragonEgg==true);
+        TutorialManager.Instance.EndTutorial();
+
+
+
+
     }
     private void Update()
     {
@@ -146,10 +223,7 @@ public class GameManager : MonoBehaviour
         {
             HandleSelection();
         }
-    }  // Yorum Satırı: Tıklanan objeyi analiz eder ve ilgili aksiyonu alır.
-    // Eskiden: Bu işlevsellik Egg ve Slot scriptlerindeki OnTriggerEnter ile dolaylı yoldan yapılıyordu.
-    // Şimdi: Tıklama olayını merkezi olarak yönetir. Raycast ile neyin vurulduğunu anlar (Yumurta mı, Slot mu?) 
-    // ve duruma göre yumurta seçer veya yerleştirme işlemini başlatır.
+    }  
     private void HandleSelection()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -441,6 +515,7 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.Save(gameData);
     }
+   
     public void ReStart()
     {
         if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) <= 0)
@@ -490,13 +565,15 @@ public class GameManager : MonoBehaviour
 
     public LevelData GetLevelData()
     {
-       
+        
 
         if (levelDataHolder == null || levelDataHolder.levels.Count == 0)
         {
             Debug.LogError("LevelDataHolder boş veya atanmamış.");
             return null;
         }
+        if (gameData.isTutorial)
+            return levelDataHolder.levels[0];
         int halfLevel = (int)(levelDataHolder.levels.Count/2);
         
         int index = gameData.levelIndex % levelDataHolder.levels.Count;
@@ -1088,6 +1165,7 @@ public class GameManager : MonoBehaviour
     }
     public void Check()
     {
+       
         LevelData currentLevel = GetLevelData();
         // Önce level verisinin var olup olmadığını kontrol et
         if (currentLevel == null)
@@ -1147,22 +1225,8 @@ public class GameManager : MonoBehaviour
             trueEggCountChanged.Invoke(0);
         }else
         {
-            Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
-            int trueCount = 0;
-            int i = 0;
-            foreach (var item in currentLevel.eggColors)
-            {
-                if(eggSlotDic.TryGetValue(i,out GameObject egg))
-                {
-                    Egg eggScript = egg.GetComponent<Egg>();
-                    if (eggScript != null && eggScript.IsCorrect(item))
-                    {
-                        trueCount++;
-                    }
-                }
-                i++;
-            }
-            Debug.Log("True Egg Count : " + trueCount + "  Cecked Egg Count : " + ceckedEggCount+   " Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
+            int trueCount = GetTrueEggCount();
+
             trueEggCountChanged.Invoke(trueCount);
             if(trueCount>= ceckedEggCount)
             {
@@ -1194,9 +1258,33 @@ public class GameManager : MonoBehaviour
                 ResourceManager.Instance.AddResource(ResourceType.LevelIndex, 1);
                
 
+            }else if(gameData.isTutorial)
+            {
+                tutorialIndex = 1;
             }
         }
         
+    }
+    private int GetTrueEggCount()
+    {
+        
+        int trueCount = 0;
+        int i = 0;
+        LevelData currentLevel = GetLevelData();
+        foreach (var item in currentLevel.eggColors)
+        {
+            if (eggSlotDic.TryGetValue(i, out GameObject egg))
+            {
+                Egg eggScript = egg.GetComponent<Egg>();
+                if (eggScript != null && eggScript.IsCorrect(item))
+                {
+                    trueCount++;
+                }
+            }
+            i++;
+        }
+      
+        return trueCount;
     }
    private void ChangeMaterial()
     {

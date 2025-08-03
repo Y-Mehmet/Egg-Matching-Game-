@@ -66,6 +66,8 @@ public class EggSpawner : MonoBehaviour
     {
         
         mixColorList.Clear();
+        SaveGameData gameData = SaveSystem.Load();
+        if (!gameData.isTutorial)
         topEggColor.Clear();
         foreach (var item in eggList)
         {

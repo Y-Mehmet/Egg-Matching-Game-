@@ -811,6 +811,7 @@ MonoBehaviour:
   dragonNameText: {fileID: 6038639515610494979}
   dragonIndexText: {fileID: 5007882369279164540}
   sliderValueText: {fileID: 8998658823906030545}
+  addTime: {fileID: 4547322488367076293}
   slider: {fileID: 6221821056318478381}
   dragonImage: {fileID: 1190995280427986897}
   wiewBtn: {fileID: 4468133985900446335}
@@ -834,6 +835,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4547322488367076293 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5793109652966411344, guid: de4b1ca914d2b77438edc7b374c27e64, type: 3}
+  m_PrefabInstance: {fileID: 8033884334420189077}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6038639515610494979 stripped

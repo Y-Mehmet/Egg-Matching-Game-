@@ -8,6 +8,7 @@ public class DragonSO : ScriptableObject
     public EggColor color;
     public Sprite DragonSprite;
     public VideoClip videoClip;
+    public int addTime = 0;
 
 
 

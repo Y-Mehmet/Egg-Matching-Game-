@@ -77,4 +77,40 @@ public class ColorManager : MonoBehaviour
 
 
     }
+
+
+    public EggColor GetRandomColor()
+    {
+        // Enum'daki eleman sayýsýný alarak daha dinamik bir kod yazabiliriz.
+        // Bu sayede yeni bir renk eklediðinizde kodu deðiþtirmek zorunda kalmazsýnýz.
+        int enumCount = System.Enum.GetValues(typeof(EggColor)).Length;
+        int random = Random.Range(0, enumCount);
+
+        switch (random)
+        {
+            case 0:
+                return EggColor.Yellow;
+            case 1:
+                return EggColor.Red;
+            case 2:
+                return EggColor.Green;
+            case 3:
+                return EggColor.Blue;
+            case 4:
+                return EggColor.Orange;
+            case 5:
+                return EggColor.Purple;
+            case 6:
+                return EggColor.Pink;
+            case 7:
+                return EggColor.Cyan;
+            case 8:
+                return EggColor.White;
+            case 9:
+                return EggColor.Black;
+            default:
+                Debug.LogError("Invalid random number generated for EggColor.");
+                return EggColor.White; // Varsayýlan bir deðer döndürmek iyi bir pratik
+        }
+    }
 }

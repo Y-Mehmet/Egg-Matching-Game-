@@ -40,14 +40,14 @@ public class Timer : MonoBehaviour
             StopCoroutine(timeCoroutine);
         }
         Time.timeScale = 1;
-        GameManager.instance.timeChanged?.Invoke(GameManager.instance.GetLevelData().startTime);
+        GameManager.instance.timeChanged?.Invoke(ResourceManager.Instance.time);
     }
 
     void StartTimer()
     {
         
         timeSpeed = GameManager.instance.TimeSpeed;
-        currentTime= GameManager.instance.GetLevelData().startTime;
+        currentTime= ResourceManager.Instance.time;
         GameManager.instance.timeChanged?.Invoke(currentTime);
         if(timeCoroutine != null)
         {

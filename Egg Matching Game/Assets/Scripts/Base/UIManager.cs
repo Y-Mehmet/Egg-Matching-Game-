@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
         {
             PanelManager.Instance.ShowPanel(PanelID.PlayPause);
         });
-        timeText.text = FormatTime(GameManager.instance.GetLevelData().startTime);
+        timeText.text = FormatTime(ResourceManager.Instance.time);
 
     }
     private void OnDisable()
