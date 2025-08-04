@@ -5,7 +5,7 @@ public class PlaySettingBtn : MonoBehaviour
    
     private void OnEnable()
     {
-        
+        SoundManager.instance.StopClip(SoundType.Tiktak);
         GetComponent<UnityEngine.UI.Button>().onClick.AddListener(TogglePlaySettingPanel);
         GameManager.instance.gameStart += PanelSetActiveFalse; // Oyun baþladýðýnda paneli aç
         GameManager.instance.continueGame += PanelSetActiveFalse; // Oyun devam ettiðinde paneli açma olayýný dinle

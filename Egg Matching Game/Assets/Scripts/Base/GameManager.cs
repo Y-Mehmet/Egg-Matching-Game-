@@ -228,6 +228,8 @@ public class GameManager : MonoBehaviour
     }  
     private void HandleSelection()
     {
+        if (!gameStarted || isShuffling)
+            return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
@@ -648,37 +650,37 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.StopClip(SoundType.Tiktak);
         stopTime?.Invoke();
         List<Transform> emtyOrWrongColorSlotTransformList = new List<Transform>();
-        foreach( GameObject slot in slotList)
+        foreach (GameObject slot in slotList)
         {
-            if(slot.TryGetComponent<Slot>(out Slot slotScript) && !eggSlotDic.ContainsKey(slotScript.slotIndex) )
+            if (slot.TryGetComponent<Slot>(out Slot slotScript) && !eggSlotDic.ContainsKey(slotScript.slotIndex))
             {
                 emtyOrWrongColorSlotTransformList.Add(slot.transform);
-                Debug.LogWarning("slot is null " + slotScript.slotIndex );
+                Debug.LogWarning("slot is null " + slotScript.slotIndex);
             }
-            else if( !currentLevel.GetTempTopEggColorList().Contains(eggSlotDic[slotScript.slotIndex].GetComponent<Egg>().eggColor))
+            else if (!currentLevel.eggColors.Contains(eggSlotDic[slotScript.slotIndex].GetComponent<Egg>().eggColor))
             {
-                Debug.LogWarning("slot is wrong color  " + slotScript.slotIndex+" color "+ eggSlotDic[slotScript.slotIndex].name);
+                Debug.LogWarning("slot is wrong color  " + slotScript.slotIndex + " color " + eggSlotDic[slotScript.slotIndex].name);
                 emtyOrWrongColorSlotTransformList.Add(slot.transform);
                 onSlotIndexChange?.Invoke(-1, eggSlotDic[slotScript.slotIndex]);
                 yield return new WaitForSeconds(.5f);
             }
         }
-        if(emtyOrWrongColorSlotTransformList.Count>0)
+        if (emtyOrWrongColorSlotTransformList.Count > 0)
         {
             foreach (Transform egg in EggSpawner.instance.EggParent)
             {
-                
+
                 if (egg.gameObject.activeInHierarchy && !eggSlotDic.ContainsValue(egg.gameObject) && GetLevelData().GetTempTopEggColorList().Contains(egg.GetComponent<Egg>().eggColor))
                 {
 
-                    
+
                     Sequence eggAnimation = AnimateEggToSlot(egg.gameObject, emtyOrWrongColorSlotTransformList[0]);
 
-                    
+
                     yield return eggAnimation.WaitForCompletion();
                     eggSlotDic[emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex] = egg.gameObject;
                     PopStack(egg.gameObject);
-                  //  Debug.LogWarning("slot index " + emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex + " egg name " + egg.name);
+                    //  Debug.LogWarning("slot index " + emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex + " egg name " + egg.name);
                     emtyOrWrongColorSlotTransformList.RemoveAt(0);
                     if (emtyOrWrongColorSlotTransformList.Count == 0)
                         break;
@@ -821,6 +823,55 @@ public class GameManager : MonoBehaviour
         });
 
     }
+    private IEnumerator AssingEggs()
+    {
+        LevelData currentLevel = GetLevelData();
+        List<Transform> emtyOrWrongColorSlotTransformList = new List<Transform>();
+        foreach (GameObject slot in slotList)
+        {
+            if (slot.TryGetComponent<Slot>(out Slot slotScript) && !eggSlotDic.ContainsKey(slotScript.slotIndex))
+            {
+                emtyOrWrongColorSlotTransformList.Add(slot.transform);
+                Debug.LogWarning("slot is null " + slotScript.slotIndex);
+            }
+           
+        }
+        if (emtyOrWrongColorSlotTransformList.Count > 0)
+        {
+            int index = 0;
+            foreach (Transform egg in EggSpawner.instance.EggParent)
+            {
+                if (index == currentLevel.GetTopEggPerCount())
+                {
+                    index = 0;
+                    continue;
+                }else if(index!=0)
+                    continue;
+                else index++;
+
+                if (egg.gameObject.activeInHierarchy && !eggSlotDic.ContainsValue(egg.gameObject) && GetLevelData().GetTempTopEggColorList().Contains(egg.GetComponent<Egg>().eggColor))
+                {
+
+
+                    Sequence eggAnimation = AnimateEggToSlot(egg.gameObject, emtyOrWrongColorSlotTransformList[0]);
+
+
+                    yield return eggAnimation.WaitForCompletion();
+                    eggSlotDic[emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex] = egg.gameObject;
+                    PopStack(egg.gameObject);
+                    //  Debug.LogWarning("slot index " + emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex + " egg name " + egg.name);
+                    emtyOrWrongColorSlotTransformList.RemoveAt(0);
+                    if (emtyOrWrongColorSlotTransformList.Count == 0)
+                    {
+                        Check();
+                        break;
+                    }
+                       
+                }
+            }
+        }else
+            Check();
+    }
     public void ShuffleRandomly()
     {
         StartCoroutine(ShuffleRandomlyCoroutine());
@@ -849,8 +900,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(fadeDuration);
 
         Sequence mainShuffleSequence = DOTween.Sequence();
-        float initialStepDuration = swapDuration / 3.0f;
-        float minDuration = swapDuration / 6.0f;
+        float initialStepDuration = swapDuration / 4.0f;
+        float minDuration = swapDuration / 12.0f;
         float decraseDuration = .05f;
 
         // <<< ANA DEĞİŞİKLİK: Tüm karıştırma mantığını birden çok kez çalıştıracak dış döngü >>>
@@ -1152,6 +1203,13 @@ public class GameManager : MonoBehaviour
         int valueableEggCount = 0;
 
         int ceckedEggCount = currentEggCount > currentSlotCount ? currentSlotCount : currentEggCount;
+        
+        if (eggSlotDic.Count< ceckedEggCount)
+        {
+            StartCoroutine(AssingEggs());
+            return;
+           
+        }
         foreach (Transform eggTransform in EggSpawner.instance.EggParent)
         {
             if (eggTransform.gameObject.activeInHierarchy)
@@ -1166,35 +1224,35 @@ public class GameManager : MonoBehaviour
 
         if (eggSlotDic.Count < ceckedEggCount)
         {
-            canCheck = false; 
-            Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
-            for (int i = 0; i < sltCount; i++)
-            {
-                if (!eggSlotDic.ContainsKey(i))
-                {
-                    Color red = Color.red;
-                    red.a = 0.4f;
-                    slotList[i].GetComponentInChildren<Renderer>().material.color = red;
-                    slotList[i].transform.DOKill();
-                    int fixedIndex = i;
-                    slotList[fixedIndex].transform.DOShakePosition(
-                        duration: 2f,
-                        strength: 0.05f,
-                        vibrato: 10,
-                        randomness: 45f
-                    ).OnComplete(() =>
-                    {
-                        canCheck = true;
-                        slotList[fixedIndex].GetComponentInChildren<Renderer>().material.color = originalColor;
-                    });
-                }
-                else
-                {
-                    slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
-                }
-            }
+            //canCheck = false; 
+            //Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
+            //for (int i = 0; i < sltCount; i++)
+            //{
+            //    if (!eggSlotDic.ContainsKey(i))
+            //    {
+            //        Color red = Color.red;
+            //        red.a = 0.4f;
+            //        slotList[i].GetComponentInChildren<Renderer>().material.color = red;
+            //        slotList[i].transform.DOKill();
+            //        int fixedIndex = i;
+            //        slotList[fixedIndex].transform.DOShakePosition(
+            //            duration: 2f,
+            //            strength: 0.05f,
+            //            vibrato: 10,
+            //            randomness: 45f
+            //        ).OnComplete(() =>
+            //        {
+            //            canCheck = true;
+            //            slotList[fixedIndex].GetComponentInChildren<Renderer>().material.color = originalColor;
+            //        });
+            //    }
+            //    else
+            //    {
+            //        slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
+            //    }
+            //}
 
-            trueEggCountChanged.Invoke(0);
+            //trueEggCountChanged.Invoke(0);
         }
         else
         {

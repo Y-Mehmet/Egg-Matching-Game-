@@ -32,6 +32,22 @@ public class SoundManager : MonoBehaviour
         // Veritabanýndaki sesleri sözlüðe yükle
         InitializeSounds();
     }
+    public bool  CheckPlayingClip(SoundType soundType)
+    {
+        if (soundDictionary.TryGetValue(soundType, out AudioClip clip))
+        {
+            if (sfxSource.clip == clip && sfxSource.isPlaying)
+            {
+                return true;
+            }
+        }else
+        {
+            sfxSource.Stop();
+            return false;
+        }
+        return false;
+           
+    }
     private void Start()
     {
 
@@ -72,7 +88,7 @@ public class SoundManager : MonoBehaviour
     }
 
     // Ses efektlerini çalmak için
-    public void PlaySfx(SoundType soundType, float startTime = 0f, bool PlayOneShot=true, float playbackSpeed = 1.0f)
+    public void PlaySfx(SoundType soundType, float startTime = 0f, bool PlayOneShot=false, float playbackSpeed = 1.0f)
     {
         if (soundDictionary.TryGetValue(soundType, out AudioClip clip))
         {

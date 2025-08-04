@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Timer : MonoBehaviour
@@ -8,6 +9,7 @@ public class Timer : MonoBehaviour
     private int currentTime;
     private float timeSpeed;
     private Coroutine timeCoroutine;
+    private bool isFrozeTime = false;
     
     private void OnEnable()
     {
@@ -67,6 +69,7 @@ public class Timer : MonoBehaviour
   
     void ContinueGameTimeCoroutine()
     {
+        if (isFrozeTime) return;
         
         if (timeCoroutine != null)
         {
@@ -77,6 +80,7 @@ public class Timer : MonoBehaviour
     void StopTimer()
     {
         Time.timeScale = 0;
+        GameManager.instance.gameStarted = false;
     }
     void StopTimerWhitSecond(int delay)
     {
@@ -88,14 +92,16 @@ public class Timer : MonoBehaviour
     }
     IEnumerator StopTimerWhitSecondCorrotune(int delay)
     {
+        isFrozeTime = true;
         PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
         yield return new WaitForSeconds(delay);
-       
-        timeCoroutine = StartCoroutine(TimeRoutine());
+        isFrozeTime = false;
+         timeCoroutine = StartCoroutine(TimeRoutine());
     }
     void ContinueTimer()
     {
         Time.timeScale = 1;
+        GameManager.instance.gameStarted = true; 
     }
     
 
@@ -108,7 +114,7 @@ public class Timer : MonoBehaviour
             yield return new WaitForSeconds(timeSpeed); 
 
             currentTime--;
-            if (currentTime == 10)
+            if (currentTime <= 10 && !SoundManager.instance.CheckPlayingClip(SoundType.Tiktak))
                 SoundManager.instance.PlaySfx(SoundType.Tiktak);
             GameManager.instance.timeChanged?.Invoke(currentTime);
         }

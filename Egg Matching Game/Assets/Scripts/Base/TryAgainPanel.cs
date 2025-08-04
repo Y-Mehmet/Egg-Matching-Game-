@@ -9,6 +9,7 @@ public class TryAgainPanel : MonoBehaviour
     [SerializeField] private TMP_Text tryAgainBtnValueText;
     private void OnEnable()
     {
+        SoundManager.instance.StopClip(SoundType.Tiktak);
         tryAgainButton.onClick.AddListener(OnTryAgainButtonClicked);
         add20secButton.onClick.AddListener(OnAdd20SecButtonClicked);
         backToHomeButton.onClick.AddListener(() => SceeneManager.instance.LoadScene(0));
