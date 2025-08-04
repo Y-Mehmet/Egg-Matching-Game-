@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
     public List<Vector3> SlotPositionList = new List<Vector3>();
     
     private bool isShuffling = false;
+    public bool isGameFinish = false;
+    
 
     public List<GameObject> slotList= new List<GameObject>();
     public Dictionary< int, GameObject> eggSlotDic = new Dictionary<int, GameObject>();
@@ -70,6 +72,7 @@ public class GameManager : MonoBehaviour
     public bool AnyPanelisOpen = false;
     public bool IsFirstSave = true;
     public SaveGameData gameData;
+    private Coroutine coroutine;
 
     private bool isAssigningEggs = false;
 
@@ -522,10 +525,12 @@ public class GameManager : MonoBehaviour
    
     public void ReStart()
     {
+        isGameFinish = false;
         if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) <= 0)
         {
             Debug.LogWarning("Yeterli enerji yok, sahne yüklenemiyor.");
             SceeneManager.instance.LoadSceneAndEnergyPanel();
+            return;
         }
         ResourceManager.Instance.AddResource(ResourceType.PlayCount, 1); // Oyun oynama sayısını artırıyoruz
         
@@ -536,7 +541,12 @@ public class GameManager : MonoBehaviour
         {
             eggSlotDic.Clear();
         }
-        
+        if(coroutine!= null)
+            StopCoroutine(coroutine);
+
+       
+
+
     }
 
     public LevelData GetLevelData()
@@ -568,7 +578,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Start");
        
         trueEggCountChanged.Invoke(0);
-       // AssignMissingEggs();
+        coroutine = StartCoroutine(AssingEggs());
+
     }
 
 
@@ -823,54 +834,72 @@ public class GameManager : MonoBehaviour
         });
 
     }
-    private IEnumerator AssingEggs()
+    public IEnumerator AssingEggs()
     {
         LevelData currentLevel = GetLevelData();
         List<Transform> emtyOrWrongColorSlotTransformList = new List<Transform>();
+
+        // 1. Boş slotları bul (Bu kısım aynı kalıyor, doğru çalışıyor)
         foreach (GameObject slot in slotList)
         {
             if (slot.TryGetComponent<Slot>(out Slot slotScript) && !eggSlotDic.ContainsKey(slotScript.slotIndex))
             {
                 emtyOrWrongColorSlotTransformList.Add(slot.transform);
-                Debug.LogWarning("slot is null " + slotScript.slotIndex);
             }
-           
         }
+
         if (emtyOrWrongColorSlotTransformList.Count > 0)
         {
-            int index = 0;
+            // <<< YENİ MANTIK BAŞLANGICI >>>
+            // Atama düzenini ve sayacını döngüden önce ayarla.
+            int skipPattern = currentLevel.GetTopEggPerCount();
+            int skipCounter = 1; // Sayaç 1'den başlar. Sadece 1 olduğunda atama yaparız.
+
+            // `EggParent` altındaki tüm potansiyel yumurtaları dolaş
             foreach (Transform egg in EggSpawner.instance.EggParent)
             {
-                if (index == currentLevel.GetTopEggPerCount())
-                {
-                    index = 0;
-                    continue;
-                }else if(index!=0)
-                    continue;
-                else index++;
+                // Bu yumurtanın atanıp atanmayacağını belirle
+                bool isAssignTurn = (skipCounter == 1);
 
+                // Sayacı BİR SONRAKİ yumurta için her zaman güncelle.
+                skipCounter++;
+                if (skipCounter > skipPattern)
+                {
+                    skipCounter = 1; // Döngüyü başa sar
+                }
+
+                // Eğer bu yumurtayı atama sırası değilse, döngünün bir sonraki adımına geç.
+                if (!isAssignTurn)
+                {
+                    continue;
+                }
+
+                // <<< ESKİ KODUN DOĞRULAMA KISMI >>>
+                // Eğer atama sırasıysa, yumurtanın diğer koşulları sağlayıp sağlamadığını kontrol et.
                 if (egg.gameObject.activeInHierarchy && !eggSlotDic.ContainsValue(egg.gameObject) && GetLevelData().GetTempTopEggColorList().Contains(egg.GetComponent<Egg>().eggColor))
                 {
+                    // Geçerli bir yumurta bulundu, ilk boş slota ata.
+                    Transform targetSlotTransform = emtyOrWrongColorSlotTransformList[0];
 
-
-                    Sequence eggAnimation = AnimateEggToSlot(egg.gameObject, emtyOrWrongColorSlotTransformList[0]);
-
-
+                    Sequence eggAnimation = AnimateEggToSlot(egg.gameObject, targetSlotTransform);
                     yield return eggAnimation.WaitForCompletion();
-                    eggSlotDic[emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex] = egg.gameObject;
+
+                    eggSlotDic[targetSlotTransform.GetComponent<Slot>().slotIndex] = egg.gameObject;
                     PopStack(egg.gameObject);
-                    //  Debug.LogWarning("slot index " + emtyOrWrongColorSlotTransformList[0].GetComponent<Slot>().slotIndex + " egg name " + egg.name);
+
+                    // Dolu slotu listeden çıkar
                     emtyOrWrongColorSlotTransformList.RemoveAt(0);
+
+                    // Eğer doldurulacak başka slot kalmadıysa, döngüyü tamamen bitir.
                     if (emtyOrWrongColorSlotTransformList.Count == 0)
                     {
-                        Check();
-                        break;
+                        
+                        yield break; // Coroutine'i sonlandır.
                     }
-                       
                 }
             }
-        }else
-            Check();
+        }
+        
     }
     public void ShuffleRandomly()
     {
@@ -1204,12 +1233,7 @@ public class GameManager : MonoBehaviour
 
         int ceckedEggCount = currentEggCount > currentSlotCount ? currentSlotCount : currentEggCount;
         
-        if (eggSlotDic.Count< ceckedEggCount)
-        {
-            StartCoroutine(AssingEggs());
-            return;
-           
-        }
+       
         foreach (Transform eggTransform in EggSpawner.instance.EggParent)
         {
             if (eggTransform.gameObject.activeInHierarchy)
@@ -1224,38 +1248,39 @@ public class GameManager : MonoBehaviour
 
         if (eggSlotDic.Count < ceckedEggCount)
         {
-            //canCheck = false; 
-            //Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
-            //for (int i = 0; i < sltCount; i++)
-            //{
-            //    if (!eggSlotDic.ContainsKey(i))
-            //    {
-            //        Color red = Color.red;
-            //        red.a = 0.4f;
-            //        slotList[i].GetComponentInChildren<Renderer>().material.color = red;
-            //        slotList[i].transform.DOKill();
-            //        int fixedIndex = i;
-            //        slotList[fixedIndex].transform.DOShakePosition(
-            //            duration: 2f,
-            //            strength: 0.05f,
-            //            vibrato: 10,
-            //            randomness: 45f
-            //        ).OnComplete(() =>
-            //        {
-            //            canCheck = true;
-            //            slotList[fixedIndex].GetComponentInChildren<Renderer>().material.color = originalColor;
-            //        });
-            //    }
-            //    else
-            //    {
-            //        slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
-            //    }
-            //}
+            canCheck = false;
+            Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
+            for (int i = 0; i < sltCount; i++)
+            {
+                if (!eggSlotDic.ContainsKey(i))
+                {
+                    Color red = Color.red;
+                    red.a = 0.4f;
+                    slotList[i].GetComponentInChildren<Renderer>().material.color = red;
+                    slotList[i].transform.DOKill();
+                    int fixedIndex = i;
+                    slotList[fixedIndex].transform.DOShakePosition(
+                        duration: 2f,
+                        strength: 0.05f,
+                        vibrato: 10,
+                        randomness: 45f
+                    ).OnComplete(() =>
+                    {
+                        canCheck = true;
+                        slotList[fixedIndex].GetComponentInChildren<Renderer>().material.color = originalColor;
+                    });
+                }
+                else
+                {
+                    slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
+                }
+            }
 
-            //trueEggCountChanged.Invoke(0);
+            trueEggCountChanged.Invoke(0);
         }
         else
         {
+            
             canCheck = true;
             int trueCount = GetTrueEggCount();
 
@@ -1263,6 +1288,7 @@ public class GameManager : MonoBehaviour
             if (trueCount >= ceckedEggCount)
             {
                 SoundManager.instance.StopClip(SoundType.Tiktak);
+                isGameFinish = true;
                 stopTime?.Invoke();
                 if (eggSlotDic.Count > 0)
                 {

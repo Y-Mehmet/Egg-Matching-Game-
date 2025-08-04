@@ -114,7 +114,7 @@ public class Timer : MonoBehaviour
             yield return new WaitForSeconds(timeSpeed); 
 
             currentTime--;
-            if (currentTime <= 10 && !SoundManager.instance.CheckPlayingClip(SoundType.Tiktak))
+            if (currentTime <= 10 && !SoundManager.instance.CheckPlayingClip(SoundType.Tiktak) && !GameManager.instance.isGameFinish)
                 SoundManager.instance.PlaySfx(SoundType.Tiktak);
             GameManager.instance.timeChanged?.Invoke(currentTime);
         }

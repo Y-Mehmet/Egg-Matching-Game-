@@ -67,7 +67,7 @@ public class CountdownController : MonoBehaviour
         
         yield return AnimateText("START!").WaitForCompletion();
 
-        // --- Geri Sayým Bitti ---
+        
 
         countdownText.gameObject.SetActive(false);
         Debug.Log("Geri sayým bitti! Oyun baþlýyor!");
