@@ -96,6 +96,7 @@ public class Timer : MonoBehaviour
         PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
         yield return new WaitForSeconds(delay);
         isFrozeTime = false;
+        if(GameManager.instance.isGameFinish) yield break; // Oyun bitmiþse devam etme
          timeCoroutine = StartCoroutine(TimeRoutine());
     }
     void ContinueTimer()
@@ -105,7 +106,7 @@ public class Timer : MonoBehaviour
     }
     
 
-    // Update is called once per frame
+
     
     private IEnumerator TimeRoutine()
     {

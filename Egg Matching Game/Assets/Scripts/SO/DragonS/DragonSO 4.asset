@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DragonSO 4
   m_EditorClassIdentifier: 
   DragonIndex: 4
-  dragonMissionGemValue: 7
+  dragonMissionGemValue: 10
   DragonGemAmount: 0
   DragonName: Silas
   color: 2
   DragonSprite: {fileID: 21300000, guid: 7a233b7260e6b86458ffc7c4d59c796b, type: 3}
   videoClip: {fileID: 32900000, guid: b31a7e7f486e94e468f865a0c72912a3, type: 3}
-  addTime: 35
+  addTime: 20

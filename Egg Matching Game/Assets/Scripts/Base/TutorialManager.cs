@@ -15,7 +15,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject handPointer;
     public GameObject blockerPanel;
     public TextMeshProUGUI tutorialTextLabel;
-    public Button HandButton;
+    public Button HandButton, textButton;
 
     [Header("Tutorial Adýmlarý")]
     public Button[]tutorialSteps;
@@ -40,6 +40,7 @@ public class TutorialManager : MonoBehaviour
         {
             Destroy(gameObject); // Eðer zaten bir örnek varsa, bu yeni örneði yok et
         }
+
     }
     private void OnEnable()
     {
@@ -48,33 +49,42 @@ public class TutorialManager : MonoBehaviour
             gameObject.SetActive(false);
         }
         HandButton.onClick.AddListener(OnTargetButtonClicked);
+        textButton.onClick.AddListener(StopTextWriter);
+
     }
     private void OnDisable()
     {
         HandButton.onClick.RemoveListener(OnTargetButtonClicked);
+        textButton.onClick.RemoveListener(StopTextWriter);
     }
     void Start()
     {
+        StartTutorial();
+    }
+    void StartTutorial()
+    {
+
         SaveGameData gameData = SaveSystem.Load();
         if (gameData == null && !gameData.isTutorial)
         {
             gameObject.SetActive(false);// Eðer oyun verisi yoksa bu nesneyi yok et
         }
-       if(gameData.levelIndex==0)
+        if (gameData.levelIndex == 0)
         {
-            offsetList.Add(new Vector3(-150, 120, 0)); // Ýlk adým için elin konumu
-                                                       // Baþlangýçta her þeyi gizle
+            offsetList.Add(new Vector3(-75, 120, 0)); // Ýlk adým için elin konumu
+                                                      // Baþlangýçta her þeyi gizle
             handPointer.SetActive(false);
             blockerPanel.SetActive(true); // Týklamalarý en baþtan engelle
             tutorialTextLabel.gameObject.SetActive(true);
 
             // Tutorial akýþýný Coroutine olarak baþlat
             StartCoroutine(TutorialFlow());
-        }else if( gameData.levelIndex==1)
+        }
+        else if (gameData.levelIndex == 1)
         {
             offsetList.Clear();
-            offsetList.Add(new Vector3(-150, 120, 0)); // Ýlk adým için elin konumu
-                                                       // Baþlangýçta her þeyi gizle
+            offsetList.Add(new Vector3(-15, 12, 0)); // Ýlk adým için elin konumu
+                                                     // Baþlangýçta her þeyi gizle
             handPointer.SetActive(false);
             blockerPanel.SetActive(true); // Týklamalarý en baþtan engelle
             tutorialTextLabel.gameObject.SetActive(true);
@@ -194,6 +204,26 @@ public class TutorialManager : MonoBehaviour
             
             
         
+    }
+    private void StopTextWriter()
+    {
+        SaveGameData gameData = SaveSystem.Load();
+        if (gameData.levelIndex == 1)
+        {
+            TypewriterHelper.Instance.CompleteTyping(missionMessage, tutorialTextLabel);
+            currentStep = 3;
+            StopCoroutine(TutorialFlow2());
+            ShowNextStep();
+            
+        }
+            
+        else if( gameData.levelIndex == 0)
+        {
+            TypewriterHelper.Instance.CompleteTyping(welcomeMessage, tutorialTextLabel);
+            StopCoroutine(TutorialFlow());
+            ShowNextStep();
+        }
+            
     }
 
     public void EndTutorial()

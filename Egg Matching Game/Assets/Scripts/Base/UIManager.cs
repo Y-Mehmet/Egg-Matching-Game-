@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public TMP_Text timeText,trueEggCountText,levelText;
+    public TMP_Text timeText,trueEggCountText;
     public Button settingsBtn;
     
     private void OnEnable()
@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
 
         GameManager.instance.timeChanged += UpdateTime;
         GameManager.instance.trueEggCountChanged += UpdateTrueEggCount;
-        GameManager.instance.levelChanged += UpdateLevel;
+        
         settingsBtn.onClick.AddListener(() =>
         {
             PanelManager.Instance.ShowPanel(PanelID.PlayPause);
@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     {
         GameManager.instance.timeChanged -= UpdateTime;
         GameManager.instance.trueEggCountChanged -= UpdateTrueEggCount;
-        GameManager.instance.levelChanged -= UpdateLevel;
+       
         settingsBtn.onClick.RemoveAllListeners();
     }
     private void UpdateTime(int time)
@@ -38,11 +38,7 @@ public class UIManager : MonoBehaviour
     {
         trueEggCountText.text = "" + count;
     }
-    private void UpdateLevel(int level)
-    {
-        level++;
-        levelText.text = "Level " + level;
-    }
+    
     private string FormatTime(int totalSeconds)
     {
         // Negatif zamaný önlemek için kontrol

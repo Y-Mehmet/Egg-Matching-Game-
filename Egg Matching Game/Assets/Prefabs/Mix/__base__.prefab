@@ -942,7 +942,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: GamaManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7111483795088876624, guid: 94ad99b07e375a94f83b60265bd0cfe7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

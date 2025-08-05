@@ -170,13 +170,13 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator Tutorial()
     {
-       
 
+        TutorialManager.Instance.HandButton.interactable = false;
         Vector3 screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(0).position);
-        Vector3 offset = new Vector3(-150, 150, 0);
+        Vector3 offset = new Vector3(-75, 150, 0);
 
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitUntil(()=>selectedEgg!= null);
 
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.SlotParent.GetChild(0).position);
         TutorialManager.Instance.HandMovment(screenPoint+ offset, new Vector3(0, -10, 0));
@@ -185,21 +185,21 @@ public class GameManager : MonoBehaviour
 
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(1).position);
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitUntil(() => selectedEgg != null);
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.SlotParent.GetChild(1).position);
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
         yield return new WaitUntil(() => eggSlotDic.ContainsKey(1));
 
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(2).position);
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
-        yield return new WaitForSeconds(1f);
+        yield return new WaitUntil(() => selectedEgg != null);
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.SlotParent.GetChild(2).position);
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
         yield return new WaitUntil(() => eggSlotDic.ContainsKey(2));
 
          AbilityBarPanel.transform.GetChild(4).TryGetComponent<CheckBtn>(out CheckBtn checkBtn);
         Vector3 checkBtnPos= checkBtn.transform.position;
-        TutorialManager.Instance.HandMovment(checkBtnPos+offset*2, new Vector3(0, -10, 0));
+        TutorialManager.Instance.HandMovment(checkBtnPos+offset+new Vector3(-40,90,0), new Vector3(0, -10, 0));
         yield return new WaitUntil(() => tutorialIndex == 1);
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(0).position);
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
@@ -207,14 +207,17 @@ public class GameManager : MonoBehaviour
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(1).position);
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
         yield return new WaitUntil(()=> GetTrueEggCount()>=3);
-        TutorialManager.Instance.HandMovment(checkBtnPos + offset*2, new Vector3(0, -10, 0));
-        yield return new WaitForSeconds(3f);
-        TutorialManager.Instance.handPointer.SetActive(false);
+        TutorialManager.Instance.HandMovment(checkBtnPos + offset+new Vector3(-40, 90, 0), new Vector3(0, -10, 0));
 
+        yield return new WaitUntil(() => isShuffling == true);
+        
+        TutorialManager.Instance.handPointer.SetActive(false);
+        
         yield return new WaitUntil(() => isShuffling == false);
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.dragon.transform.position);
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
         yield return new WaitUntil(()=>isSelectTrueDaragonEgg==true);
+        TutorialManager.Instance.HandButton.interactable = true;
         TutorialManager.Instance.EndTutorial();
 
 
@@ -578,6 +581,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Start");
        
         trueEggCountChanged.Invoke(0);
+        if(!ResourceManager.Instance.isTutorial)
         coroutine = StartCoroutine(AssingEggs());
 
     }
@@ -658,6 +662,7 @@ public class GameManager : MonoBehaviour
             isShuffling = false;
             yield break;
         }
+        float stepDuration = swapDuration / 6.0f;
         SoundManager.instance.StopClip(SoundType.Tiktak);
         stopTime?.Invoke();
         List<Transform> emtyOrWrongColorSlotTransformList = new List<Transform>();
@@ -748,7 +753,7 @@ public class GameManager : MonoBehaviour
         // 2. Adım: Animasyon için bir DOTween Sequence oluştur
         // Sequence, animasyonları arka arkaya veya aynı anda oynatmamızı sağlar
         Sequence shuffleSequence = DOTween.Sequence();
-        float stepDuration = swapDuration / 6.0f;
+        
 
         // Animasyon sırasında pozisyonları takip etmek için geçici bir liste oluşturalım.
         // Çünkü Transform'ların pozisyonları animasyon sırasında değişecektir.

@@ -50,4 +50,19 @@ public class TypewriterHelper : MonoBehaviour
         // Yazma iþlemi bittiðinde coroutine referansýný temizle
         typingCoroutine = null;
     }
+    public void CompleteTyping(string textToType, TextMeshProUGUI textLabel)
+    {
+        // Eðer bir yazma iþlemi varsa ve henüz bitmediyse
+        if (typingCoroutine != null)
+        {
+            // Coroutine'i hemen durdur
+            StopCoroutine(typingCoroutine);
+
+            // Metin kutusuna tüm metni anýnda yaz
+            textLabel.text = textToType;
+
+            // Coroutine referansýný temizle
+            typingCoroutine = null;
+        }
+    }
 }

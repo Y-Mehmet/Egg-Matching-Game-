@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DragonSO 2
   m_EditorClassIdentifier: 
   DragonIndex: 2
-  dragonMissionGemValue: 5
+  dragonMissionGemValue: 7
   DragonGemAmount: 0
   DragonName: Drako
   color: 1
   DragonSprite: {fileID: 21300000, guid: 6c601b11bdf047048b0840e79796cfe9, type: 3}
   videoClip: {fileID: 32900000, guid: e14b8646f69824048b0511c11e755153, type: 3}
-  addTime: 25
+  addTime: 15

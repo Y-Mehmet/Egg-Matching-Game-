@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DragonSO 6
   m_EditorClassIdentifier: 
   DragonIndex: 6
-  dragonMissionGemValue: 9
+  dragonMissionGemValue: 10
   DragonGemAmount: 0
   DragonName: Ryven
   color: 6
   DragonSprite: {fileID: 21300000, guid: 1e2446b0ae9669f4891a38588f3a1cf7, type: 3}
   videoClip: {fileID: 32900000, guid: 74d716fd5b517b54395daca4728af240, type: 3}
-  addTime: 45
+  addTime: 20

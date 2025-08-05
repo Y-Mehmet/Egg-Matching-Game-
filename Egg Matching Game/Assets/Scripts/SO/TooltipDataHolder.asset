@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b84667c46cbcb824e8c528aa72a7a517, type: 3}
+  m_Name: TooltipDataHolder
+  m_EditorClassIdentifier: 
+  tooltips:
+  - {fileID: 11400000, guid: 00e0c0bf5ca61ee42bfa846bae2d4498, type: 2}

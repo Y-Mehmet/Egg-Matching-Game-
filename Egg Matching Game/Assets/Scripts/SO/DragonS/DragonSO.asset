@@ -19,4 +19,4 @@ MonoBehaviour:
   color: 0
   DragonSprite: {fileID: 21300000, guid: a6385de2a00be364382c34b8a133d90f, type: 3}
   videoClip: {fileID: 32900000, guid: 0d0bc3b8105901e419a7b5b4a3f6a58c, type: 3}
-  addTime: 15
+  addTime: 5
