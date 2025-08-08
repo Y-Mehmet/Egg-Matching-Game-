@@ -53,7 +53,15 @@ public class VideoManager : MonoBehaviour
     private void OnDisable()
     {
         StopCoroutine(PrepareAndPlayVideo());
-        videoDisplay.gameObject.SetActive(false);
-        loadingScreen.gameObject.SetActive(true);
+        if(videoPlayer!= null)
+        {
+            
+            videoDisplay.gameObject.SetActive(false);
+        }
+       if(loadingScreen != null)
+        {
+            loadingScreen.gameObject.SetActive(true);
+        }
+        
     }
 }

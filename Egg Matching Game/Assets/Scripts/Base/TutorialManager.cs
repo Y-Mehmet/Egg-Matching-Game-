@@ -5,7 +5,8 @@ using TMPro;
 using NUnit.Framework;
 using System.Collections.Generic;
 using DG.Tweening;
-using UnityEngine.Rendering; // TextMeshPro için gerekli
+using UnityEngine.Rendering;
+using System.Linq; // TextMeshPro için gerekli
 
 public class TutorialManager : MonoBehaviour
 {
@@ -48,15 +49,23 @@ public class TutorialManager : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-        HandButton.onClick.AddListener(OnTargetButtonClicked);
-        textButton.onClick.AddListener(StopTextWriter);
+        if(HandButton!= null)
+        {
+            HandButton.onClick.RemoveListener(OnTargetButtonClicked);
+            HandButton.onClick.AddListener(OnTargetButtonClicked);
+        }
+        if(textButton!= null)
+        {
+            textButton.onClick.RemoveListener(StopTextWriter);
+            textButton.onClick.AddListener(StopTextWriter);
+        }
 
     }
-    private void OnDisable()
-    {
-        HandButton.onClick.RemoveListener(OnTargetButtonClicked);
-        textButton.onClick.RemoveListener(StopTextWriter);
-    }
+    //private void OnDisable()
+    //{
+    //    HandButton.onClick.RemoveListener(OnTargetButtonClicked);
+    //    textButton.onClick.RemoveListener(StopTextWriter);
+    //}
     void Start()
     {
         StartTutorial();
@@ -132,14 +141,20 @@ public class TutorialManager : MonoBehaviour
 
        if(currentStep==0)
         {
-            Button targetButton = tutorialSteps[currentStep];
+            Button targetButton = tutorialSteps[currentStep]; 
+
             blockerPanel.SetActive(true);
             handPointer.SetActive(true);
 
 
             handPointer.transform.SetAsLastSibling();
-            targetButton.onClick.RemoveAllListeners();
-            targetButton.onClick.AddListener(OnTargetButtonClicked);
+            if(targetButton!=null)
+            {
+                targetButton.onClick.RemoveAllListeners();
+                targetButton.onClick.AddListener(OnTargetButtonClicked);
+
+            }
+            if(tutorialSteps[0]!= null)
             HandMovment(tutorialSteps[0].transform.position + offsetList[0], new Vector3(0, -10, 0));
         }
        else if(currentStep==3)
@@ -150,8 +165,13 @@ public class TutorialManager : MonoBehaviour
 
 
             handPointer.transform.SetAsLastSibling();
-            targetButton.onClick.RemoveAllListeners();
-            targetButton.onClick.AddListener(OnTargetButtonClicked);
+            if (targetButton != null)
+            {
+                targetButton.onClick.RemoveAllListeners();
+                targetButton.onClick.AddListener(OnTargetButtonClicked);
+
+            }
+            if(tutorialSteps[1] != null)
             HandMovment(tutorialSteps[1].transform.position + offsetList[0], new Vector3(0, -10, 0));
         }
     }

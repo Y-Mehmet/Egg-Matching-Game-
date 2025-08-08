@@ -39,10 +39,31 @@ public class InterstitialAds : MonoBehaviour , IUnityAdsLoadListener ,IUnityAdsS
         Debug.Log("Interstitial Ad Loaded");
     }
 
-    public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)    {    }
+    public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
+    {
+        // Hata mesajýný logla
+        Debug.LogError($"Error loading Ad Unit {placementId}: {error.ToString()} - {message}");
+        if (GameManager.instance != null && ResourceManager.Instance != null)
+        {
+            ResourceManager.Instance.GetReweard();
+            //if (GameManager.instance.currentRewarded == RewardedType.Resource)
+            //    GameManager.instance.ReStart();
+        }
+        else
+        {
+            Debug.LogWarning("GameManager veya gameData bulunamadý.");
+        }
+        SceeneManager.instance.LoadScene(0);
+    }
+
+
     #endregion
     #region ShowCallbacks
-    public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)    {    }
+    public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+    {
+        // Hata mesajýný logla
+        Debug.LogError($"Error showing Ad Unit {placementId}: {error.ToString()} - {message}");
+    }
 
     public void OnUnityAdsShowStart(string placementId)    {    }
 
