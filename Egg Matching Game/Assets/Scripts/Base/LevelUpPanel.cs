@@ -52,13 +52,13 @@ public class LevelUpPanel : MonoBehaviour
     }
     private void OnAdsButtonClicked()
     {
-        Debug.Log("Ödüllü Reklam Butonu Týklandý!");
+        //Debug.Log("Ödüllü Reklam Butonu Týklandý!");
 
         // Ödüllü reklamý göstermeden önce hazýr olup olmadýðýný kontrol edin
-        if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
+        if (AdsManager.Instance != null)
         {
             ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Resource);
-            AdsManager.Instance.rewardedAds.ShowRewardedAd();
+            AdsManager.Instance.ShowRewardedAd();
             Debug.Log("Ödüllü Reklam Çaðrýldý!");
         }
         else
@@ -69,14 +69,14 @@ public class LevelUpPanel : MonoBehaviour
     }
     private void OnContinueButtonClicked()
     {
-        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 2 == 0)
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 1 == 0)
         {
             // Geçiþ reklamýný göstermeden önce hazýr olup olmadýðýný kontrol edin (isteðe baðlý ama iyi bir pratik)
             // Eðer reklam hazýrsa göster
-            if (AdsManager.Instance != null && AdsManager.Instance.interstitialAds != null)
+            if (AdsManager.Instance != null )
             {
                 ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.OneResource);
-                AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+                AdsManager.Instance.ShowInterstitialAd();
                 Debug.Log("Geçiþ Reklamý Çaðrýldý!");
 
             }
@@ -91,8 +91,8 @@ public class LevelUpPanel : MonoBehaviour
             ResourceManager.Instance.AddResource(ResourceType.Gem, gemAmount);
             SceeneManager.instance.LoadScene(0);
         }
-        
-        
-       
+
+
+
     }
 }

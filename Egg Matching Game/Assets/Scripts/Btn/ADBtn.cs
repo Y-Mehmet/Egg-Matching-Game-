@@ -14,13 +14,13 @@ public class ADBtn : MonoBehaviour
     }
     private void OnButtonClick()
     {
-        Debug.Log("Ödüllü Reklam Butonu Týklandý!");
+        //Debug.Log("Ödüllü Reklam Butonu Týklandý!");
 
         // Ödüllü reklamý göstermeden önce hazýr olup olmadýðýný kontrol edin
-        if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
+        if (AdsManager.Instance != null )
         {
             ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Resource);
-            AdsManager.Instance.rewardedAds.ShowRewardedAd();
+            AdsManager.Instance.ShowRewardedAd();
             Debug.Log("Ödüllü Reklam Çaðrýldý!");
         }
         else

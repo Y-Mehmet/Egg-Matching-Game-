@@ -89,10 +89,10 @@ public class AddPanel : MonoBehaviour
 
     private void OnAddButtonClicked()
     {
-        if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
+        if (AdsManager.Instance != null )
         {
             ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Energy);
-            AdsManager.Instance.rewardedAds.ShowRewardedAd();
+            AdsManager.Instance.ShowRewardedAd();
             Debug.Log("Ödüllü Reklam Çaðrýldý!");
         }
         else
