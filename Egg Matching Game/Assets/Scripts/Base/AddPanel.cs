@@ -89,16 +89,16 @@ public class AddPanel : MonoBehaviour
 
     private void OnAddButtonClicked()
     {
-        //if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
-        //{
-        //    ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Energy);
-        //    AdsManager.Instance.rewardedAds.ShowRewardedAd();
-        //    Debug.Log("Ödüllü Reklam Çaðrýldý!");
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("Ödüllü Reklam hazýr deðil veya AdsManager bulunamadý.");
-        //}
+        if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
+        {
+            ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Energy);
+            AdsManager.Instance.rewardedAds.ShowRewardedAd();
+            Debug.Log("Ödüllü Reklam Çaðrýldý!");
+        }
+        else
+        {
+            Debug.LogWarning("Ödüllü Reklam hazýr deðil veya AdsManager bulunamadý.");
+        }
     }
 
     private void OnCloseButtonClicked()

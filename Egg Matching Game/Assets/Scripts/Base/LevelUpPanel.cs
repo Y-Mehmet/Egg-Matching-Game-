@@ -52,45 +52,45 @@ public class LevelUpPanel : MonoBehaviour
     }
     private void OnAdsButtonClicked()
     {
-        //Debug.Log("Ödüllü Reklam Butonu Týklandý!");
+        Debug.Log("Ödüllü Reklam Butonu Týklandý!");
 
-        //// Ödüllü reklamý göstermeden önce hazýr olup olmadýðýný kontrol edin
-        //if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
-        //{
-        //    ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Resource);
-        //    AdsManager.Instance.rewardedAds.ShowRewardedAd();
-        //    Debug.Log("Ödüllü Reklam Çaðrýldý!");
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("Ödüllü Reklam hazýr deðil veya AdsManager bulunamadý.");
-        //    // Alternatif olarak, oyuncuya reklamýn þu anda mevcut olmadýðýný bildirebilirsiniz.
-        //}
+        // Ödüllü reklamý göstermeden önce hazýr olup olmadýðýný kontrol edin
+        if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
+        {
+            ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Resource);
+            AdsManager.Instance.rewardedAds.ShowRewardedAd();
+            Debug.Log("Ödüllü Reklam Çaðrýldý!");
+        }
+        else
+        {
+            Debug.LogWarning("Ödüllü Reklam hazýr deðil veya AdsManager bulunamadý.");
+            // Alternatif olarak, oyuncuya reklamýn þu anda mevcut olmadýðýný bildirebilirsiniz.
+        }
     }
     private void OnContinueButtonClicked()
     {
-        //if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 2 == 0)
-        //{
-        //    // Geçiþ reklamýný göstermeden önce hazýr olup olmadýðýný kontrol edin (isteðe baðlý ama iyi bir pratik)
-        //    // Eðer reklam hazýrsa göster
-        //    if (AdsManager.Instance != null && AdsManager.Instance.interstitialAds != null)
-        //    {
-        //        ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.OneResource);
-        //        AdsManager.Instance.interstitialAds.ShowInterstitialAd();
-        //        Debug.Log("Geçiþ Reklamý Çaðrýldý!");
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 2 == 0)
+        {
+            // Geçiþ reklamýný göstermeden önce hazýr olup olmadýðýný kontrol edin (isteðe baðlý ama iyi bir pratik)
+            // Eðer reklam hazýrsa göster
+            if (AdsManager.Instance != null && AdsManager.Instance.interstitialAds != null)
+            {
+                ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.OneResource);
+                AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+                Debug.Log("Geçiþ Reklamý Çaðrýldý!");
 
-        //    }
-        //    else
-        //    {
-        //        Debug.LogWarning("Geçiþ Reklamý hazýr deðil veya AdsManager bulunamadý.");
-        //    }
-        //}
-        //else
-        //{
-        //    ResourceManager.Instance.AddResource(ResourceType.Coin, ResourceManager.Instance.coinsPerGame);
-        //    ResourceManager.Instance.AddResource(ResourceType.Gem, gemAmount);
-        //    SceeneManager.instance.LoadScene(0);
-        //}
+            }
+            else
+            {
+                Debug.LogWarning("Geçiþ Reklamý hazýr deðil veya AdsManager bulunamadý.");
+            }
+        }
+        else
+        {
+            ResourceManager.Instance.AddResource(ResourceType.Coin, ResourceManager.Instance.coinsPerGame);
+            ResourceManager.Instance.AddResource(ResourceType.Gem, gemAmount);
+            SceeneManager.instance.LoadScene(0);
+        }
         
         
        

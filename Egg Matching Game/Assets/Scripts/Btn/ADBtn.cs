@@ -14,19 +14,19 @@ public class ADBtn : MonoBehaviour
     }
     private void OnButtonClick()
     {
-        //Debug.Log("Ödüllü Reklam Butonu Týklandý!");
+        Debug.Log("Ödüllü Reklam Butonu Týklandý!");
 
-        //// Ödüllü reklamý göstermeden önce hazýr olup olmadýðýný kontrol edin
-        //if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
-        //{
-        //    ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Resource);
-        //    AdsManager.Instance.rewardedAds.ShowRewardedAd();
-        //    Debug.Log("Ödüllü Reklam Çaðrýldý!");
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("Ödüllü Reklam hazýr deðil veya AdsManager bulunamadý.");
-        //    // Alternatif olarak, oyuncuya reklamýn þu anda mevcut olmadýðýný bildirebilirsiniz.
-        //}
+        // Ödüllü reklamý göstermeden önce hazýr olup olmadýðýný kontrol edin
+        if (AdsManager.Instance != null && AdsManager.Instance.rewardedAds != null)
+        {
+            ResourceManager.Instance.currentRewardedTypeChanged?.Invoke(RewardedType.Resource);
+            AdsManager.Instance.rewardedAds.ShowRewardedAd();
+            Debug.Log("Ödüllü Reklam Çaðrýldý!");
+        }
+        else
+        {
+            Debug.LogWarning("Ödüllü Reklam hazýr deðil veya AdsManager bulunamadý.");
+            // Alternatif olarak, oyuncuya reklamýn þu anda mevcut olmadýðýný bildirebilirsiniz.
+        }
     }
 }
