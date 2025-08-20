@@ -127,11 +127,11 @@ public class GameManager : MonoBehaviour
 
 
         Time.timeScale = 1;
-        //// Menü aktif olduğunda banner reklamı göster
-        //if (AdsManager.Instance != null && AdsManager.Instance.bannerAds != null)
-        //{
-        //    AdsManager.Instance.bannerAds.ShowBannerAd();
-        //}
+        // Menü aktif olduğunda banner reklamı göster
+        if (AdsManager.Instance != null )
+        {
+            AdsManager.Instance.ShowBannerAd();
+        }
 
     }
     private void OnDisable()
@@ -139,12 +139,11 @@ public class GameManager : MonoBehaviour
         gameStart -= GameStart;
         gameStart -= StartTutorial; // Oyun başladığında tutorial'ı başlatmayı durdur
         gameOver -= GameOver;
-       
-        // Menü kapandığında banner reklamı gizle (isteğe bağlı, oyununuzun tasarımına göre değişir)
-        //if (AdsManager.Instance != null && AdsManager.Instance.bannerAds != null)
-        //{
-        //    AdsManager.Instance.bannerAds.HideBannerAd();
-        //}
+
+        if (AdsManager.Instance != null)
+        {
+            AdsManager.Instance.HideBannerAd();
+        }
     }
     private void Start()
     {

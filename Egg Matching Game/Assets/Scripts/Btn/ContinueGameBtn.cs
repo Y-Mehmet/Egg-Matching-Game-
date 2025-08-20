@@ -13,5 +13,6 @@ public class ContinueGameBtn : MonoBehaviour
     private void OnClick()
     {
         GameManager.instance.continueGame?.Invoke();
+        PanelManager.Instance.HideLastPanel();
     }
 }

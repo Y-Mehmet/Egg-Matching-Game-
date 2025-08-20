@@ -69,7 +69,8 @@ public class LevelUpPanel : MonoBehaviour
     }
     private void OnContinueButtonClicked()
     {
-        if (ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount) % 1 == 0)
+        int playcount = ResourceManager.Instance.GetResourceAmount(ResourceType.PlayCount);
+        if (playcount > 5 && playcount% 1 == 0 )
         {
             // Geçiþ reklamýný göstermeden önce hazýr olup olmadýðýný kontrol edin (isteðe baðlý ama iyi bir pratik)
             // Eðer reklam hazýrsa göster
