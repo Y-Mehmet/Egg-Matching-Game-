@@ -455,22 +455,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BasePanel
       objectReference: {fileID: 0}
-    - target: {fileID: 8474502588468076295, guid: db0295160c7d6e349a637311507c8438, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8474502588468076295, guid: db0295160c7d6e349a637311507c8438, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8474502588468076295, guid: db0295160c7d6e349a637311507c8438, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8474502588468076295, guid: db0295160c7d6e349a637311507c8438, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9211645046499407979, guid: db0295160c7d6e349a637311507c8438, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

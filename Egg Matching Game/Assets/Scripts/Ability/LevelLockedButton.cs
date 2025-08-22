@@ -26,6 +26,7 @@ public class LevelLockedButton : MonoBehaviour
         // Get the Button component once and store it in a variable.
         button = GetComponent<Button>();
         button.interactable = false;
+        chilImage.enabled = false;
     }
 
     // This function is called every time the object becomes active. This ensures it stays updated when UI panels are opened/closed.
@@ -75,7 +76,7 @@ public class LevelLockedButton : MonoBehaviour
         // If a levelText component is assigned, update it with the required level.
         if (levelText != null)
         {
-            levelText.text = "Level " + abilityData.RequiredLevel;
+            levelText.text = "Level " + abilityData.RequiredLevel+1;
         }
         if (chilImage != null)
         {
@@ -90,6 +91,7 @@ public class LevelLockedButton : MonoBehaviour
     {
         // Set the button's interactability.
         button.interactable = isUnlocked;
+        chilImage.enabled = true;
 
         // Set the visibility of the lock object.
         // If isUnlocked is true, the lockObject should be inactive (hidden).
