@@ -17,4 +17,4 @@ MonoBehaviour:
   description: Heads up! You won't use all of the top eggs. Match the correct colors
     to the slots.
   isNewFeature: 1
-  reqLevelIndex: 11
+  reqLevelIndex: 13

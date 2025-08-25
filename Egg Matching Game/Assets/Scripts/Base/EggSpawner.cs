@@ -20,7 +20,7 @@ public class EggSpawner : MonoBehaviour
 
     private bool TruePos = false;
     public List<EggColor> mixColorList = new List<EggColor>();
-    public List<EggColor> topEggColor = new List<EggColor>();
+   // public List<EggColor> topEggColor = new List<EggColor>();
     public List<GameObject> eggList = new List<GameObject>();
     public List<Queue<GameObject>> eggStackList = new List<Queue<GameObject>>();
     public List<Vector3> slotPos = new List<Vector3>();
@@ -65,8 +65,8 @@ public class EggSpawner : MonoBehaviour
     {
         mixColorList.Clear();
         SaveGameData gameData = SaveSystem.Load();
-        if (!gameData.isTutorial)
-            topEggColor.Clear();
+        //if (!gameData.isTutorial)
+        //    topEggColor.Clear();
         foreach (var item in eggList)
         {
             Destroy(item.gameObject);

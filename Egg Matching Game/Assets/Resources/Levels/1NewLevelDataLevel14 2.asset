@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f92cd3b07c240bc46a933d79a5b97f73, type: 3}
-  m_Name: 1NewLevelDataLevel15 1
+  m_Name: 1NewLevelDataLevel14 2
   m_EditorClassIdentifier: 
-  eggColors: 0000000004000000020000000100000003000000
-  topEggColors: 0100000003000000000000000200000004000000
-  tempTopEggColors: 0100000003000000000000000200000004000000
+  eggColors: 00000000010000000900000008000000
+  topEggColors: 06000000000000000200000003000000
+  tempTopEggColors: 06000000000000000200000003000000
   brokenEggCount: 0
   brokenSlotCount: 0
   topEggPerCount: 1
-  startTime: 30
+  startTime: 35
   mixColor: 0
   dualColor: 0

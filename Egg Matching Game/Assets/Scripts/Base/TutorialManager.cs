@@ -35,7 +35,7 @@ public class TutorialManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Bu nesneyi sahneler arasýnda taþýmak için
+           // DontDestroyOnLoad(gameObject); // Bu nesneyi sahneler arasýnda taþýmak için
         }
         else
         {

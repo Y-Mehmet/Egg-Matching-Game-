@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
         // Menü aktif olduğunda banner reklamı göster
         if (AdsManager.Instance != null )
         {
-            AdsManager.Instance.ShowBannerAd();
+            //AdsManager.Instance.ShowBannerAd();
         }
 
     }
@@ -195,8 +195,10 @@ public class GameManager : MonoBehaviour
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.SlotParent.GetChild(2).position);
         TutorialManager.Instance.HandMovment(screenPoint + offset, new Vector3(0, -10, 0));
         yield return new WaitUntil(() => eggSlotDic.ContainsKey(2));
-
+        
          AbilityBarPanel.transform.GetChild(4).TryGetComponent<CheckBtn>(out CheckBtn checkBtn);
+       
+
         Vector3 checkBtnPos= checkBtn.transform.position;
         TutorialManager.Instance.HandMovment(checkBtnPos+offset+new Vector3(-40,90,0), new Vector3(0, -10, 0));
         yield return new WaitUntil(() => tutorialIndex == 1);
