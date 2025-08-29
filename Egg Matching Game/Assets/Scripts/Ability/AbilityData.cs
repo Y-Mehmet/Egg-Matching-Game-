@@ -8,6 +8,7 @@ public enum AbilityType
     BreakEgg,
     Shuffle,
     BreakDragonEgg,
+    Flow,
 }
 
 // Bu satýr sayesinde Unity'de "Create > Game > Ability" menüsü ile yeni yetenek verileri oluþturabilirsiniz.

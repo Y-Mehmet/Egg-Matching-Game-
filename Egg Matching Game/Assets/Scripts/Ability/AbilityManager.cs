@@ -14,6 +14,7 @@ public class AbilityManager : MonoBehaviour
     public Action<Tag> breakSlotAction; // Bu eylemin kendisi bir Coroutine baþlatacak
     public Action<Tag> breakDragonEggAction;
     public Action<Tag> breakEggAction;
+    public Action flowAction;
     public Action shuffleAction;
     public Action<AbilityType> curentAbilityTypeChanged;
     public AbilityType currentAbilityType;
@@ -42,6 +43,7 @@ public class AbilityManager : MonoBehaviour
         breakEggAction += StartBreakEgg;
         curentAbilityTypeChanged += OnAbilityTypeChanged;
         breakDragonEggAction += StartBreakDragonEgg;
+        flowAction += StartFlowAction;
     }
 
     private void OnDisable()
@@ -50,6 +52,7 @@ public class AbilityManager : MonoBehaviour
         breakEggAction -= StartBreakEgg;
         curentAbilityTypeChanged -= OnAbilityTypeChanged;
         breakDragonEggAction -= StartBreakDragonEgg;
+        flowAction -= StartFlowAction;
     }
     
     private void OnAbilityTypeChanged(AbilityType abilityType)
@@ -57,6 +60,13 @@ public class AbilityManager : MonoBehaviour
         currentAbilityType=abilityType;
         PanelManager.Instance.ShowPanel(PanelID.AbilityPurchasePanel, PanelShowBehavior.SHOW_PREVISE);
 
+    }
+    private void StartFlowAction()
+    {
+        GameManager.instance.AbilityBarPanel.SetActive(false);
+         OneObjectPool.Instance.GetObjectWhitName(ObjectName.Flow);
+        GameManager.instance.CheckSlotEggColor();
+        
     }
     private void StartBreakEgg(Tag tag)
     {

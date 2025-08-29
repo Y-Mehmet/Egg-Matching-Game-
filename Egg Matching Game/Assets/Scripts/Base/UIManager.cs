@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
         UpdateTime(ResourceManager.Instance.time);
 
         GameManager.instance.timeChanged += UpdateTime;
-        GameManager.instance.trueEggCountChanged += UpdateTrueEggCount;
+       // GameManager.instance.trueEggCountChanged += UpdateTrueEggCount;
         
         settingsBtn.onClick.AddListener(() =>
         {
@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         GameManager.instance.timeChanged -= UpdateTime;
-        GameManager.instance.trueEggCountChanged -= UpdateTrueEggCount;
+       // GameManager.instance.trueEggCountChanged -= UpdateTrueEggCount;
        
         settingsBtn.onClick.RemoveAllListeners();
     }

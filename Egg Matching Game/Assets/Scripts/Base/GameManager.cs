@@ -235,7 +235,7 @@ public class GameManager : MonoBehaviour
     }  
     private void HandleSelection()
     {
-        if (!gameStarted || isShuffling)
+        if (!gameStarted || isShuffling || isGameFinish)
             return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
@@ -269,11 +269,13 @@ public class GameManager : MonoBehaviour
                     Debug.LogWarning("selected out slot and clicked in slot: ");
                     AddEggListByIndex(eggSlotDic.FirstOrDefault(k => k.Value == clickedEgg.gameObject).Key, selectedEgg);
                     DeselectObject();
+                    Check();
                 }
                 else if (eggSlotDic.ContainsValue(selectedEgg) && eggSlotDic.ContainsValue(clickedEgg.gameObject))
                 {
                     AddEggListByIndex(eggSlotDic.FirstOrDefault(k => k.Value == clickedEgg.gameObject).Key, selectedEgg);
                     DeselectObject();
+                    Check();
                 }
                 else if (eggSlotDic.ContainsValue(selectedEgg) && !eggSlotDic.ContainsValue(clickedEgg.gameObject))
                 {
@@ -298,6 +300,7 @@ public class GameManager : MonoBehaviour
                     AddEggListByIndex(clickedSlot.slotIndex, selectedEgg);
                     PopStack(selectedEgg); // Seçilen yumurtayı yığından çıkar
                     DeselectObject(); // İşlem bitti, seçimi temizle.
+                    Check();
                 }
             }
             else if(selectedEgg!= null)
@@ -316,6 +319,89 @@ public class GameManager : MonoBehaviour
         {
             DeselectObject();
         }
+    }
+    public void CheckSlotEggColor()
+    {
+        Debug.LogWarning("Slot color checker is called");
+        gameStarted = false;
+        StartCoroutine(AnimateWrongEggs());
+    }
+
+
+    public IEnumerator AnimateWrongEggs()
+    {
+        List<GameObject> wrongEggs = new List<GameObject>();
+        float totalDuration = 5f;
+        float slowPhase = totalDuration * 0.5f; // İlk yarı yavaş
+        float fastPhase = totalDuration * 0.5f; // İkinci yarı hızlı
+
+        // Yanlış yumurtaları bul
+        foreach (var egg in eggSlotDic.Values)
+        {
+            egg.transform.DOKill();
+
+            if (!GetLevelData().eggColors.Contains(egg.GetComponent<Egg>().eggColor))
+            {
+                wrongEggs.Add(egg);
+            }
+        }
+
+        if (wrongEggs.Count == 0)
+        {
+            yield return new WaitForSeconds(7f);
+            AbilityBarPanel.SetActive(true);
+            PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
+            gameStarted = true;
+
+        }
+           
+
+        // DOTween Sequence
+        Sequence seq = DOTween.Sequence();
+
+        // 1️⃣ 2 saniye bekle
+        seq.AppendInterval(2f);
+
+        // 2️⃣ Slow Phase (tüm yanlış yumurtalar aynı anda)
+        foreach (var egg in wrongEggs)
+        {
+            seq.Join(
+                egg.transform.DOShakePosition(
+                    duration: slowPhase,
+                    strength: 0.05f,
+                    vibrato: 8,
+                    randomness: 45f
+                )
+            );
+        }
+
+        // 3️⃣ Fast Phase (tüm yanlış yumurtalar aynı anda)
+        seq.AppendCallback(() =>
+        {
+            foreach (var egg in wrongEggs)
+            {
+                egg.transform.DOShakePosition(
+                    duration: fastPhase,
+                    strength: 0.06f,
+                    vibrato: 8,
+                    randomness: 45f
+                ).OnComplete(() => { AddEggListByIndex(-1, egg); });
+            }
+        });
+
+        // 4️⃣ Bittikten sonra diğer kodlar
+        seq.OnComplete(() =>
+        {
+            AbilityBarPanel.SetActive(true);
+            PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
+            gameStarted = true;
+        });
+
+        // Sequence çalıştır
+        seq.Play();
+
+        // Sequence bitene kadar bekle
+        yield return seq.WaitForCompletion();
     }
     public void AddEggListByIndex(int slotIndex, GameObject eggObj)
     {
@@ -481,6 +567,7 @@ public class GameManager : MonoBehaviour
     {
         ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
         PanelManager.Instance.ShowPanel(PanelID.TryAgainPanel, PanelShowBehavior.HIDE_PREVISE);
+        gameStarted = false;
 
     }
     public void ShowOutline(List<GameObject> list)
@@ -1230,27 +1317,10 @@ public class GameManager : MonoBehaviour
             return; // Metodu güvenli bir şekilde sonlandır
         }
         int sltCount = GetSlotCount();
-        int brokenEggCount = GetLevelData().GetBrokenEggCount();
+     
+        int ceckedEggCount = GetCheckedEggCount();
 
-        int startSlotCount = GetLevelData().eggColors.Count;
-        int currentEggCount = startSlotCount - brokenEggCount;
-        int currentSlotCount = startSlotCount - GetLevelData().GetBrokenSlotCount();
-        int valueableEggCount = 0;
 
-        int ceckedEggCount = currentEggCount > currentSlotCount ? currentSlotCount : currentEggCount;
-        
-       
-        foreach (Transform eggTransform in EggSpawner.instance.EggParent)
-        {
-            if (eggTransform.gameObject.activeInHierarchy)
-            {//eggSlotDic.ContainsValue(eggTransform.gameObject) &&
-                valueableEggCount++;
-            }
-        }
-        if (valueableEggCount < ceckedEggCount)
-        {
-            ceckedEggCount = valueableEggCount;
-        }
 
         if (eggSlotDic.Count < ceckedEggCount)
         {
@@ -1289,7 +1359,7 @@ public class GameManager : MonoBehaviour
             
             canCheck = true;
             int trueCount = GetTrueEggCount();
-
+            
             trueEggCountChanged.Invoke(trueCount);
             if (trueCount >= ceckedEggCount)
             {
@@ -1329,6 +1399,32 @@ public class GameManager : MonoBehaviour
             }
         }
 
+    }
+   
+    public int GetCheckedEggCount()
+    {
+        int brokenEggCount = GetLevelData().GetBrokenEggCount();
+
+        int startSlotCount = GetLevelData().eggColors.Count;
+        int currentEggCount = startSlotCount - brokenEggCount;
+        int currentSlotCount = startSlotCount - GetLevelData().GetBrokenSlotCount();
+        int valueableEggCount = 0;
+
+        int ceckedEggCount = currentEggCount > currentSlotCount ? currentSlotCount : currentEggCount;
+
+
+        foreach (Transform eggTransform in EggSpawner.instance.EggParent)
+        {
+            if (eggTransform.gameObject.activeInHierarchy)
+            {//eggSlotDic.ContainsValue(eggTransform.gameObject) &&
+                valueableEggCount++;
+            }
+        }
+        if (valueableEggCount < ceckedEggCount)
+        {
+            ceckedEggCount = valueableEggCount;
+        }
+        return ceckedEggCount;
     }
     private int GetTrueEggCount()
     {
