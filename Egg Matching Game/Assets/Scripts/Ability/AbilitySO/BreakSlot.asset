@@ -15,13 +15,13 @@ MonoBehaviour:
   Type: 1
   Name: Break Slot
   Icon: {fileID: 21300000, guid: 928e288a2690d4fd99390dce406f3608, type: 3}
-  RequiredLevel: 10
+  RequiredLevel: 9
   Title: Hammer!
   Description: Tap any slot to remove it!
   ParticlePerfabs: {fileID: 6173185505503982800, guid: a8adfef168a19664fb9682bad0b3ad7a, type: 3}
   AbilityWorkerPrefab: {fileID: 6124923020510234005, guid: bb8a750b11eb61446b59bb8cf73e5060, type: 3}
   ParticleStartTime: 0
-  cost: 150
+  cost: 200
   RequiresTarget: 1
   TargetTag: Slot
   action: {fileID: 11400000, guid: 3441fe92a86bdbf45b0d2dbe52848f57, type: 2}
