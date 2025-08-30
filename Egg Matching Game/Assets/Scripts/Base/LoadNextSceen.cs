@@ -40,8 +40,23 @@ public class LoadNextSceen : MonoBehaviour
     {
         if (NetworkManager.instance == null || !NetworkManager.instance.isNetworkOpen)
             return;
-        SoundManager.instance.PlaySfx(SoundType.btnClick);
-        SceeneManager.instance.LoadScene(1);
+        if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) <= 0)
+        {
+            if (PanelManager.Instance != null)
+            {
+                SoundManager.instance.PlaySfx(SoundType.EmptyCoin);
+                PanelManager.Instance.ShowPanel(PanelID.RefillEnergyPanel);
+            }
+            else
+            {
+                Debug.LogWarning("PanelManager instance is null. Cannot show RefillEnergyPanel.");
+            }
+        }else
+        {
+            SoundManager.instance.PlaySfx(SoundType.btnClick);
+            SceeneManager.instance.LoadScene(1);
+        }
+        
     }
     
 }

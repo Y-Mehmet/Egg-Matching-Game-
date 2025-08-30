@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
          AbilityBarPanel.transform.GetChild(4).TryGetComponent<CheckBtn>(out CheckBtn checkBtn);
        
 
-        Vector3 checkBtnPos= checkBtn.transform.position;
+        Vector3 checkBtnPos= FinalCountUI.instance.eggCountText.transform.position;
         TutorialManager.Instance.HandMovment(checkBtnPos+offset+new Vector3(-40,90,0), new Vector3(0, -10, 0));
         yield return new WaitUntil(() => tutorialIndex == 1);
         screenPoint = mainCamera.WorldToScreenPoint(EggSpawner.instance.EggParent.GetChild(0).position);
@@ -1001,6 +1001,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ShuffleRandomlyCoroutine()
     {
+        yield return new WaitForSeconds(3);
         if (isShuffling)
         {
             Debug.LogWarning("Karıştırma zaten devam ediyor.");
@@ -1361,6 +1362,7 @@ public class GameManager : MonoBehaviour
             int trueCount = GetTrueEggCount();
             
             trueEggCountChanged.Invoke(trueCount);
+           
             if (trueCount >= ceckedEggCount)
             {
                 SoundManager.instance.StopClip(SoundType.Tiktak);
@@ -1385,7 +1387,9 @@ public class GameManager : MonoBehaviour
                 EggSpawner.instance.DragonSetActive();
                 ChangeMaterial();
 
-                SoundManager.instance.PlaySfx(SoundType.Check);
+               
+                SoundManager.instance.PlaySfxSequentially(SoundType.UGOTIT, SoundType.Yess);
+                SoundManager.instance.PlaySfx(SoundType.Clapping);
 
 
 
@@ -1393,7 +1397,11 @@ public class GameManager : MonoBehaviour
 
 
             }
-            else if (gameData.isTutorial)
+            else if (gameData.isVibrationEnabled)
+            {
+                SoundManager.instance.PlaySfx((SoundType)(trueCount + 18));
+            }
+            if ((trueCount < ceckedEggCount) && gameData.isTutorial)
             {
                 tutorialIndex = 1;
             }

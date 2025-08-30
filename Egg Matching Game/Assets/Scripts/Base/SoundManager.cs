@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -68,7 +69,18 @@ public class SoundManager : MonoBehaviour
                 Debug.LogWarning("SoundManager: '" + sound.soundType + "' için zaten bir ses klibi mevcut!");
             }
         }
-       
+        foreach (var sound in soundDatabase.correctSounds)
+        {
+            if (!soundDictionary.ContainsKey(sound.soundType))
+            {
+                soundDictionary.Add(sound.soundType, sound.audioClip);
+            }
+            else
+            {
+                Debug.LogWarning("SoundManager: '" + sound.soundType + "' için zaten bir ses klibi mevcut!");
+            }
+        }
+
 
     }
 
@@ -150,7 +162,38 @@ public class SoundManager : MonoBehaviour
         ResourceManager.Instance.SaveResources();
         
     }
-    
+    // SoundManager.cs içinde
+    // ... Diðer metodlarýn altýnda
+    public void PlaySfxSequentially(SoundType firstSound, SoundType secondSound)
+    {
+        StartCoroutine(PlaySoundsInOrder(firstSound, secondSound));
+    }
+
+    private IEnumerator PlaySoundsInOrder(SoundType firstSound, SoundType secondSound)
+    {
+        // Birinci sesi çal
+        if (soundDictionary.TryGetValue(firstSound, out AudioClip firstClip))
+        {
+            sfxSource.PlayOneShot(firstClip);
+            // Birinci sesin bitmesini bekle
+            yield return new WaitForSeconds(firstClip.length);
+        }
+        else
+        {
+            Debug.LogWarning("SoundManager: '" + firstSound + "' isimli SFX bulunamadý!");
+        }
+
+        // Ýkinci sesi çal
+        if (soundDictionary.TryGetValue(secondSound, out AudioClip secondClip))
+        {
+            sfxSource.PlayOneShot(secondClip);
+        }
+        else
+        {
+            Debug.LogWarning("SoundManager: '" + secondSound + "' isimli SFX bulunamadý!");
+        }
+    }
+
 }
 public enum SoundType
 {
@@ -172,7 +215,20 @@ public enum SoundType
     BrokenEgg,
     LevelUp,
     Temp,
-    
+    Zero,
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+    Nine,
+    Ten,
+    UGOTIT,
+    Yess,
+    Clapping,
 
 
 }

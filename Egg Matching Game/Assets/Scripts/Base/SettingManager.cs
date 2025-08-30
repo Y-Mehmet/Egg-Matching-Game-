@@ -12,7 +12,8 @@ public class SettingManager : MonoBehaviour
     [SerializeField] private Button pushAlarmToggle;
     [SerializeField] private Slider soundFxSlider;
     [SerializeField] private Slider musicSlider;
-    [SerializeField] private Button vibrationToggle;
+    [SerializeField] private Button correctSoundToggle
+        ;
 
 
     public bool IsVibrationEnabled { get; private set; }
@@ -41,7 +42,7 @@ public class SettingManager : MonoBehaviour
         pushAlarmToggle.onClick.AddListener(OnPushAlarmToggleChanged);
         soundFxSlider.onValueChanged.AddListener(OnSoundFxSliderChanged);
         musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
-        vibrationToggle.onClick.AddListener(OnVibrationToggleChanged);
+        correctSoundToggle.onClick.AddListener(OnVibrationToggleChanged);
 
         // Oyunu açtýðýmýzda kayýtlý ayarlarý yeni sistemle yükle
         LoadSettings();
@@ -52,8 +53,8 @@ public class SettingManager : MonoBehaviour
         pushAlarmToggle.onClick.RemoveListener(OnPushAlarmToggleChanged);
         soundFxSlider.onValueChanged.RemoveListener(OnSoundFxSliderChanged);
         musicSlider.onValueChanged.RemoveListener(OnMusicSliderChanged);
-        vibrationToggle.onClick.RemoveListener(OnVibrationToggleChanged);
-        ResourceManager.Instance.SetSoundResoruce(IsPushAlarmEnabled,  SoundFxVolume, MusicVolume, IsVibrationEnabled); // Yeni sistemde ayarlarý kaydetme iþlemi
+        correctSoundToggle.onClick.RemoveListener(OnVibrationToggleChanged);
+       // Yeni sistemde ayarlarý kaydetme iþlemi
     }
 
  
@@ -76,7 +77,7 @@ public class SettingManager : MonoBehaviour
 
         // 3. Yüklenen bu deðerleri UI elemanlarýna yansýt
         MoveHandle(pushAlarmToggle.transform, IsPushAlarmEnabled);
-        MoveHandle(vibrationToggle.transform, IsVibrationEnabled);
+        MoveHandle(correctSoundToggle.transform, IsVibrationEnabled);
         soundFxSlider.value = SoundFxVolume;
         musicSlider.value = MusicVolume;
 
@@ -91,9 +92,9 @@ public class SettingManager : MonoBehaviour
         IsPushAlarmEnabled = !IsPushAlarmEnabled;
         MoveHandle(pushAlarmToggle.transform, IsPushAlarmEnabled);
 
-       
 
-       
+
+        ResourceManager.Instance.SetSoundResoruce(IsPushAlarmEnabled, SoundFxVolume, MusicVolume, IsVibrationEnabled);
     }
 
     public void OnSoundFxSliderChanged(float value)
@@ -102,7 +103,7 @@ public class SettingManager : MonoBehaviour
 
         SoundManager.instance.SetSfxVolume(value);
 
-      
+        ResourceManager.Instance.SetSoundResoruce(IsPushAlarmEnabled, SoundFxVolume, MusicVolume, IsVibrationEnabled);
     }
 
     public void OnMusicSliderChanged(float value)
@@ -112,20 +113,18 @@ public class SettingManager : MonoBehaviour
 
 
         SoundManager.instance.SetBgmVolume(value);
+        ResourceManager.Instance.SetSoundResoruce(IsPushAlarmEnabled, SoundFxVolume, MusicVolume, IsVibrationEnabled);
     }
 
     public void OnVibrationToggleChanged()
     {
         IsVibrationEnabled = !IsVibrationEnabled;
-        MoveHandle(vibrationToggle.transform, IsVibrationEnabled);
+        MoveHandle(correctSoundToggle.transform, IsVibrationEnabled);
 
        
 
         Debug.Log("Vibration ayarý deðiþtirildi: " + IsVibrationEnabled);
-        if (IsVibrationEnabled)
-        {
-            // Test titreþimi...
-        }
+        ResourceManager.Instance.SetSoundResoruce(IsPushAlarmEnabled, SoundFxVolume, MusicVolume, IsVibrationEnabled);
     }
 
     // MoveHandle metodu deðiþmeden ayný kalabilir.

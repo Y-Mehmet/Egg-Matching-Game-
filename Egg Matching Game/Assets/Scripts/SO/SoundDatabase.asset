@@ -85,3 +85,64 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 30529f399d5b5ae429f422c2bb83ad16, type: 3}
     volume: 0.2
     loop: 0
+  correctSounds:
+  - soundType: 18
+    audioClip: {fileID: 8300000, guid: c9824531b026bba43b06827790a8c15d, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 19
+    audioClip: {fileID: 8300000, guid: 386509125d32a67449d4a2cc30270aea, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 20
+    audioClip: {fileID: 8300000, guid: ad547199964d67045bafe19c9bdd5155, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 21
+    audioClip: {fileID: 8300000, guid: e399dbf8c50508a459d7b69bc438f0d7, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 22
+    audioClip: {fileID: 8300000, guid: 3e8e13608a74c3d46bb66389c18878f0, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 23
+    audioClip: {fileID: 8300000, guid: 64b4f5a076046c946829dda4f48fb56a, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 24
+    audioClip: {fileID: 8300000, guid: 519f7fb576470314992633af3f48c0c8, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 25
+    audioClip: {fileID: 8300000, guid: 383cd3746caae4f488368a79aaa3b428, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 18
+    audioClip: {fileID: 0}
+    volume: 0
+    loop: 0
+  - soundType: 26
+    audioClip: {fileID: 8300000, guid: d9a5856e0ea3a1c49a5f05105c0ad8e2, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 27
+    audioClip: {fileID: 8300000, guid: a46cc6e250c239644a8814c163f49303, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 28
+    audioClip: {fileID: 8300000, guid: abef2e6e2691ed64593be6cc9310bb9b, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 29
+    audioClip: {fileID: 8300000, guid: 2e0a0803b8edd654a97be414673427c0, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 30
+    audioClip: {fileID: 8300000, guid: 40685459f02800e4fb6312b969dd352d, type: 3}
+    volume: 0
+    loop: 0
+  - soundType: 31
+    audioClip: {fileID: 8300000, guid: 85ed4fc61a8ca024a999113a5d3ebdb4, type: 3}
+    volume: 0
+    loop: 0

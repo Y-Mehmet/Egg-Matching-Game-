@@ -34,7 +34,7 @@ public class TryAgainPanel : MonoBehaviour
     {
         if(ResourceManager.Instance.SpendResource(ResourceType.Coin,coinCost))
         {
-           
+            GameManager.instance.gameStarted = true;
             GameManager.instance.addSec?.Invoke(20);
             PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.TryAgainPanel);
         }

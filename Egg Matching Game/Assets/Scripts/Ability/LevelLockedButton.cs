@@ -76,7 +76,7 @@ public class LevelLockedButton : MonoBehaviour
         // If a levelText component is assigned, update it with the required level.
         if (levelText != null)
         {
-            levelText.text = "Level " + abilityData.RequiredLevel+1;
+            levelText.text = "Level " + (abilityData.RequiredLevel+1);
         }
         if (chilImage != null)
         {

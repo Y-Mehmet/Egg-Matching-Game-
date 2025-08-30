@@ -811,7 +811,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -88.46054, y: 1.250061}
+  m_AnchoredPosition: {x: 30, y: 1.250061}
   m_SizeDelta: {x: 177.46967, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5714144370383914283
@@ -3085,7 +3085,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Vibration
+  m_text: Correct Sound
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
   m_sharedMaterial: {fileID: 7374927986402738804, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
@@ -5667,7 +5667,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -97, y: 1.250061}
+  m_AnchoredPosition: {x: 30, y: 1.250061}
   m_SizeDelta: {x: 177.46967, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &146756403054492173
@@ -5800,7 +5800,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 44.80945, y: -1.2499237}
-  m_SizeDelta: {x: 70, y: 64}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8700619665895887618
 CanvasRenderer:
@@ -5830,7 +5830,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f6de2a7823f2e4282b6a118ee77c977e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9a2b5ab0d742444eea4b7b1f1ad30e5c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5893,7 +5893,7 @@ MonoBehaviour:
   pushAlarmToggle: {fileID: 5580141302305406082}
   soundFxSlider: {fileID: 270426541436698359}
   musicSlider: {fileID: 7988371158106430101}
-  vibrationToggle: {fileID: 6277481351760277138}
+  correctSoundToggle: {fileID: 6277481351760277138}
 --- !u!1 &6904278933842560717
 GameObject:
   m_ObjectHideFlags: 0

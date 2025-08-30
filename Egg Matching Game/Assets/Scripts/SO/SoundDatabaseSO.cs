@@ -7,7 +7,7 @@ public class Sound
     public SoundType soundType;
     public AudioClip audioClip;
     [Range(0f, 1f)]
-    public float volume = .3f; // Sesin varsayýlan ses seviyesi
+    public float volume = .25f; // Sesin varsayýlan ses seviyesi
     public bool loop = false; // Sesin döngüde çalýnýp çalýnmayacaðý
 
 }
@@ -17,4 +17,5 @@ public class Sound
 public class SoundDatabaseSO : ScriptableObject
 {
     public Sound[] sounds;
+    public Sound[] correctSounds;
 }
