@@ -121,14 +121,18 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         gameStart += GameStart;
-        gameStart += StartTutorial; // Oyun başladığında tutorial'ı başlat
+        gameStart += StartTutorial;
         gameOver += GameOver;
-        
+        onSlotIndexChange += (index, eggObj) => EmtySlotChecker(); // Lambda ile parametresiz çağır; // BU KALIYOR
+        onSlotedEggCountChange += EmtySlotChecker; // YENİ: Boş slot sayısını takip etmek için ekledik.
+                                                   // Her yumurta eklendiğinde/çıkarıldığında bu da tetiklenir.
 
+        // ESKİ: trueEggCountChanged += ((int i) => { EmtySlotChecker(); }); // Bu satırı kaldırın veya yoruma alın.
+        // trueEggCountChanged artık Check() içinde çağrılıyor
+        // ve EmtySlotChecker'ı doğrudan çağırıyoruz.
 
         Time.timeScale = 1;
-        // Menü aktif olduğunda banner reklamı göster
-        if (AdsManager.Instance != null )
+        if (AdsManager.Instance != null)
         {
             //AdsManager.Instance.ShowBannerAd();
         }
@@ -137,8 +141,12 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         gameStart -= GameStart;
-        gameStart -= StartTutorial; // Oyun başladığında tutorial'ı başlatmayı durdur
+        gameStart -= StartTutorial;
         gameOver -= GameOver;
+        onSlotIndexChange += (index, eggObj) => EmtySlotChecker(); // Lambda ile parametresiz çağır
+        onSlotedEggCountChange -= EmtySlotChecker; // YENİ: Eşleşmesini kaldır.
+
+        // ESKİ: trueEggCountChanged -= ((int i ) => { EmtySlotChecker(); }); // Bu satırı kaldırın veya yoruma alın.
 
         if (AdsManager.Instance != null)
         {
@@ -432,6 +440,7 @@ public class GameManager : MonoBehaviour
             //else
             //    PushStack(eggObj);
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
+            onSlotedEggCountChange?.Invoke();
         }
         else if (eggSlotDic.ContainsKey(slotIndex) && eggObj != eggSlotDic[slotIndex])
         {
@@ -442,17 +451,20 @@ public class GameManager : MonoBehaviour
 
                 eggSlotDic[tempIndex] = tempEgg;
                 onSlotIndexChange?.Invoke(tempIndex, tempEgg);
+                onSlotedEggCountChange?.Invoke();
             }
             else
             {
                 Debug.LogWarning("go to start pos ");
                 //eggSlotDic[tempIndex] = tempEgg;
                 onSlotIndexChange?.Invoke(-1, tempEgg);
+                onSlotedEggCountChange?.Invoke();
             }
             if(slotIndex!=-1)
             eggSlotDic[slotIndex] = eggObj;
            
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
+            onSlotedEggCountChange?.Invoke();
             Debug.LogWarning("go to slot pos ");
             //if(tempIndex==-1)
             //{
@@ -606,7 +618,20 @@ public class GameManager : MonoBehaviour
            
         }
     }
-    
+    public void HideAllOutline( List<GameObject> list)
+    {
+        foreach (var item in list)
+        {
+
+            GameObject child = item.transform.GetChild(0).transform.GetChild(0).gameObject;
+            if (child != null)
+            {
+                child.SetActive(false);
+
+            }
+        }
+    }
+
     private int GetSlotCount() { return slotList.Count; }
     
     public void Save()
@@ -1305,6 +1330,47 @@ public class GameManager : MonoBehaviour
         }
         
     }
+
+    private void EmtySlotChecker() // Parametreleri kaldırdık, çünkü artık onSlotedEggCountChange tarafından çağrılacak.
+    {
+        // Debug.LogWarning("EmtySlotChecker called."); // Debug amaçlı
+
+        int sltCount = GetSlotCount();
+        int ceckedEggCount = GetCheckedEggCount();
+
+        List<GameObject> emptySlotTransforms = new List<GameObject>(); // Sadece boş slotların objelerini tutacak
+
+        // Tüm slotları dolaş
+        for (int i = 0; i < sltCount; i++)
+        {
+            // Eğer bu slot boşsa (yani eggSlotDic'te bu index yoksa)
+            if (!eggSlotDic.ContainsKey(i))
+            {
+                emptySlotTransforms.Add(slotList[i]);
+                // İsterseniz burada boş slotlara başlangıç rengi verebilirsiniz.
+                // slotList[i].GetComponentInChildren<Renderer>().material.color = Color.red; 
+            }
+            else
+            {
+                // Dolu slotların rengini orijinal haline döndür
+                slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
+            }
+        }
+
+        // Boş slotlar varsa onları işaretle, yoksa tüm işaretleri kaldır
+        if (emptySlotTransforms.Count > 0)
+        {
+            HideAllOutline(slotList); // Önce tüm işaretleri kaldır
+            ShowOutline(emptySlotTransforms); // Sadece boş olanları işaretle
+        }
+        else
+        {
+            HideAllOutline(slotList); // Hiç boş slot yoksa tüm işaretleri kaldır
+        }
+
+        // ESKİ: canCheck = false; // Bu bayrağı buradan kaldırdık, artık burada yönetilmeyecek.
+        // ESKİ: trueEggCountChanged.Invoke(0); // BU SATIRI KESİNLİKLE KALDIRIN! Sonsuz döngü nedeniydi.
+    }
     public void Check()
     {
 
@@ -1323,41 +1389,10 @@ public class GameManager : MonoBehaviour
 
 
 
-        if (eggSlotDic.Count < ceckedEggCount)
-        {
-            canCheck = false;
-            Debug.Log("Egg Slot Count : " + eggSlotDic.Count + "  Cecked Egg Count : " + ceckedEggCount + " slot count " + sltCount);
-            for (int i = 0; i < sltCount; i++)
-            {
-                if (!eggSlotDic.ContainsKey(i))
-                {
-                    Color red = Color.red;
-                    red.a = 0.4f;
-                    slotList[i].GetComponentInChildren<Renderer>().material.color = red;
-                    slotList[i].transform.DOKill();
-                    int fixedIndex = i;
-                    slotList[fixedIndex].transform.DOShakePosition(
-                        duration: 2f,
-                        strength: 0.05f,
-                        vibrato: 10,
-                        randomness: 45f
-                    ).OnComplete(() =>
-                    {
-                        canCheck = true;
-                        slotList[fixedIndex].GetComponentInChildren<Renderer>().material.color = originalColor;
-                    });
-                }
-                else
-                {
-                    slotList[i].GetComponentInChildren<Renderer>().material.color = originalColor;
-                }
-            }
 
-            trueEggCountChanged.Invoke(0);
-        }
-        else
+        if (eggSlotDic.Count >= ceckedEggCount)
         {
-            
+            HideAllOutline(slotList);
             canCheck = true;
             int trueCount = GetTrueEggCount();
             
