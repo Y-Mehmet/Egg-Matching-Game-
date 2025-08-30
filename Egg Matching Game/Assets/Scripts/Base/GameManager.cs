@@ -123,13 +123,7 @@ public class GameManager : MonoBehaviour
         gameStart += GameStart;
         gameStart += StartTutorial;
         gameOver += GameOver;
-        onSlotIndexChange += (index, eggObj) => EmtySlotChecker(); // Lambda ile parametresiz çağır; // BU KALIYOR
-        onSlotedEggCountChange += EmtySlotChecker; // YENİ: Boş slot sayısını takip etmek için ekledik.
-                                                   // Her yumurta eklendiğinde/çıkarıldığında bu da tetiklenir.
-
-        // ESKİ: trueEggCountChanged += ((int i) => { EmtySlotChecker(); }); // Bu satırı kaldırın veya yoruma alın.
-        // trueEggCountChanged artık Check() içinde çağrılıyor
-        // ve EmtySlotChecker'ı doğrudan çağırıyoruz.
+        onSlotIndexChange += (int slotIndex, GameObject egg) => EmtySlotChecker();
 
         Time.timeScale = 1;
         if (AdsManager.Instance != null)
@@ -143,10 +137,8 @@ public class GameManager : MonoBehaviour
         gameStart -= GameStart;
         gameStart -= StartTutorial;
         gameOver -= GameOver;
-        onSlotIndexChange += (index, eggObj) => EmtySlotChecker(); // Lambda ile parametresiz çağır
-        onSlotedEggCountChange -= EmtySlotChecker; // YENİ: Eşleşmesini kaldır.
+        onSlotIndexChange -= (int slotIndex, GameObject egg) => EmtySlotChecker();
 
-        // ESKİ: trueEggCountChanged -= ((int i ) => { EmtySlotChecker(); }); // Bu satırı kaldırın veya yoruma alın.
 
         if (AdsManager.Instance != null)
         {
@@ -259,8 +251,8 @@ public class GameManager : MonoBehaviour
             // Tıklanan obje bir yumurta mı?
             if (hit.collider.TryGetComponent<Egg>(out Egg clickedEgg))
             {
-               
-              
+
+             
                 if (selectedEgg == null)
                 {
                     SelectObject(clickedEgg.gameObject); // İlk kez seçiliyorsa, seç ve vurgula.
@@ -440,7 +432,7 @@ public class GameManager : MonoBehaviour
             //else
             //    PushStack(eggObj);
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
-            onSlotedEggCountChange?.Invoke();
+           
         }
         else if (eggSlotDic.ContainsKey(slotIndex) && eggObj != eggSlotDic[slotIndex])
         {
@@ -451,14 +443,14 @@ public class GameManager : MonoBehaviour
 
                 eggSlotDic[tempIndex] = tempEgg;
                 onSlotIndexChange?.Invoke(tempIndex, tempEgg);
-                onSlotedEggCountChange?.Invoke();
+                
             }
             else
             {
                 Debug.LogWarning("go to start pos ");
                 //eggSlotDic[tempIndex] = tempEgg;
                 onSlotIndexChange?.Invoke(-1, tempEgg);
-                onSlotedEggCountChange?.Invoke();
+                
             }
             if(slotIndex!=-1)
             eggSlotDic[slotIndex] = eggObj;
@@ -1333,10 +1325,15 @@ public class GameManager : MonoBehaviour
 
     private void EmtySlotChecker() // Parametreleri kaldırdık, çünkü artık onSlotedEggCountChange tarafından çağrılacak.
     {
-        // Debug.LogWarning("EmtySlotChecker called."); // Debug amaçlı
+        
 
         int sltCount = GetSlotCount();
         int ceckedEggCount = GetCheckedEggCount();
+        if(eggSlotDic.Count>=ceckedEggCount)
+        {
+            HideAllOutline(slotList);
+            return;
+        }
 
         List<GameObject> emptySlotTransforms = new List<GameObject>(); // Sadece boş slotların objelerini tutacak
 
@@ -1347,8 +1344,7 @@ public class GameManager : MonoBehaviour
             if (!eggSlotDic.ContainsKey(i))
             {
                 emptySlotTransforms.Add(slotList[i]);
-                // İsterseniz burada boş slotlara başlangıç rengi verebilirsiniz.
-                // slotList[i].GetComponentInChildren<Renderer>().material.color = Color.red; 
+           
             }
             else
             {
@@ -1368,8 +1364,7 @@ public class GameManager : MonoBehaviour
             HideAllOutline(slotList); // Hiç boş slot yoksa tüm işaretleri kaldır
         }
 
-        // ESKİ: canCheck = false; // Bu bayrağı buradan kaldırdık, artık burada yönetilmeyecek.
-        // ESKİ: trueEggCountChanged.Invoke(0); // BU SATIRI KESİNLİKLE KALDIRIN! Sonsuz döngü nedeniydi.
+    
     }
     public void Check()
     {
@@ -1392,7 +1387,7 @@ public class GameManager : MonoBehaviour
 
         if (eggSlotDic.Count >= ceckedEggCount)
         {
-            HideAllOutline(slotList);
+          
             canCheck = true;
             int trueCount = GetTrueEggCount();
             
