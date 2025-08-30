@@ -40,9 +40,18 @@ public class DragonSlot : MonoBehaviour
     private void UpdateSelectedIcon()
     {
      if (ResourceManager.Instance.SelectedDragonIndex == slotIndex)
+        {
             selectedIcon.gameObject.SetActive(true);
+            wiewBtn.enabled = false;
+            wiewBtn.GetComponentInChildren<TMP_Text>().text = "Selected";
+        }
+            
         else
+        {
             selectedIcon.gameObject.SetActive(false);
+            wiewBtn.enabled = true;
+            wiewBtn.GetComponentInChildren<TMP_Text>().text = "Select";
+        }
     }
 
 }
