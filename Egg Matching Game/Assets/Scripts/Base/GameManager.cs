@@ -1458,7 +1458,7 @@ public class GameManager : MonoBehaviour
                     {
                        
                         EggSpawner.instance.dragon.transform.SetParent(parentObj.transform);
-                        EggSpawner.instance.dragon.transform.position = startpos;
+                        EggSpawner.instance.dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
                     });
 
                 }
