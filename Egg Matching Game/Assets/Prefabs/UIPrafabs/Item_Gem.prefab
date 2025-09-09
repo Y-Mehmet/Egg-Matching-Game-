@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 703973065340619378}
   - component: {fileID: 3966118262875551000}
   - component: {fileID: 4883851750117921774}
+  - component: {fileID: 8335016793973261919}
   m_Layer: 5
   m_Name: Item_Gem
   m_TagString: Untagged
@@ -168,6 +169,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundType: 7
+--- !u!114 &8335016793973261919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5134184935638611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d46148072bebfa24ca13c3a13832bc4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priceText: {fileID: 890578151152211337}
+  IAP: {fileID: 703973065340619378}
 --- !u!1 &1510039068089549354
 GameObject:
   m_ObjectHideFlags: 0
@@ -5525,10 +5540,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: US $1.99
+  m_text: "US ( \u20BA 1.99 "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5c5ee151f9307453bad78be36b51a077, type: 2}
-  m_sharedMaterial: {fileID: 2517202264660172603, guid: 5c5ee151f9307453bad78be36b51a077, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 122066a1363dbcf4eaf6fffaabc1258c, type: 2}
+  m_sharedMaterial: {fileID: 6733694172291026895, guid: 122066a1363dbcf4eaf6fffaabc1258c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

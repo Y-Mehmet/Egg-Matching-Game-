@@ -274,8 +274,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 323.435, y: -85}
-  m_SizeDelta: {x: 446.87, y: 100}
+  m_AnchoredPosition: {x: 321.91498, y: -85}
+  m_SizeDelta: {x: 443.83, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3825165714091199792
 CanvasRenderer:
@@ -32077,8 +32077,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 856.685, y: -85}
-  m_SizeDelta: {x: 419.63, y: 100}
+  m_AnchoredPosition: {x: 852.77496, y: -85}
+  m_SizeDelta: {x: 417.89, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6761533647428456962
 CanvasRenderer:
@@ -32448,6 +32448,7 @@ GameObject:
   - component: {fileID: 6385292440159828945}
   - component: {fileID: 6256913820514138638}
   - component: {fileID: 3004500341390992670}
+  - component: {fileID: 8378970297995427210}
   m_Layer: 5
   m_Name: Item_Gem_best
   m_TagString: Untagged
@@ -32608,6 +32609,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8378970297995427210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245724862265948259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d46148072bebfa24ca13c3a13832bc4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priceText: {fileID: 8202264588550999204}
+  IAP: {fileID: 6256913820514138638}
 --- !u!1 &8526291680750325493
 GameObject:
   m_ObjectHideFlags: 0
@@ -32864,45 +32879,49 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3993150840741761576, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: soundType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -33022,45 +33041,49 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3993150840741761576, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: soundType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -33180,45 +33203,49 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3993150840741761576, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: soundType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -33282,6 +33309,10 @@ PrefabInstance:
       propertyPath: button
       value: 
       objectReference: {fileID: 8401791734433993235}
+    - target: {fileID: 890578151152211337, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: m_text
+      value: 'Price: $1.99'
+      objectReference: {fileID: 0}
     - target: {fileID: 1468590550019588028, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -33370,6 +33401,14 @@ PrefabInstance:
       propertyPath: m_text
       value: 80
       objectReference: {fileID: 0}
+    - target: {fileID: 4883851750117921774, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: soundType
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8335016793973261919, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: productId
+      value: gem80
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33408,8 +33447,16 @@ PrefabInstance:
       value: gem1k
       objectReference: {fileID: 0}
     - target: {fileID: 890578151152211337, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
-      propertyPath: m_text
-      value: US $19.99
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 5c5ee151f9307453bad78be36b51a077, type: 2}
+    - target: {fileID: 890578151152211337, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2517202264660172603, guid: 5c5ee151f9307453bad78be36b51a077, type: 2}
+    - target: {fileID: 890578151152211337, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1468590550019588028, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
       propertyPath: m_Pivot.x
@@ -33498,6 +33545,14 @@ PrefabInstance:
     - target: {fileID: 3960119452233789562, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
       propertyPath: m_text
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4883851750117921774, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: soundType
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8335016793973261919, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: productId
+      value: gem1k
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33617,6 +33672,14 @@ PrefabInstance:
       propertyPath: m_text
       value: 240
       objectReference: {fileID: 0}
+    - target: {fileID: 4883851750117921774, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: soundType
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8335016793973261919, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: productId
+      value: gem240
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33727,45 +33790,49 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3993150840741761576, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: soundType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -33885,45 +33952,49 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3993150840741761576, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
+      propertyPath: soundType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 111.06
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 145.73
       objectReference: {fileID: 0}
     - target: {fileID: 4011734517397196010, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4862448689230797601, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -43.711357
       objectReference: {fileID: 0}
     - target: {fileID: 6635698505315221655, guid: 73007777db878f04c955cfbe6edb2035, type: 3}
       propertyPath: gemAmount
@@ -34050,6 +34121,14 @@ PrefabInstance:
     - target: {fileID: 3960119452233789562, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
       propertyPath: m_text
       value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4883851750117921774, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: soundType
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8335016793973261919, guid: b671792b5c61b4e4d80834e7386d87d2, type: 3}
+      propertyPath: productId
+      value: gem500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

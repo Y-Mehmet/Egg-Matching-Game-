@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         if (AdsManager.Instance != null)
         {
-            //AdsManager.Instance.ShowBannerAd();
+            AdsManager.Instance.ShowBannerAd();
         }
 
     }
@@ -1415,6 +1415,25 @@ public class GameManager : MonoBehaviour
                 AbilityBarPanel.SetActive(false);
 
                 EggSpawner.instance.DragonSetActive();
+
+                if (EggSpawner.instance.dragon != null)
+                {
+                    GameObject parentObj;
+                    parentObj= EggSpawner.instance.dragon.transform.parent.gameObject;
+                    Vector3 startpos = EggSpawner.instance.dragon.transform.position;
+                    EggSpawner.instance.dragon.transform.SetParent(null);
+                    EggSpawner.instance.dragon.SetActive(true);
+                    EggSpawner.instance.dragon.transform.DOMoveZ(-1f, 2f).SetEase(Ease.InOutSine).OnComplete(() =>
+                    {
+                       
+                        EggSpawner.instance.dragon.transform.SetParent(parentObj.transform);
+                        EggSpawner.instance.dragon.transform.position = startpos;
+                    });
+
+                }
+                else
+                    Debug.LogWarning("dragon egg is null");
+
                 ChangeMaterial();
 
                
@@ -1520,7 +1539,7 @@ public class GameManager : MonoBehaviour
 
                 // 3. ADIM: Şimdi yeni materyali yavaşça görünür yap (Fade in)
                 // Tekrar .material diyoruz ki doğru kopyayı fade edelim
-                mySequence.Append(objectRenderer.material.DOFade(1f, fadeDuration));
+                mySequence.Append(objectRenderer.material.DOFade(1f, 2*fadeDuration));
             }
         }
         ShuffleRandomly();
