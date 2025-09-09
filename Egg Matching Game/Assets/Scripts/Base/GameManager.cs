@@ -1398,19 +1398,50 @@ public class GameManager : MonoBehaviour
                 SoundManager.instance.StopClip(SoundType.Tiktak);
                 isGameFinish = true;
                 stopTime?.Invoke();
+                //if (eggSlotDic.Count > 0)
+                //{
+                //    foreach (var item in eggSlotDic)
+                //    {
+                //        if (item.Value != null)
+                //        {
+
+                //            EggSpawner.instance.dragon.transform.SetParent(item.Value.transform);
+                //            EggSpawner.instance.dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
+                //            break;
+                //        }
+                //    }
+                //}
+
                 if (eggSlotDic.Count > 0)
                 {
-                    foreach (var item in eggSlotDic)
-                    {
-                        if (item.Value != null)
-                        {
+                    // Null olmayan slotları filtrele
+                    var validSlots = eggSlotDic
+     .Where(kvp => kvp.Key != -1 && kvp.Value != null)
+     .Select(kvp => kvp.Value)
+     .ToList();
 
-                            EggSpawner.instance.dragon.transform.SetParent(item.Value.transform);
-                            EggSpawner.instance.dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
-                            break;
-                        }
+
+
+                    if (validSlots.Count > 0)
+                    {
+                        // Rastgele bir slot seç
+                        int randomIndex = UnityEngine.Random.Range(0, validSlots.Count);
+                        Transform chosenSlot = validSlots[randomIndex].transform;
+
+                        // Dragon'u bu slot'a yerleştir
+                        EggSpawner.instance.dragon.transform.SetParent(chosenSlot);
+                        EggSpawner.instance.dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No valid egg slots found.");
                     }
                 }
+                else
+                {
+                    Debug.LogWarning("eggSlotDic is empty.");
+                }
+
                 // gameReStart?.Invoke();
                 AbilityBarPanel.SetActive(false);
 
