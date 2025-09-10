@@ -807,6 +807,7 @@ public class GameManager : MonoBehaviour
                         break;
                 }
             }
+            
         }
         int sltCount = GetSlotCount();
         int brokenEggCount = currentLevel.GetBrokenEggCount();
@@ -821,6 +822,7 @@ public class GameManager : MonoBehaviour
 
             // isAssigningEggs bayrağı false olana kadar bu satırda BEKLE
             yield return new WaitWhile(() => isAssigningEggs);
+           
             Debug.LogWarning(" assing egg end");
         }
         Debug.LogWarning(" Shuffle Coroutine started.");
@@ -940,6 +942,7 @@ public class GameManager : MonoBehaviour
             PanelManager.Instance.HidePanelWithPanelID(panelID: PanelID.AbilityPurchasePanel);
             continueTime?.Invoke();
             isShuffling = false; // Bayrağı indir, böylece tekrar karıştırılabilir
+            Check();
             
         });
 
@@ -1003,7 +1006,7 @@ public class GameManager : MonoBehaviour
                     // Eğer doldurulacak başka slot kalmadıysa, döngüyü tamamen bitir.
                     if (emtyOrWrongColorSlotTransformList.Count == 0)
                     {
-                        
+                        Check();
                         yield break; // Coroutine'i sonlandır.
                     }
                 }
@@ -1488,31 +1491,80 @@ public class GameManager : MonoBehaviour
         }
 
     }
-   
+
+    // ESKİ METODU BU YENİ VE DOĞRU BLOKLA DEĞİŞTİRİN
+
+    /// <summary>
+    /// Sahnedeki aktif slotların gerektirdiği renkler ile mevcut aktif yumurtaların renklerini,
+    /// her bir rengin sayısını (frekansını) dikkate alarak karşılaştırır.
+    /// Örneğin, 2 sarı slot için en az 2 sarı yumurta varsa eşleşme sayısını doğru hesaplar.
+    /// </summary>
+    /// <returns>Doğru eşleştirilebilecek maksimum yumurta sayısı.</returns>
     public int GetCheckedEggCount()
     {
-        int brokenEggCount = GetLevelData().GetBrokenEggCount();
-
-        int startSlotCount = GetLevelData().eggColors.Count;
-        int currentEggCount = startSlotCount - brokenEggCount;
-        int currentSlotCount = startSlotCount - GetLevelData().GetBrokenSlotCount();
-        int valueableEggCount = 0;
-
-        int ceckedEggCount = currentEggCount > currentSlotCount ? currentSlotCount : currentEggCount;
-
-
-        foreach (Transform eggTransform in EggSpawner.instance.EggParent)
+        LevelData currentLevel = GetLevelData();
+        if (currentLevel == null)
         {
-            if (eggTransform.gameObject.activeInHierarchy)
-            {//eggSlotDic.ContainsValue(eggTransform.gameObject) &&
-                valueableEggCount++;
+            Debug.LogError("GetCheckedEggCount: LevelData bulunamadı!");
+            return 0;
+        }
+
+        // Adım 1: Aktif olan slotların hangi renkte yumurtalara ihtiyaç duyduğunu bir listeye topla.
+        // Bu listede renkler tekrar edebilir (örn: [Sarı, Sarı, Mavi]).
+        List<EggColor> requiredColors = new List<EggColor>();
+        foreach (GameObject slotGo in slotList)
+        {
+            if (slotGo != null && slotGo.activeInHierarchy)
+            {
+                Slot slotComponent = slotGo.GetComponent<Slot>();
+                if (slotComponent != null && slotComponent.slotIndex < currentLevel.eggColors.Count)
+                {
+                    requiredColors.Add(currentLevel.eggColors[slotComponent.slotIndex]);
+                }
             }
         }
-        if (valueableEggCount < ceckedEggCount)
+
+        // Adım 2: Sahnedeki tüm aktif yumurtaların renklerini ve sayısını bir sözlüğe (Dictionary) kaydet.
+        // Bu yapı, her renkten kaç tane olduğunu verimli bir şekilde tutar (örn: {Sarı: 2, Mavi: 1}).
+        Dictionary<EggColor, int> availableColorCounts = new Dictionary<EggColor, int>();
+        if (EggSpawner.instance != null && EggSpawner.instance.EggParent != null)
         {
-            ceckedEggCount = valueableEggCount;
+            foreach (Transform eggTransform in EggSpawner.instance.EggParent)
+            {
+                if (eggTransform != null && eggTransform.gameObject.activeInHierarchy)
+                {
+                    Egg eggComponent = eggTransform.GetComponent<Egg>();
+                    if (eggComponent != null)
+                    {
+                        EggColor color = eggComponent.eggColor;
+                        if (availableColorCounts.ContainsKey(color))
+                        {
+                            availableColorCounts[color]++; // Eğer renk zaten varsa, sayısını bir artır.
+                        }
+                        else
+                        {
+                            availableColorCounts.Add(color, 1); // Eğer yeni bir renkse, sözlüğe ekle.
+                        }
+                    }
+                }
+            }
         }
-        return ceckedEggCount;
+
+        // Adım 3: Gereken renkler listesini, mevcut yumurta sayılarıyla karşılaştırarak eşleşme sayısını bul.
+        int matchCount = 0;
+        foreach (EggColor requiredColor in requiredColors)
+        {
+            // Eğer gereken renk, mevcut yumurtalar arasında varsa VE o renkten hala kullanabileceğimiz sayıda varsa...
+            if (availableColorCounts.ContainsKey(requiredColor) && availableColorCounts[requiredColor] > 0)
+            {
+                matchCount++; // Eşleşme sayısını bir artır.
+                              // Bu rengi "kullandığımız" için sözlükteki sayısını bir azalt.
+                              // Böylece 2 sarı gerekip 1 sarı varken sadece bir eşleşme sayılır.
+                availableColorCounts[requiredColor]--;
+            }
+        }
+
+        return matchCount;
     }
     private int GetTrueEggCount()
     {
