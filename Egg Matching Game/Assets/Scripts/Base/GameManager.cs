@@ -1023,7 +1023,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ShuffleRandomlyCoroutine()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         if (isShuffling)
         {
             Debug.LogWarning("Karıştırma zaten devam ediyor.");
@@ -1048,7 +1048,7 @@ public class GameManager : MonoBehaviour
         Sequence mainShuffleSequence = DOTween.Sequence();
         float initialStepDuration = swapDuration / 4.0f;
         float minDuration = swapDuration / 12.0f;
-        float decreaseDuration = .05f;
+        float decreaseDuration = .1f;
 
         // ANA DEĞİŞİKLİK: Karıştırma işlemini daha kaotik hale getirmek için birkaç tur (pass) yapıyoruz.
         for (int pass = 0; pass < shufflePasses; pass++)
@@ -1499,18 +1499,30 @@ public class GameManager : MonoBehaviour
 
                 if (EggSpawner.instance.dragon != null)
                 {
-                    GameObject parentObj;
-                    parentObj= EggSpawner.instance.dragon.transform.parent.gameObject;
-                    Vector3 startpos = EggSpawner.instance.dragon.transform.position;
-                    EggSpawner.instance.dragon.transform.SetParent(null);
-                    EggSpawner.instance.dragon.SetActive(true);
-                    EggSpawner.instance.dragon.transform.DOMoveZ(-1f, 2f).SetEase(Ease.InOutSine).OnComplete(() =>
-                    {
-                       
-                        EggSpawner.instance.dragon.transform.SetParent(parentObj.transform);
-                        EggSpawner.instance.dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
-                    });
+                    // Önceki kodunuzun tamamını bu blokla değiştirebilirsiniz
 
+                    GameObject dragon = EggSpawner.instance.dragon;
+                    Transform parentTransform = dragon.transform.parent; // Mevcut parent'ı al
+
+                    // 1. Hedefin dünya uzayındaki pozisyonunu belirle.
+                    // Ejderhanın mevcut X ve Y dünya pozisyonunu koruyup, Z'sini -1f yap.
+                    Vector3 targetWorldPosition = new Vector3(dragon.transform.position.x, dragon.transform.position.y, -1f);
+
+                    // 2. Bu dünya pozisyonunu, parent'ın yerel koordinat sistemine çevir.
+                    // "Bu dünya noktası, parent'ımın hangi lokal pozisyonuna denk geliyor?" diye sorarız.
+                    Vector3 targetLocalPosition = parentTransform.InverseTransformPoint(targetWorldPosition);
+
+                    // Ejderhayı aktif et
+                    dragon.SetActive(true);
+
+                    // 3. DOLocalMove ile parent'ına göre hareket ettir.
+                    dragon.transform.DOLocalMove(targetLocalPosition, 1.5f).SetEase(Ease.InOutSine).OnComplete(() =>
+                    {
+                        // Animasyon bittiğinde ejderhanın pozisyonunu yeniden ayarlamaya gerek kalmaz,
+                        // çünkü zaten doğru lokal pozisyonda olacaktır.
+                        // Ancak yine de tam olarak istediğiniz pozisyonda olmasını garanti etmek için bu satırı bırakabilirsiniz.
+                        dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
+                    });
                 }
                 else
                     Debug.LogWarning("dragon egg is null");
