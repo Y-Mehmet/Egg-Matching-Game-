@@ -83,7 +83,7 @@ public class ColorManager : MonoBehaviour
     {
         // Enum'daki eleman sayýsýný alarak daha dinamik bir kod yazabiliriz.
         // Bu sayede yeni bir renk eklediðinizde kodu deðiþtirmek zorunda kalmazsýnýz.
-        int enumCount = System.Enum.GetValues(typeof(EggColor)).Length;
+        int enumCount = System.Enum.GetValues(typeof(EggColor)).Length-1;
         int random = Random.Range(0, enumCount);
 
         switch (random)
@@ -109,7 +109,7 @@ public class ColorManager : MonoBehaviour
             case 9:
                 return EggColor.Black;
             default:
-                Debug.LogError("Invalid random number generated for EggColor.");
+                Debug.Log("Invalid random number generated for EggColor.");
                 return EggColor.White; // Varsayýlan bir deðer döndürmek iyi bir pratik
         }
     }

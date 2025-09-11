@@ -1,3 +1,4 @@
+ï»¿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -64,93 +65,112 @@ public class LevelData : ScriptableObject
         }
         return tempTopEggColors;
     }
+    // Ã–NCEKÄ° TÃœM GetTopEggColorList METOTLARINI BU NÄ°HAÄ° VE DOÄžRU VERSÄ°YONLA DEÄžÄ°ÅžTÄ°RÄ°N
+    // Ã–NCEKÄ° TÃœM GetTopEggColorList METOTLARINI BU NÄ°HAÄ° VE DOÄžRU VERSÄ°YONLA DEÄžÄ°ÅžTÄ°RÄ°N
     public List<EggColor> GetTopEggColorList()
     {
         if (GameManager.instance.gameData.isTutorial)
         {
             return topEggColors;
         }
-        List<EggColor> tempEggColorList = eggColors;
-        tempEggColorList = tempEggColorList.OrderBy(x => Random.value).ToList();
-        int perCount = GameManager.instance.GetLevelData().topEggPerCount;
 
-        // ... (BURADAKÝ LÝSTE DOLDURMA KODUNUZ DEÐÝÞMEDEN AYNI KALIYOR) ...
-        bool allColorsDistinct = eggColors.Distinct().Count() == eggColors.Count;
-        if (!allColorsDistinct && !dualColor)
+        topEggColors.Clear();
+        int perCount = this.topEggPerCount;
+        if (perCount <= 0) perCount = 1;
+
+        // DURUM A: perCount == 1 -> birebir kopya
+        if (perCount == 1)
         {
-            // ... (Bu blok ayný)
-            var colorCounts = eggColors.GroupBy(color => color).Select(group => new { Color = group.Key, Count = group.Count() }).ToList();
-            Debug.Log("eggColors'taki renklerin sayýsý:");
-            foreach (var colorCount in colorCounts)
-            {
-                foreach (var color in tempEggColorList)
-                {
-                    if (colorCount.Color == color)
-                    {
-                        if (colorCount.Count > 1 && colorCount.Count <= perCount)
-                        {
-                            if (topEggColors.Contains(color))
-                            {
-                                EggColor randomEgg = ColorManager.instance.GetRandomColor();
-                                for (int i = 0; i < perCount; i++) { topEggColors.Add(randomEgg); }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < perCount; i++) { topEggColors.Add(color); }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < perCount; i++) { topEggColors.Add(color); }
-                        }
-                    }
-                }
-            }
+            topEggColors.AddRange(eggColors);
         }
         else
         {
-            foreach (var color in tempEggColorList)
+            // 1) Ã‡Ã¶zÃ¼mdeki her rengin ihtiyacÄ±nÄ± say
+            var colorCounts = new Dictionary<EggColor, int>();
+            foreach (var color in eggColors)
             {
-                for (int i = 0; i < perCount; i++)
+                if (!colorCounts.ContainsKey(color)) colorCounts[color] = 0;
+                colorCounts[color]++;
+            }
+
+            // 2) Konsept slotlarÄ± oluÅŸtur (her slot tamamen tek renkten olacak)
+            List<List<EggColor>> conceptualSlots = new List<List<EggColor>>();
+
+            foreach (var kvp in colorCounts)
+            {
+                EggColor color = kvp.Key;
+                int needed = kvp.Value;
+
+                // Her renk iÃ§in gereken minimum slot sayÄ±sÄ±
+                int slotCount = Mathf.CeilToInt((float)needed / perCount);
+
+                for (int s = 0; s < slotCount; s++)
                 {
-                    topEggColors.Add(color);
+                    var slot = new List<EggColor>();
+                    for (int i = 0; i < perCount; i++)
+                        slot.Add(color); // *** TAMAMEN bu renkten doldur ***
+                    conceptualSlots.Add(slot);
                 }
             }
-        }
-        // ... (LÝSTE DOLDURMA KODU BURADA BÝTÝYOR) ...
 
+            // 3) Toplam gereken slot sayÄ±sÄ± = eggColors.Count
+            int requiredSlots = eggColors.Count;
+            int currentSlots = conceptualSlots.Count;
 
-        // --- YENÝ ÝSTEÐE GÖRE GÜNCELLENEN KONTROL VE KARIÞTIRMA DÖNGÜSÜ ---
-        int attempts = 0;
-        const int maxAttempts = 10;
-
-        // Liste geçerli olana veya maksimum deneme sayýsýna ulaþana kadar döngüyü çalýþtýr.
-        while (attempts < maxAttempts)
-        {
-            // Yardýmcý metodu çaðýr. Eðer 'true' dönerse liste geçerlidir ve döngüden çýkýlýr.
-            if (ValidateAndShuffleTopEggs(eggColors, perCount))
+            // 4) EÄŸer eksik slot varsa -> tamamen Ã§eldirici (Ã§Ã¶zÃ¼m renkleri dÄ±ÅŸÄ±nda) ile doldur
+            while (currentSlots < requiredSlots)
             {
-                break;
+                EggColor distractor;
+                do
+                {
+                    distractor = ColorManager.instance.GetRandomColor();
+                } while (colorCounts.ContainsKey(distractor)); // Ã§Ã¶zÃ¼m renkleri olmasÄ±n
+
+                var slot = new List<EggColor>();
+                for (int i = 0; i < perCount; i++)
+                    slot.Add(distractor);
+
+                conceptualSlots.Add(slot);
+                currentSlots++;
             }
 
-            attempts++;
+            // 5) SlotlarÄ± dÃ¼z listeye aktar (her slot blok halinde eklenir)
+            foreach (var slot in conceptualSlots)
+            {
+                topEggColors.AddRange(slot);
+            }
         }
 
+        // --- KARMA + KALÄ°TE KONTROL (bloklarÄ± bozmadan karÄ±ÅŸtÄ±racak bir yardÄ±mcÄ± bekleniyor) ---
+        int attempts = 0;
+        const int maxAttempts = 10;
+        while (attempts < maxAttempts)
+        {
+            if (ValidateAndShuffleTopEggs(eggColors, perCount))
+                break;
+            attempts++;
+        }
         if (attempts >= maxAttempts)
         {
             Debug.LogWarning($"Liste {maxAttempts} denemeden sonra ideal duruma getirilemedi.");
         }
 
+        // Debug log
+        string eggColorsString = string.Join(", ", eggColors);
+        string topEggColorsString = string.Join(", ", topEggColors);
+        Debug.Log($"--- GetTopEggColorList() Metodu TamamlandÄ± ---\n" +
+                  $"<b>Girdi (eggColors):</b>   [{eggColorsString}]\n" +
+                  $"<b>Ã‡Ä±ktÄ± (topEggColors):</b> [{topEggColorsString}]");
+
         return topEggColors;
-    }/// <summary>
-     /// topEggColors listesini kontrol eder. Çakýþan eleman sayýsý 1'den fazlaysa listeyi karýþtýrýr.
-     /// </summary>
-     /// <param name="originalEggColors">Karþýlaþtýrma yapýlacak orijinal liste.</param>
-     /// <param name="currentPerCount">Renk tekrar sayýsý.</param>
-     /// <returns>Liste geçerliyse (çakýþma <= 1) true, karýþtýrýldýysa false döner.</returns>
+    }
+
+
+
     private bool ValidateAndShuffleTopEggs(List<EggColor> originalEggColors, int currentPerCount)
     {
         int matchCount = 0;
+        // Kalite kontrol iÃ§in yumurta-slot Ã§akÄ±ÅŸmalarÄ±nÄ± say (Bu kÄ±sÄ±m doÄŸru Ã§alÄ±ÅŸÄ±yor)
         for (int i = 0; i < topEggColors.Count; i++)
         {
             int originalIndex = i / currentPerCount;
@@ -160,19 +180,18 @@ public class LevelData : ScriptableObject
             }
         }
 
-        // Eðer çakýþma sayýsý 1'den fazlaysa listeyi gruplar halinde karýþtýr.
+        // EÄŸer Ã§akÄ±ÅŸma sayÄ±sÄ± kabul edilemez dÃ¼zeydeyse listeyi yeniden dÃ¼zenle
         if (matchCount > 0)
         {
-            // topEggColors listesini gruplara ayýr.
+            // Listeyi gruplar halinde karÄ±ÅŸtÄ±rmak iÃ§in geÃ§ici bir yapÄ± oluÅŸtur (Bu kÄ±sÄ±m doÄŸru)
             var groups = topEggColors
                 .Select((item, index) => new { Item = item, Index = index })
                 .GroupBy(x => x.Index / currentPerCount)
                 .ToList();
 
-            // Gruplarýn sýrasýný rastgele karýþtýr.
             var shuffledGroups = groups.OrderBy(x => UnityEngine.Random.value).ToList();
 
-            // Karýþtýrýlmýþ gruplardan yeni bir liste oluþtur.
+            // KarÄ±ÅŸtÄ±rÄ±lmÄ±ÅŸ gruplardan geÃ§ici yeni bir liste oluÅŸtur (Bu kÄ±sÄ±m doÄŸru)
             List<EggColor> newTopEggColors = new List<EggColor>();
             foreach (var group in shuffledGroups)
             {
@@ -182,13 +201,18 @@ public class LevelData : ScriptableObject
                 }
             }
 
-            // topEggColors listesini güncellenmiþ liste ile deðiþtir.
-            topEggColors = newTopEggColors;
-            return false; // Liste karýþtýrýldý, henüz geçerli deðil.
+            // --- Ä°ÅžTE KRÄ°TÄ°K DÃœZELTME BURADA ---
+            // HatalÄ± Kod: topEggColors = newTopEggColors; // Bu satÄ±r yeni bir referans atayarak hataya neden oluyordu.
+
+            // DOÄžRU KOD: Orijinal listenin iÃ§eriÄŸini temizle ve yeni iÃ§erikle doldur.
+            // Bu, referansÄ±n korunmasÄ±nÄ± ve oyunun diÄŸer kÄ±sÄ±mlarÄ±nÄ±n gÃ¼ncellemeyi gÃ¶rmesini saÄŸlar.
+            topEggColors.Clear();
+            topEggColors.AddRange(newTopEggColors);
+
+            return false; // Liste yeniden dÃ¼zenlendi, bir sonraki dÃ¶ngÃ¼de tekrar kontrol edilecek.
         }
 
-        // Çakýþma sayýsý 0 veya 1 ise liste geçerlidir.
-        return true; // Liste geçerli.
+        return true; // Liste geÃ§erli.
     }
 
 
