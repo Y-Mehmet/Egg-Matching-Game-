@@ -1019,9 +1019,11 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ShuffleRandomlyCoroutine());
     }
 
+    // ESKİ ShuffleRandomlyCoroutine METODUNU BU YENİ VERSİYONLA TAMAMEN DEĞİŞTİRİN
+
     private IEnumerator ShuffleRandomlyCoroutine()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         if (isShuffling)
         {
             Debug.LogWarning("Karıştırma zaten devam ediyor.");
@@ -1029,98 +1031,143 @@ public class GameManager : MonoBehaviour
         }
         isShuffling = true;
 
-        List<GameObject> eggsToShuffle = new List<GameObject>(eggSlotDic.Values);
+        List<GameObject> allEggsInSlots = new List<GameObject>(eggSlotDic.Values);
 
-        if (eggsToShuffle.Count < 2)
+        if (allEggsInSlots.Count < 2)
         {
             Debug.Log("Karıştırılacak yeterli yumurta yok.");
             isShuffling = false;
-            // Orijinal kodunuzdaki gibi, hata durumunda panel ve yetenek çağrılıyor
             PanelManager.Instance.ShowPanel(PanelID.BreakDragonEggPanel);
-             abilityData.action.Execute();
+            abilityData.action.Execute();
             yield break;
         }
+
+        // Animasyon başlamadan önce materyallerin geçişi için bekle
         yield return new WaitForSeconds(fadeDuration);
 
         Sequence mainShuffleSequence = DOTween.Sequence();
         float initialStepDuration = swapDuration / 4.0f;
         float minDuration = swapDuration / 12.0f;
-        float decraseDuration = .05f;
+        float decreaseDuration = .05f;
 
-        // <<< ANA DEĞİŞİKLİK: Tüm karıştırma mantığını birden çok kez çalıştıracak dış döngü >>>
+        // ANA DEĞİŞİKLİK: Karıştırma işlemini daha kaotik hale getirmek için birkaç tur (pass) yapıyoruz.
         for (int pass = 0; pass < shufflePasses; pass++)
         {
-            // Her "pas" başladığında mantık listesini ve hızı sıfırla
-            List<GameObject> shuffleLogicList = new List<GameObject>(eggsToShuffle);
+            // Her turda, henüz bir gruba atanmamış yumurtaların listesini tutarız.
+            var remainingEggs = new List<GameObject>(allEggsInSlots);
             float stepDuration = initialStepDuration;
 
-            // Orijinal karıştırma döngünüz
-            for (int n = shuffleLogicList.Count - 1; n > 0; n--)
+            // İşlenecek en az 2 yumurta kaldığı sürece gruplar oluşturmaya devam et.
+            while (remainingEggs.Count >= 2)
             {
-                int k = Random.Range(0, n + 1);
-                if (n == k)
-                    continue;
+                // --- 1. ADIM: Takas grubunun boyutunu belirle ---
+                // Mevcut yumurta sayısına göre 2, 3 veya 4'lü bir grup oluştur.
+                // Örneğin 3 yumurta kaldıysa, 2'li veya 3'lü bir grup seçilebilir.
+                // Animasyonun çok yavaşlamaması için maksimum grup boyutunu 4 ile sınırlıyoruz.
+                int maxGroupSize = Mathf.Min(5, remainingEggs.Count + 1); // Random.Range'in üst sınırı exclusive olduğu için +1 ve 5
+                int groupSize = Random.Range(2, maxGroupSize);
 
-                GameObject eggA = shuffleLogicList[n];
-                GameObject eggB = shuffleLogicList[k];
-
-                (shuffleLogicList[n], shuffleLogicList[k]) = (shuffleLogicList[k], shuffleLogicList[n]);
-
-                // --- TAKAS MANTIĞI VE ANİMASYONU (Orijinal haliyle korunmuştur) ---
-                int tempIndexA = eggSlotDic.FirstOrDefault(kvp => kvp.Value == eggA).Key;
-                int tempIndexB = eggSlotDic.FirstOrDefault(kvp => kvp.Value == eggB).Key;
-
-                if (tempIndexA == default && eggSlotDic.All(kvp => kvp.Value != eggA) || tempIndexB == default && eggSlotDic.All(kvp => kvp.Value != eggB))
+                // --- 2. ADIM: Rastgele bir takas grubu oluştur ---
+                List<GameObject> currentGroup = new List<GameObject>();
+                // Kalan yumurtaları karıştırıp ilk 'groupSize' tanesini seçerek rastgele bir grup oluştur.
+                for (int i = 0; i < groupSize; i++)
                 {
-                    Debug.LogWarning("Yumurtalardan biri sözlükte bulunamadı, bu takas atlanıyor.");
-                    continue;
+                    int randomIndex = Random.Range(0, remainingEggs.Count);
+                    currentGroup.Add(remainingEggs[randomIndex]);
+                    remainingEggs.RemoveAt(randomIndex);
                 }
 
-                Vector3 posA = slotList.FirstOrDefault(slot => slot.GetComponent<Slot>()?.slotIndex == tempIndexA).transform.position;
-                Vector3 posB = slotList.FirstOrDefault(slot => slot.GetComponent<Slot>()?.slotIndex == tempIndexB).transform.position;
+                // --- 3. ADIM: Grubun mevcut pozisyonlarını ve hedef pozisyonlarını belirle ---
+                Dictionary<GameObject, Vector3> initialPositions = new Dictionary<GameObject, Vector3>();
+                Dictionary<GameObject, int> initialIndexes = new Dictionary<GameObject, int>();
 
-                eggSlotDic[tempIndexA] = eggB;
-                eggSlotDic[tempIndexB] = eggA;
+                foreach (var egg in currentGroup)
+                {
+                    int index = eggSlotDic.FirstOrDefault(kvp => kvp.Value == egg).Key;
+                    initialIndexes[egg] = index;
+                    initialPositions[egg] = slotList.FirstOrDefault(s => s.GetComponent<Slot>().slotIndex == index).transform.position;
+                }
 
-                Vector3 backPosA = new Vector3(posA.x, posA.y + zOffsetOnSwap, posA.z);
-                Vector3 backPosB = new Vector3(posB.x, posB.y - zOffsetOnSwap, posB.z);
+                // --- 4. ADIM: Animasyonları Sıralı Olarak Oluştur (Dairesel Takas) ---
+                // Bu grubun tüm animasyonları AYNI ANDA başlayacak şekilde ayarlanacak.
 
-                mainShuffleSequence.Append(eggA.transform.DOMove(backPosA, stepDuration).SetEase(shuffleEase)
-                    // Her animasyon başladığında ses efekti çalınır
-                    .OnStart(() => SoundManager.instance.PlaySfx(SoundType.GoToSlot)));
-                mainShuffleSequence.Join(eggB.transform.DOMove(backPosB, stepDuration).SetEase(shuffleEase));
+                // ANİMASYON AŞAMASI 1: Tüm yumurtaları geri çek
+                for (int i = 0; i < currentGroup.Count; i++)
+                {
+                    GameObject egg = currentGroup[i];
+                    Vector3 backPos = new Vector3(initialPositions[egg].x, initialPositions[egg].y + zOffsetOnSwap, initialPositions[egg].z);
 
-                Vector3 swapTargetForA = new Vector3(posB.x, posB.y, backPosA.z);
-                Vector3 swapTargetForB = new Vector3(posA.x, posA.y, backPosB.z);
+                    var moveTween = egg.transform.DOMove(backPos, stepDuration).SetEase(shuffleEase);
+                    if (i == 0)
+                    {
+                        // Grubun ilk animasyonu 'Append' ile eklenir ve ses efekti tetiklenir
+                        mainShuffleSequence.Append(moveTween.OnStart(() => SoundManager.instance.PlaySfx(SoundType.GoToSlot)));
+                    }
+                    else
+                    {
+                        // Gruptaki diğer tüm animasyonlar 'Join' ile ilkine katılır, böylece hepsi aynı anda başlar.
+                        mainShuffleSequence.Join(moveTween);
+                    }
+                }
 
-                mainShuffleSequence.Append(eggA.transform.DOMove(swapTargetForA, stepDuration).SetEase(shuffleEase));
-                mainShuffleSequence.Join(eggB.transform.DOMove(swapTargetForB, stepDuration).SetEase(shuffleEase));
+                // ANİMASYON AŞAMASI 2: Yumurtaları yeni pozisyonlarına (dairesel olarak) hareket ettir
+                for (int i = 0; i < currentGroup.Count; i++)
+                {
+                    GameObject currentEgg = currentGroup[i];
+                    // Bir sonraki yumurtanın pozisyonunu hedef olarak al (listenin sonundaysa başa dön)
+                    GameObject targetEgg = currentGroup[(i + 1) % groupSize];
+                    Vector3 targetPos = initialPositions[targetEgg];
 
-                mainShuffleSequence.Append(eggA.transform.DOMove(posB, stepDuration).SetEase(shuffleEase));
-                mainShuffleSequence.Join(eggB.transform.DOMove(posA, stepDuration).SetEase(shuffleEase));
+                    Vector3 swapTarget = new Vector3(targetPos.x, targetPos.y, currentEgg.transform.position.z);
 
+                    var moveTween = currentEgg.transform.DOMove(swapTarget, stepDuration * 2).SetEase(shuffleEase);
+                    if (i == 0) mainShuffleSequence.Append(moveTween); else mainShuffleSequence.Join(moveTween);
+                }
+
+                // ANİMASYON AŞAMASI 3: Yumurtaları son pozisyonlarına yerleştir
+                for (int i = 0; i < currentGroup.Count; i++)
+                {
+                    GameObject currentEgg = currentGroup[i];
+                    GameObject targetEgg = currentGroup[(i + 1) % groupSize];
+                    Vector3 finalPos = initialPositions[targetEgg];
+
+                    var moveTween = currentEgg.transform.DOMove(finalPos, stepDuration).SetEase(shuffleEase);
+                    if (i == 0) mainShuffleSequence.Append(moveTween); else mainShuffleSequence.Join(moveTween);
+                }
+
+                // --- 5. ADIM: Sözlükteki (eggSlotDic) verileri güncelle ---
+                // Animasyonlar sıralanırken, mantıksal verileri de güncelleyelim.
+                for (int i = 0; i < currentGroup.Count; i++)
+                {
+                    GameObject currentEgg = currentGroup[i];
+                    GameObject targetEgg = currentGroup[(i + 1) % groupSize];
+
+                    // Mevcut yumurtayı, hedef yumurtanın eski slot index'ine ata
+                    eggSlotDic[initialIndexes[targetEgg]] = currentEgg;
+                }
+
+                // Takas grupları arasında küçük bir bekleme ekleyelim
                 if (delayBetweenSwaps > 0)
                 {
                     mainShuffleSequence.AppendInterval(delayBetweenSwaps);
                 }
-                if (stepDuration >= minDuration)
+
+                // Animasyonu hızlandır
+                if (stepDuration > minDuration)
                 {
-                    stepDuration -= decraseDuration;
+                    stepDuration -= decreaseDuration;
                 }
             }
         }
 
-        // Tüm animasyon döngüleri bittiğinde yapılacaklar (Orijinal haliyle korunmuştur)
+        // Tüm animasyon döngüleri bittiğinde yapılacaklar
         mainShuffleSequence.OnComplete(() => {
             isShuffling = false;
-            Debug.Log("Random Shuffle complete!");
-
-            // Oyun akışınız için gerekli olan panel gösterme ve eylem yürütme işlemleri
+            Debug.Log("Random Multi-Swap Shuffle complete!");
             PanelManager.Instance.ShowPanel(PanelID.BreakDragonEggPanel);
-             abilityData.action.Execute();
+            abilityData.action.Execute();
         });
 
-        // Coroutine'in, tüm animasyon sekansı bitene kadar beklemesini sağla
         yield return mainShuffleSequence.WaitForCompletion();
     }
     public void AssignMissingEggs()
