@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DragonSO 3
   m_EditorClassIdentifier: 
   DragonIndex: 3
-  dragonMissionGemValue: 9
+  dragonMissionGemValue: 15
   DragonGemAmount: 0
   DragonName: Kaxen
   color: 5

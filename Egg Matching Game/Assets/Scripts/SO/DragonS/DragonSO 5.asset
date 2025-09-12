@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DragonSO 5
   m_EditorClassIdentifier: 
   DragonIndex: 5
-  dragonMissionGemValue: 10
+  dragonMissionGemValue: 20
   DragonGemAmount: 0
   DragonName: Velys
   color: 3

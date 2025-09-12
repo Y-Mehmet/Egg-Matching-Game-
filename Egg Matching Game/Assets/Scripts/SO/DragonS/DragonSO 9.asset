@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DragonSO 9
   m_EditorClassIdentifier: 
   DragonIndex: 9
-  dragonMissionGemValue: 12
+  dragonMissionGemValue: 33
   DragonGemAmount: 0
   DragonName: Aethel
   color: 9

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DragonSO 8
   m_EditorClassIdentifier: 
   DragonIndex: 8
-  dragonMissionGemValue: 11
+  dragonMissionGemValue: 30
   DragonGemAmount: 0
   DragonName: Faelar
   color: 8

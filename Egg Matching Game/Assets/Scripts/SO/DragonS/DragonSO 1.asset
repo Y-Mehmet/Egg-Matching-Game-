@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DragonSO 1
   m_EditorClassIdentifier: 
   DragonIndex: 1
-  dragonMissionGemValue: 5
+  dragonMissionGemValue: 7
   DragonGemAmount: 0
   DragonName: Jaxx
   color: 7

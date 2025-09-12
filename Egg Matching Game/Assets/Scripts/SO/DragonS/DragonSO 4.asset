@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DragonSO 4
   m_EditorClassIdentifier: 
   DragonIndex: 4
-  dragonMissionGemValue: 10
+  dragonMissionGemValue: 17
   DragonGemAmount: 0
   DragonName: Silas
   color: 2

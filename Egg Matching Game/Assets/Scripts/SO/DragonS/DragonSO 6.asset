@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DragonSO 6
   m_EditorClassIdentifier: 
   DragonIndex: 6
-  dragonMissionGemValue: 10
+  dragonMissionGemValue: 25
   DragonGemAmount: 0
   DragonName: Ryven
   color: 6
