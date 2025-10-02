@@ -1,16 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-UnityEngine.Pool;
 
-DoneUnityEngine.Pool;
-
-DoneUnityEngine.Pool;
-
-Done
-    UnityEngine.Pool;
-
-Don
 public class SpendResBtn : MonoBehaviour
 {
     [SerializeField] private ResourceType resourceType; // The type of resource to spend

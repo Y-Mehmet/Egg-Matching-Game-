@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
-using Facebook.Unity;
+
 
 public class LoadingPanelMyGame : MonoBehaviour
 {
@@ -15,34 +15,34 @@ public class LoadingPanelMyGame : MonoBehaviour
 
     private void OnEnable()
     {
-        // Panel aktif hale geldiðinde yükleme iþlemini baþlat
+        // Panel aktif hale geldiï¿½inde yï¿½kleme iï¿½lemini baï¿½lat
         gameObject.SetActive(true);
         
     }
     void Start()
     {
         GameAnalyticsSDK.GameAnalytics.Initialize();
-        FB.Init();
+       // FB.Init();
        
         StartCoroutine(ChangeAlfa());
     }
 
     private IEnumerator ChangeAlfa()
     {
-        // Baþlangýçta belirlediðimiz süre kadar bekle.
-        // Bu süre, videonun yüklenmeye baþlamasý için zaman tanýr.
+        // Baï¿½langï¿½ï¿½ta belirlediï¿½imiz sï¿½re kadar bekle.
+        // Bu sï¿½re, videonun yï¿½klenmeye baï¿½lamasï¿½ iï¿½in zaman tanï¿½r.
         yield return new WaitForSeconds(5);
 
         float gecenZaman = 0f;
         Color baslangicRengi = myGameLogo.color;
 
-        // Alfa deðeri 0 olana kadar bu döngü çalýþacak.
+        // Alfa deï¿½eri 0 olana kadar bu dï¿½ngï¿½ ï¿½alï¿½ï¿½acak.
         while (gecenZaman < 1)
         {
-            // Geçen süreyi her frame'de artýr.
+            // Geï¿½en sï¿½reyi her frame'de artï¿½r.
             gecenZaman += Time.deltaTime;
 
-            // Rengin alfa deðerini zamanla 1'den 0'a doðru düþür.
+            // Rengin alfa deï¿½erini zamanla 1'den 0'a doï¿½ru dï¿½ï¿½ï¿½r.
             float yeniAlfa = Mathf.Lerp(1f, 0f, gecenZaman / 1);
             myGameLogo.color = new Color(baslangicRengi.r, baslangicRengi.g, baslangicRengi.b, yeniAlfa);
 
@@ -56,49 +56,49 @@ public class LoadingPanelMyGame : MonoBehaviour
 
     IEnumerator LoadSceneAsyncAndDeactivatePanel()
     {
-        // Yüklenecek sahneyi asenkron bir iþlem olarak baþlat
-        // Sahne 1'i yükleyecek (Build Settings'deki sahne sýrasý)
+        // Yï¿½klenecek sahneyi asenkron bir iï¿½lem olarak baï¿½lat
+        // Sahne 1'i yï¿½kleyecek (Build Settings'deki sahne sï¿½rasï¿½)
         AsyncOperation operation = SceneManager.LoadSceneAsync(1);
 
-        // Sahne hazýr olduðunda otomatik aktivasyonu kapat
-        // Bu, yükleme %90'a geldiðinde bile sahnenin hemen geçiþ yapmamasýný saðlar.
+        // Sahne hazï¿½r olduï¿½unda otomatik aktivasyonu kapat
+        // Bu, yï¿½kleme %90'a geldiï¿½inde bile sahnenin hemen geï¿½iï¿½ yapmamasï¿½nï¿½ saï¿½lar.
         // Biz izin verene kadar bekler.
         operation.allowSceneActivation = false;
         
 
-        // Yükleme tamamlanana kadar döngüyü sürdür
+        // Yï¿½kleme tamamlanana kadar dï¿½ngï¿½yï¿½ sï¿½rdï¿½r
         while (!operation.isDone)
         {
-            // Yükleme ilerlemesini 0-0.9 arasýnda bir deðere normalleþtir
-            // Unity, sahne tamamen hazýr olmadan önce progress deðerini 0.9'da durdurur.
-            float progress = Mathf.Clamp01(operation.progress / 0.9f); // 0.9'a bölerek %0-100 aralýðýna getir
+            // Yï¿½kleme ilerlemesini 0-0.9 arasï¿½nda bir deï¿½ere normalleï¿½tir
+            // Unity, sahne tamamen hazï¿½r olmadan ï¿½nce progress deï¿½erini 0.9'da durdurur.
+            float progress = Mathf.Clamp01(operation.progress / 0.9f); // 0.9'a bï¿½lerek %0-100 aralï¿½ï¿½ï¿½na getir
 
         
 
-            // Eðer yükleme %90'ýn üzerine çýktýysa (yani sahne yüklendi ama henüz aktif deðil)
-            if (operation.progress >= 0.9f) // %90'a ulaþtýðýnda
+            // Eï¿½er yï¿½kleme %90'ï¿½n ï¿½zerine ï¿½ï¿½ktï¿½ysa (yani sahne yï¿½klendi ama henï¿½z aktif deï¿½il)
+            if (operation.progress >= 0.9f) // %90'a ulaï¿½tï¿½ï¿½ï¿½nda
             {
              
                 operation.allowSceneActivation = true;
             }
 
-            // Bir sonraki frame'e geçmesini bekle
+            // Bir sonraki frame'e geï¿½mesini bekle
             yield return null;
         }
 
-        // Yeni sahne tamamen yüklendiðinde ve aktif hale geldiðinde,
-        // bu yükleme panelini devre dýþý býrak veya yok et.
-        // Yok etmek daha temiz bir çözümdür, çünkü DontDestroyOnLoad ile iþaretlendi.
+        // Yeni sahne tamamen yï¿½klendiï¿½inde ve aktif hale geldiï¿½inde,
+        // bu yï¿½kleme panelini devre dï¿½ï¿½ï¿½ bï¿½rak veya yok et.
+        // Yok etmek daha temiz bir ï¿½ï¿½zï¿½mdï¿½r, ï¿½ï¿½nkï¿½ DontDestroyOnLoad ile iï¿½aretlendi.
         Destroy(gameObject);
     }
 
-    // OnDisable metodu, bu GameObject manuel olarak devre dýþý býrakýldýðýnda veya yok edildiðinde çaðrýlýr.
-    // Ancak DontDestroyOnLoad kullanýldýðýnda, sahne geçiþinde otomatik olarak çaðrýlmaz.
-    // Bu yüzden Destroy(gameObject) ile manuel olarak yok etmeliyiz.
+    // OnDisable metodu, bu GameObject manuel olarak devre dï¿½ï¿½ï¿½ bï¿½rakï¿½ldï¿½ï¿½ï¿½nda veya yok edildiï¿½inde ï¿½aï¿½rï¿½lï¿½r.
+    // Ancak DontDestroyOnLoad kullanï¿½ldï¿½ï¿½ï¿½nda, sahne geï¿½iï¿½inde otomatik olarak ï¿½aï¿½rï¿½lmaz.
+    // Bu yï¿½zden Destroy(gameObject) ile manuel olarak yok etmeliyiz.
     private void OnDisable()
     {
-        // Coroutine'i durdurmak genellikle iyi bir uygulamadýr,
-        // ancak Destroy(gameObject) çaðrýldýðýnda zaten duracaktýr.
+        // Coroutine'i durdurmak genellikle iyi bir uygulamadï¿½r,
+        // ancak Destroy(gameObject) ï¿½aï¿½rï¿½ldï¿½ï¿½ï¿½nda zaten duracaktï¿½r.
         StopAllCoroutines();
     }
 }
