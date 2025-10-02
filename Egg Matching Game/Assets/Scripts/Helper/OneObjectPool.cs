@@ -34,7 +34,7 @@ public class OneObjectPool : MonoBehaviour
     {
         if(objectPool.Count == 0)
         {
-            Debug.LogWarning("Object pool is empty. Please add objects to the pool before requesting.");
+           // Debug.LogWarning("Object pool is empty. Please add objects to the pool before requesting.");
             return null;
         }
         foreach (var item in objectPool)
@@ -48,7 +48,7 @@ public class OneObjectPool : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning(" Object with name  " + name + " is already active. Please deactivate it before requesting again.");
+                   // Debug.LogWarning(" Object with name  " + name + " is already active. Please deactivate it before requesting again.");
                     return null;
                 }
             }

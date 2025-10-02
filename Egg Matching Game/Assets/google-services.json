@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "527184526437",
+    "project_id": "dragon-egg-breaker",
+    "storage_bucket": "dragon-egg-breaker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527184526437:android:afa06447d9f6a854095a8c",
+        "android_client_info": {
+          "package_name": "com.MYGame.com.EggMatching"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk_3cPpXV9zCsgkdObYRDHWYkadgzeMw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

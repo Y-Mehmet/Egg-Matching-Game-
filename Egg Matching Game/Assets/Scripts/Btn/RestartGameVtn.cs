@@ -21,9 +21,12 @@ public class RestartGameVtn : MonoBehaviour
     {
        if(ResourceManager.Instance.HasEnoughResource(ResourceType.Energy, 2))
             {
-            GameManager.instance.gameReStart?.Invoke();
-            ResourceManager.Instance.SpendResource(ResourceType.Energy, 2);
-        }else
+            
+            ResourceManager.Instance.SpendResource(ResourceType.Energy, 1);
+            // GameManager.instance.gameReStart?.Invoke();
+            SceeneManager.instance.LoadScene();
+        }
+        else
         {
             SoundManager.instance.PlaySfx(SoundType.EmptyCoin);
            

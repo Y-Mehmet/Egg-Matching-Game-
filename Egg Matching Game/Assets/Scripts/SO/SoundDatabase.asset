@@ -118,10 +118,6 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 383cd3746caae4f488368a79aaa3b428, type: 3}
     volume: 0
     loop: 0
-  - soundType: 18
-    audioClip: {fileID: 0}
-    volume: 0
-    loop: 0
   - soundType: 26
     audioClip: {fileID: 8300000, guid: d9a5856e0ea3a1c49a5f05105c0ad8e2, type: 3}
     volume: 0

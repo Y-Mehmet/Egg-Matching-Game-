@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
+using Facebook.Unity;
 
 public class LoadingPanelMyGame : MonoBehaviour
 {
@@ -20,7 +21,9 @@ public class LoadingPanelMyGame : MonoBehaviour
     }
     void Start()
     {
-        // Alfa deðerini deðiþtirme iþlemini baþlatýyoruz.
+        GameAnalyticsSDK.GameAnalytics.Initialize();
+        FB.Init();
+       
         StartCoroutine(ChangeAlfa());
     }
 

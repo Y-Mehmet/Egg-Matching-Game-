@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 public class NetworkManager : MonoBehaviour
 {
-    public static NetworkManager instance; // "intance" yerine "instance" yazmak daha yaygýndýr
+    public static NetworkManager instance; 
     public bool isNetworkOpen=false;
     private void Awake()
     {

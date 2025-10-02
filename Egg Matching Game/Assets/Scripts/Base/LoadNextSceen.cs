@@ -38,8 +38,8 @@ public class LoadNextSceen : MonoBehaviour
     }
     private void LoadNextScene()
     {
-        if (NetworkManager.instance == null || !NetworkManager.instance.isNetworkOpen)
-            return;
+        //if (NetworkManager.instance == null || !NetworkManager.instance.isNetworkOpen)
+        //    return;
         if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) <= 0)
         {
             if (PanelManager.Instance != null)

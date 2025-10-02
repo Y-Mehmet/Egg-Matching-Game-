@@ -20,7 +20,7 @@ public class ResourceManager : MonoBehaviour
     public int coinsPerGame = 50; // Her oyun sonunda kazanýlan para miktarý
     public int gemsPerGame = 1; // Her oyun sonunda kazanýlan elmas miktarý
     public int DragonIndex = 0;
-    public int macDragobIndex = 9;
+    public int maxDragonIndex = 9;
     public bool isPushAlarmEnabled = false;
     public float soundFxVolume = 0.8f;
     public float musicVolume = 0.8f;
@@ -28,7 +28,7 @@ public class ResourceManager : MonoBehaviour
     public int SelectedDragonIndex = -1;
     public bool isTutorial = true;
     public int time = 45;
-
+    public bool isDragonMissionFinish;
 
     // Yüklenen tüm oyun verilerini tutan referansýmýz.
     private SaveGameData gameData;
@@ -111,7 +111,7 @@ public class ResourceManager : MonoBehaviour
                 break;
             case ResourceType.PlayCount: playCount += amount; break; // Oyun oynama sayýsýný artýrýyoruz
             case ResourceType.LevelIndex: levelIndex += amount; break; // Oyun seviyesini artýrýyoruz
-            case ResourceType.DragonIndex: DragonIndex += amount; if (DragonIndex > macDragobIndex) DragonIndex = macDragobIndex; break; // Ejderha indeksini artýrýyoruz
+            case ResourceType.DragonIndex: DragonIndex += amount; if (DragonIndex > maxDragonIndex) DragonIndex = maxDragonIndex; break; // Ejderha indeksini artýrýyoruz
             case ResourceType.Time:time += amount;break;       
         }
 
@@ -121,7 +121,7 @@ public class ResourceManager : MonoBehaviour
 
     public bool SpendResource(ResourceType type, int amount)
     {
-        Debug.LogWarning("type: " + type + ", amount: " + amount + ", current amount: " + GetResourceAmount(type));
+       // Debug.LogWarning("type: " + type + ", amount: " + amount + ", current amount: " + GetResourceAmount(type));
         if (amount <= 0) return true;
 
         if (HasEnoughResource(type, amount))
@@ -181,6 +181,7 @@ public class ResourceManager : MonoBehaviour
         gameData.isPushAlarmEnabled = this.isPushAlarmEnabled;
         gameData.SelectedDragonIndex=this.SelectedDragonIndex;
         gameData.isTutorial=this.isTutorial;
+        gameData.isDragonMissionFinish=this.isDragonMissionFinish;
 
         // YENÝ: Zaman bilgisini kaydet
         gameData.nextEnergyTimeString = this.nextEnergyTime.ToBinary().ToString();
@@ -206,6 +207,7 @@ public class ResourceManager : MonoBehaviour
         this.SelectedDragonIndex = gameData.SelectedDragonIndex;
         this.isTutorial = gameData.isTutorial;
         this.time = gameData.time;
+        this.isDragonMissionFinish= gameData.isDragonMissionFinish;
 
         // YENÝ: Zaman bilgisini yükle
         if (!string.IsNullOrEmpty(gameData.nextEnergyTimeString))
@@ -417,4 +419,5 @@ public class ResourceManager : MonoBehaviour
     LevelIndex,
     DragonIndex,
     Time,
+    
 }

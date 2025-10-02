@@ -57,6 +57,7 @@ public class HammerAnimator : MonoBehaviour
                         targetToDestroy = null;
                         GameManager.instance.AbilityBarPanel.SetActive(true);
                         gameObject.SetActive(false);
+                        GameManager.instance.Check();
 
 
                     });
@@ -94,6 +95,7 @@ public class HammerAnimator : MonoBehaviour
                          targetToDestroy = null;
                          GameManager.instance.AbilityBarPanel.SetActive(true);
                          gameObject.SetActive(false);
+                         GameManager.instance.Check();
                          
                      });
             

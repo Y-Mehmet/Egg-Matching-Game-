@@ -7,18 +7,18 @@ using UnityEngine;
 
 
 
-// Bu sýnýf, reklamlarý otomatik olarak yükler ve gerektiðinde gösterir.
+
 public class AdsManager : MonoBehaviour
 {
-    // Singleton deseni için tekil örnek
+  
     public static AdsManager Instance { get; private set; }
 
-    // Reklam nesneleri
+   
     private LevelPlayInterstitialAd interstitialAd;
     private LevelPlayRewardedAd rewardedAd;
 
 
-    // BANNER REKLAM ÝÇÝN YENÝ EKLENEN SATIR
+   
     private LevelPlayBannerAd bannerAd;
 
     // Reklam yüklemesi için zaman aþýmý süresi (saniye)

@@ -187,7 +187,7 @@ public class TutorialManager : MonoBehaviour
 
         // Son olarak, elin RectTransform'unun pozisyonunu atýyoruz.
         handRectTransform.position = targetPos;
-        Debug.LogWarning("Hand position set to: " + targetPos + " " + handRectTransform.position);
+      //  Debug.LogWarning("Hand position set to: " + targetPos + " " + handRectTransform.position);
 
       
        

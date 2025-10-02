@@ -98,20 +98,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productId: gem80
   buttonType: 0
-  consumePurchase: 1
+  automaticallyConfirmTransaction: 1
+  onProductFetched:
+    m_PersistentCalls:
+      m_Calls: []
+  onProductFetchFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseFetched:
+    m_PersistentCalls:
+      m_Calls: []
   onTransactionsRestored:
     m_PersistentCalls:
       m_Calls: []
-  onPurchaseComplete:
+  onOrderPending:
+    m_PersistentCalls:
+      m_Calls: []
+  onOrderConfirmed:
     m_PersistentCalls:
       m_Calls: []
   onPurchaseFailed:
     m_PersistentCalls:
       m_Calls: []
-  onProductFetched:
+  onOrderDeferred:
     m_PersistentCalls:
       m_Calls: []
-  button: {fileID: 0}
+  onPurchaseCompleteLegacy:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseFailedLegacy:
+    m_PersistentCalls:
+      m_Calls: []
+  button: {fileID: 3966118262875551000}
 --- !u!114 &3966118262875551000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5542,8 +5560,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "US ( \u20BA 1.99 "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 122066a1363dbcf4eaf6fffaabc1258c, type: 2}
-  m_sharedMaterial: {fileID: 6733694172291026895, guid: 122066a1363dbcf4eaf6fffaabc1258c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5c5ee151f9307453bad78be36b51a077, type: 2}
+  m_sharedMaterial: {fileID: 2517202264660172603, guid: 5c5ee151f9307453bad78be36b51a077, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

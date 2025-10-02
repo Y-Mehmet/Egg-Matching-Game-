@@ -22,6 +22,7 @@ public class SaveGameData
     public bool isVibrationEnabled = true;
     public int SelectedDragonIndex = -1;
     public int time=45;
+    public bool isDragonMissionFinish = false;
 
 
 }

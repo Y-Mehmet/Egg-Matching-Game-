@@ -45,7 +45,7 @@ public class Egg : MonoBehaviour
                 transform.position += new Vector3(0, 0, -2);
                 transform.DOMove(GameManager.instance.SlotPositionList[slotIndex], 0.5f).SetEase(Ease.OutBack).OnComplete(() => { GameManager.instance.PopStack(gameObject); });
                 transform.position += new Vector3(0, 0, -2);
-                Debug.LogWarning("Egg  go to slot pose: " + egg.name+" slot index "+slotIndex);
+              //  Debug.LogWarning("Egg  go to slot pose: " + egg.name+" slot index "+slotIndex);
                 SoundManager.instance.PlaySfx(SoundType.GoToSlot);
             }
             

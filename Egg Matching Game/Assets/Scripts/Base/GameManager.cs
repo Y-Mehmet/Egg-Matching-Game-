@@ -15,9 +15,10 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-    public bool isTutorialLevel = false;
+   
     private int tutorialIndex = 0;
     private bool canCheck = true;
+    private bool isfinalShuffel = false;
     
     public GameObject AbilityBarPanel;
     public bool isSelectTrueDaragonEgg;
@@ -157,15 +158,17 @@ public class GameManager : MonoBehaviour
     }
     private  void StartTutorial()
     {
-        if (gameData.isTutorial && TutorialManager.Instance != null)
+        if (TutorialManager.Instance != null)
+        {
+            Debug.LogWarning("is tootrial manager  null");
+            return;
+        }
+        if (gameData.isTutorial )
         {
             StartCoroutine(Tutorial());
 
         }
-        else
-        {
-            Debug.LogWarning("is tootrial manager  null");
-        }
+        
     }
     IEnumerator Tutorial()
     {
@@ -244,7 +247,7 @@ public class GameManager : MonoBehaviour
             {
                 foreach (var item in eggSlotDic)
                 {
-                    Debug.LogWarning("index  " + item.Key + " name  " + item.Value);
+                   // Debug.LogWarning("index  " + item.Key + " name  " + item.Value);
                 }
             }
 
@@ -260,13 +263,13 @@ public class GameManager : MonoBehaviour
                 // Zaten bu yumurta seçiliyse, seçimi iptal et.
                 else if (selectedEgg == clickedEgg.gameObject)
                 {
-                    Debug.LogWarning("Deselecting egg: " + clickedEgg.gameObject.name);
+                   // Debug.LogWarning("Deselecting egg: " + clickedEgg.gameObject.name);
 
                     DeselectObject();
                 }
                 else if (!eggSlotDic.ContainsValue(selectedEgg) && eggSlotDic.ContainsValue(clickedEgg.gameObject)) 
                 {
-                    Debug.LogWarning("selected out slot and clicked in slot: ");
+                  //  Debug.LogWarning("selected out slot and clicked in slot: ");
                     AddEggListByIndex(eggSlotDic.FirstOrDefault(k => k.Value == clickedEgg.gameObject).Key, selectedEgg);
                     DeselectObject();
                     Check();
@@ -292,7 +295,7 @@ public class GameManager : MonoBehaviour
             // Tıklanan obje bir slot mu?
             else if (hit.collider.TryGetComponent<Slot>(out Slot clickedSlot))
             {
-                Debug.LogWarning("slot selected");
+               // Debug.LogWarning("slot selected");
                 // Eğer bir yumurta seçiliyse, yerleştirme işlemini yap.
                 if (selectedEgg != null)
                 {
@@ -310,7 +313,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("bos alan tıklandı");
+               // Debug.LogWarning("bos alan tıklandı");
                 DeselectObject();
             }
         }
@@ -322,7 +325,7 @@ public class GameManager : MonoBehaviour
     }
     public void CheckSlotEggColor()
     {
-        Debug.LogWarning("Slot color checker is called");
+      //  Debug.LogWarning("Slot color checker is called");
         gameStarted = false;
         StartCoroutine(AnimateWrongEggs());
     }
@@ -429,8 +432,7 @@ public class GameManager : MonoBehaviour
             }
             if (slotIndex != -1)
                 eggSlotDic[slotIndex] = eggObj;
-            //else
-            //    PushStack(eggObj);
+     
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
            
         }
@@ -447,8 +449,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("go to start pos ");
-                //eggSlotDic[tempIndex] = tempEgg;
+              
                 onSlotIndexChange?.Invoke(-1, tempEgg);
                 
             }
@@ -457,24 +458,15 @@ public class GameManager : MonoBehaviour
            
             onSlotIndexChange?.Invoke(slotIndex, eggObj);
             onSlotedEggCountChange?.Invoke();
-            Debug.LogWarning("go to slot pos ");
-            //if(tempIndex==-1)
-            //{
-            //    PushStack(tempEgg);
-            //}
+         
         }
-        //if(slotIndex==-1)
-        //{
-        //    PushStack(eggObj);
-        //}
+     
         
 
 
     }
 
-    // Yorum Satırı: Bir objeyi (yumurta) seçer ve görsel olarak vurgular.
-    // Eskiden: Böyle bir metod yoktu.
-    // Şimdi: Seçilen objenin renderer'ını bulur, orijinal rengini kaydeder ve onu bir vurgu rengiyle değiştirir.
+   
     private void SelectObject(GameObject obj)
     {
         if (!gameStarted || isShuffling)
@@ -524,6 +516,8 @@ public class GameManager : MonoBehaviour
 
     public void UpdateQueueSetActive()
     {
+        if (isfinalShuffel)
+            return;
         if (EggSpawner.instance.eggStackList.Count == 0) return;
         foreach (var eggStack in EggSpawner.instance.eggStackList)
         {
@@ -633,6 +627,7 @@ public class GameManager : MonoBehaviour
    
     public void ReStart()
     {
+        isfinalShuffel = false;
         isGameFinish = false;
         if (ResourceManager.Instance.GetResourceAmount(ResourceType.Energy) <= 0)
         {
@@ -776,11 +771,11 @@ public class GameManager : MonoBehaviour
             if (slot.TryGetComponent<Slot>(out Slot slotScript) && !eggSlotDic.ContainsKey(slotScript.slotIndex))
             {
                 emtyOrWrongColorSlotTransformList.Add(slot.transform);
-                Debug.LogWarning("slot is null " + slotScript.slotIndex);
+                Debug.Log("slot is null " + slotScript.slotIndex);
             }
             else if (!currentLevel.eggColors.Contains(eggSlotDic[slotScript.slotIndex].GetComponent<Egg>().eggColor))
             {
-                Debug.LogWarning("slot is wrong color  " + slotScript.slotIndex + " color " + eggSlotDic[slotScript.slotIndex].name);
+                Debug.Log("slot is wrong color  " + slotScript.slotIndex + " color " + eggSlotDic[slotScript.slotIndex].name);
                 emtyOrWrongColorSlotTransformList.Add(slot.transform);
                 onSlotIndexChange?.Invoke(-1, eggSlotDic[slotScript.slotIndex]);
                 yield return new WaitForSeconds(.5f);
@@ -1047,15 +1042,15 @@ public class GameManager : MonoBehaviour
 
         Sequence mainShuffleSequence = DOTween.Sequence();
         float initialStepDuration = swapDuration / 4.0f;
-        float minDuration = swapDuration / 12.0f;
-        float decreaseDuration = .1f;
-
+        float minDuration = swapDuration / 10.0f;
+        float decreaseDuration =.1f;
+        float stepDuration = initialStepDuration;
         // ANA DEĞİŞİKLİK: Karıştırma işlemini daha kaotik hale getirmek için birkaç tur (pass) yapıyoruz.
         for (int pass = 0; pass < shufflePasses; pass++)
         {
             // Her turda, henüz bir gruba atanmamış yumurtaların listesini tutarız.
             var remainingEggs = new List<GameObject>(allEggsInSlots);
-            float stepDuration = initialStepDuration;
+           
 
             // İşlenecek en az 2 yumurta kaldığı sürece gruplar oluşturmaya devam et.
             while (remainingEggs.Count >= 2)
@@ -1244,14 +1239,14 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"Slot {slotScript.slotIndex} için yumurta bulunamadı.");
+                    Debug.Log($"Slot {slotScript.slotIndex} için yumurta bulunamadı.");
                 }
             }
         }
 
         // 4. ADIM: TÜM animasyonlar bittiğinde ne olacağını belirle.
         masterSequence.OnComplete(() => {
-            Debug.LogWarning("Tüm yumurtaların atanma animasyon dalgası tamamlandı.");
+            Debug.Log("Tüm yumurtaların atanma animasyon dalgası tamamlandı.");
             isAssigningEggs = false;
 
         });
@@ -1344,17 +1339,17 @@ public class GameManager : MonoBehaviour
                             {
                                 isSelectTrueDaragonEgg = true;
                                 PanelManager.Instance.ShowPanel(PanelID.LevelUpPanel);
-                                Debug.LogWarning(" true egg for dragon");
+                                Debug.Log(" true egg for dragon");
                             });
                            
                         }
                         else
-                            Debug.LogWarning("dragon egg is null");
+                            Debug.Log("dragon egg is null");
                       
                     }
                     else
                     {
-                        Debug.LogWarning(" wrong egg for dragon");
+                        Debug.Log(" wrong egg for dragon");
 
                         EggSpawner.instance.dragon.transform.SetParent(null);
                         EggSpawner.instance.dragon.SetActive(true);
@@ -1495,37 +1490,10 @@ public class GameManager : MonoBehaviour
                 // gameReStart?.Invoke();
                 AbilityBarPanel.SetActive(false);
 
-                EggSpawner.instance.DragonSetActive();
 
-                if (EggSpawner.instance.dragon != null)
-                {
-                    // Önceki kodunuzun tamamını bu blokla değiştirebilirsiniz
+                
+                StartCoroutine(DragonMovment());
 
-                    GameObject dragon = EggSpawner.instance.dragon;
-                    Transform parentTransform = dragon.transform.parent; // Mevcut parent'ı al
-
-                    // 1. Hedefin dünya uzayındaki pozisyonunu belirle.
-                    // Ejderhanın mevcut X ve Y dünya pozisyonunu koruyup, Z'sini -1f yap.
-                    Vector3 targetWorldPosition = new Vector3(dragon.transform.position.x, dragon.transform.position.y, -1f);
-
-                    // 2. Bu dünya pozisyonunu, parent'ın yerel koordinat sistemine çevir.
-                    // "Bu dünya noktası, parent'ımın hangi lokal pozisyonuna denk geliyor?" diye sorarız.
-                    Vector3 targetLocalPosition = parentTransform.InverseTransformPoint(targetWorldPosition);
-
-                    // Ejderhayı aktif et
-                    dragon.SetActive(true);
-
-                    // 3. DOLocalMove ile parent'ına göre hareket ettir.
-                    dragon.transform.DOLocalMove(targetLocalPosition, 1.5f).SetEase(Ease.InOutSine).OnComplete(() =>
-                    {
-                        // Animasyon bittiğinde ejderhanın pozisyonunu yeniden ayarlamaya gerek kalmaz,
-                        // çünkü zaten doğru lokal pozisyonda olacaktır.
-                        // Ancak yine de tam olarak istediğiniz pozisyonda olmasını garanti etmek için bu satırı bırakabilirsiniz.
-                        dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
-                    });
-                }
-                else
-                    Debug.LogWarning("dragon egg is null");
 
                 ChangeMaterial();
 
@@ -1559,6 +1527,32 @@ public class GameManager : MonoBehaviour
     /// Örneğin, 2 sarı slot için en az 2 sarı yumurta varsa eşleşme sayısını doğru hesaplar.
     /// </summary>
     /// <returns>Doğru eşleştirilebilecek maksimum yumurta sayısı.</returns>
+    
+    IEnumerator DragonMovment()
+    {
+        if (EggSpawner.instance.dragon != null)
+        {
+            Debug.LogWarning("gemm movment is start");
+
+            GameObject dragon = EggSpawner.instance.dragon;
+         
+
+          
+            dragon.transform.localPosition = new Vector3(0, 0.2f, -1);
+
+            EggSpawner.instance.DragonSetActive();
+
+            // 3. DOLocalMove ile parent'ına göre hareket ettir.
+           yield return new WaitForSeconds(3);
+            
+                
+                dragon.transform.localPosition = new Vector3(0, 0.2f, 0);
+                Debug.LogWarning("gemm movment is copmlate");
+          
+        }
+        else
+            Debug.LogWarning("dragon egg is null");
+    }
     public int GetCheckedEggCount()
     {
         LevelData currentLevel = GetLevelData();
@@ -1648,7 +1642,8 @@ public class GameManager : MonoBehaviour
     }
    private void ChangeMaterial()
     {
-       foreach(Transform egg in EggSpawner.instance.EggParent)
+        isfinalShuffel = true;
+        foreach (Transform egg in EggSpawner.instance.EggParent)
         {
             if( !eggSlotDic.ContainsValue(egg.gameObject))
             {

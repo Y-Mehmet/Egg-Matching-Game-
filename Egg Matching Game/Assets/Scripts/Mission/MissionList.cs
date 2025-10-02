@@ -50,15 +50,30 @@ public class MissionList : MonoBehaviour
     }
     private void UpdateMissionDetails()
     {
-        requireGemAmount = DragonManager.Instance.GetRequiredGemAmount();
-        dragonNameText.text = DragonManager.Instance.GetCurrentDragonSO().DragonName.ToString();
-        desctriptionText.text = "Paint the "+DragonManager.Instance.GetCurrentDragonSO().color.ToString().FirstCharacterToLower() +" parts";
-        missionGemCountText.text = requireGemAmount.ToString();
-        if(ResourceManager.Instance.GetResourceAmount(ResourceType.Gem)<=0)
-            missionGemCountText.color = Color.red;
-        else
-            missionGemCountText.color= Color.white; 
-        colorImage.color = ColorManager.instance.GetEggColor(DragonManager.Instance.GetCurrentDragonSO().color);
+        if(ResourceManager.Instance.isDragonMissionFinish)
+        {
+           
+            dragonNameText.text = "Congs!";
+            desctriptionText.text = "Mission Complete";
+            missionGemCountText.text = "";
+            if (ResourceManager.Instance.GetResourceAmount(ResourceType.Gem) <= 0)
+                missionGemCountText.color = Color.red;
+            else
+                missionGemCountText.color = Color.white;
+            colorImage.color = Color.grey;
+        }else
+        {
+            requireGemAmount = DragonManager.Instance.GetRequiredGemAmount();
+            dragonNameText.text = DragonManager.Instance.GetCurrentDragonSO().DragonName.ToString();
+            desctriptionText.text = "Paint the " + DragonManager.Instance.GetCurrentDragonSO().color.ToString().FirstCharacterToLower() + " parts";
+            missionGemCountText.text = requireGemAmount.ToString();
+            if (ResourceManager.Instance.GetResourceAmount(ResourceType.Gem) <= 0)
+                missionGemCountText.color = Color.red;
+            else
+                missionGemCountText.color = Color.white;
+            colorImage.color = ColorManager.instance.GetEggColor(DragonManager.Instance.GetCurrentDragonSO().color);
+        }
+        
 
     }
 }

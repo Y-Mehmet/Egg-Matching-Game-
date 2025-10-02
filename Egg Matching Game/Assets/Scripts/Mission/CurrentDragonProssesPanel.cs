@@ -30,13 +30,16 @@ public class CurrentDragonProssesPanel : MonoBehaviour
     }
     private void UpdateUI(int d)
     {
-        dragonClorText.text = DragonManager.Instance.dragonHolder.dragonSOList[DragonManager.Instance.GetDragonIndex()].color.ToString();
-        sliderValueText.text = DragonManager.Instance.dragonHolder.dragonSOList[DragonManager.Instance.GetDragonIndex()].DragonGemAmount + "/" + DragonManager.Instance.dragonHolder.dragonSOList[DragonManager.Instance.GetDragonIndex()].dragonMissionGemValue;
-        if (slider != null)
+       if(!ResourceManager.Instance.isDragonMissionFinish)
         {
-            slider.onValueChanged.AddListener(OnSliderValueChanged);
+            dragonClorText.text = DragonManager.Instance.dragonHolder.dragonSOList[DragonManager.Instance.GetDragonIndex()].color.ToString();
+            sliderValueText.text = DragonManager.Instance.dragonHolder.dragonSOList[DragonManager.Instance.GetDragonIndex()].DragonGemAmount + "/" + DragonManager.Instance.dragonHolder.dragonSOList[DragonManager.Instance.GetDragonIndex()].dragonMissionGemValue;
+            if (slider != null)
+            {
+                slider.onValueChanged.AddListener(OnSliderValueChanged);
+            }
+            OnSliderValueChanged(DragonManager.Instance.GetCurrentDragonSO().DragonGemAmount);
         }
-        OnSliderValueChanged(DragonManager.Instance.GetCurrentDragonSO().DragonGemAmount);
     }
 
 }

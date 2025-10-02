@@ -43,9 +43,16 @@ public class DragonManager : MonoBehaviour
     }
     private void SetDragonIndex(int index)
     {
-
-        ResourceManager.Instance.AddResource(ResourceType.DragonIndex, 1);
-        DragonManager.Instance.dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = 0;
+        if(GetDragonIndex()== ResourceManager.Instance.maxDragonIndex)
+        {
+            ResourceManager.Instance.isDragonMissionFinish = true;
+            ResourceManager.Instance.SaveResources();
+        }else
+        {
+            ResourceManager.Instance.AddResource(ResourceType.DragonIndex, 1);
+           dragonHolder.dragonSOList[GetDragonIndex()].DragonGemAmount = 0;
+        }
+       
         PanelManager.Instance.ShowPanel(PanelID.DragonInfo, PanelShowBehavior.HIDE_PREVISE);
 
     }
@@ -80,7 +87,7 @@ public class DragonManager : MonoBehaviour
     }
     public DragonSO GetCurrentDragonSO()
     {
-       
+      
         return dragonHolder.dragonSOList[GetDragonIndex()];
         
     }

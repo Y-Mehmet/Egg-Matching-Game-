@@ -30,7 +30,7 @@ public class DragonInfoPanel : MonoBehaviour
         int currentIndex = DragonManager.Instance.GetDragonIndex();
         for (int i = 0; i < slotList.Count; i++)
         {
-            if (i < currentIndex)
+            if (i < currentIndex || (ResourceManager.Instance.isDragonMissionFinish))
             {
                 foreach (Transform item in slotList[i].transform)
                 {
@@ -44,6 +44,7 @@ public class DragonInfoPanel : MonoBehaviour
             }
             else if (i == currentIndex)
             {
+               
                 foreach (Transform item in slotList[i].transform)
                 {
                     if (item.TryGetComponent<OnProgresDragonSlot>(out OnProgresDragonSlot obj))
@@ -52,7 +53,7 @@ public class DragonInfoPanel : MonoBehaviour
                         item.gameObject.SetActive(false);
                 }
                 slotList[i].GetComponentInChildren<OnProgresDragonSlot>().gameObject.SetActive(true);
-                Debug.LogWarning("You are on progress dragon slot");
+                Debug.Log("You are on progress dragon slot");
             }
             else
             {
